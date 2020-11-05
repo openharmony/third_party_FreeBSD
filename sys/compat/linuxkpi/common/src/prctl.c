@@ -46,7 +46,7 @@ int prctl(int option, ...)
     }
 
     name = va_arg(ap, unsigned long);
-    err = OsSetCurrTaskName((const char *)name);
+    err = OsSetTaskName(OsCurrTaskGet(), (const char *)name, TRUE);
     if (err != LOS_OK) {
         goto ERROR;
     }
