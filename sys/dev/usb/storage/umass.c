@@ -3158,25 +3158,25 @@ umass_status(void)
 }
 
 static int
-umass_open(FAR struct inode *filep)
+umass_open(FAR struct Vnode *filep)
 {
 	(void)filep;
 	return (0);
 }
 
 static int
-umass_close(FAR struct inode *filep)
+umass_close(FAR struct Vnode *filep)
 {
 	(void)filep;
 	return (0);
 }
 
 static ssize_t
-umass_read(FAR struct inode *umass_inode, FAR unsigned char *buffer,
+umass_read(FAR struct Vnode *umass_inode, FAR unsigned char *buffer,
 		    uint64_t start_sector, unsigned int nsectors)
 {
 	int status;
-	struct umass_softc *sc = (struct umass_softc *)umass_inode->i_private;
+	struct umass_softc *sc = (struct umass_softc *)((struct drv_data*)umass_inode->data)->priv;
 
 	mtx_lock(&sc->sc_umass_mtx);
 	if (sc->sc_super_disk == TRUE) {
@@ -3193,11 +3193,11 @@ umass_read(FAR struct inode *umass_inode, FAR unsigned char *buffer,
 }
 
 static ssize_t
-umass_write(FAR struct inode *umass_inode, FAR const unsigned char *buffer,
+umass_write(FAR struct Vnode *umass_inode, FAR const unsigned char *buffer,
 		    uint64_t start_sector, unsigned int nsectors)
 {
 	int status;
-	struct umass_softc *sc = (struct umass_softc *)umass_inode->i_private;
+	struct umass_softc *sc = (struct umass_softc *)((struct drv_data*)umass_inode->data)->priv;
 
 	mtx_lock(&sc->sc_umass_mtx);
 	if (sc->sc_super_disk == TRUE) {
@@ -3214,14 +3214,14 @@ umass_write(FAR struct inode *umass_inode, FAR const unsigned char *buffer,
 }
 
 static int
-umass_geometry(FAR struct inode *umass_inode, FAR struct geometry *ugeometry)
+umass_geometry(FAR struct Vnode *umass_inode, FAR struct geometry *ugeometry)
 {
 	struct umass_softc *sc;
 
 	if ((ugeometry == NULL) || (umass_inode == NULL))
 		return (-1);
 
-	sc = (struct umass_softc *)umass_inode->i_private;
+	sc = (struct umass_softc *)(struct umass_softc *)((struct drv_data*)umass_inode->data)->priv;
 
 	if (sc == NULL)
 		return (-1);
@@ -3238,7 +3238,7 @@ umass_geometry(FAR struct inode *umass_inode, FAR struct geometry *ugeometry)
 }
 
 static int
-umass_ioctl(FAR struct inode *umass_inode, int cmd, unsigned long arg)
+umass_ioctl(FAR struct Vnode *umass_inode, int cmd, unsigned long arg)
 {
 	(void)umass_inode;
 	(void)cmd;

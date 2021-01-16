@@ -1351,7 +1351,7 @@ tty_usb_write_wait(void)
 static int
 tty_usb_open(struct file *filep)
 {
-	struct ucom_softc *sc = (struct ucom_softc *)filep->f_inode->i_private;
+	struct ucom_softc *sc = (struct ucom_softc *)((struct drv_data*)filep->f_vnode->data)->priv;
 	int ret;
 
 	UCOM_MTX_LOCK(sc);
@@ -1369,7 +1369,7 @@ tty_usb_open(struct file *filep)
 static int
 tty_usb_close(struct file *filep)
 {
-	struct ucom_softc *sc = (struct ucom_softc *)filep->f_inode->i_private;
+	struct ucom_softc *sc = (struct ucom_softc *)((struct drv_data*)filep->f_vnode->data)->priv;
 
 	UCOM_MTX_LOCK(sc);
 	tty_usb_queue_delete();
@@ -1382,7 +1382,7 @@ tty_usb_close(struct file *filep)
 static ssize_t
 tty_usb_read(struct file *filep, char *buffer, size_t buflen)
 {
-	struct ucom_softc *sc = (struct ucom_softc *)filep->f_inode->i_private;
+	struct ucom_softc *sc = (struct ucom_softc *)((struct drv_data*)filep->f_vnode->data)->priv;
 	int read_len = -1;
 	int ret;
 	UCOM_MTX_LOCK(sc);
@@ -1440,7 +1440,7 @@ tty_usb_read(struct file *filep, char *buffer, size_t buflen)
 static ssize_t
 tty_usb_write(struct file *filep, const char *buffer, size_t buflen)
 {
-	struct ucom_softc *sc = (struct ucom_softc *)filep->f_inode->i_private;
+	struct ucom_softc *sc = (struct ucom_softc *)((struct drv_data*)filep->f_vnode->data)->priv;
 
 	tx_data_copy_in(sc, (void *)buffer, buflen);
 	ucom_outwakeup(sc);
