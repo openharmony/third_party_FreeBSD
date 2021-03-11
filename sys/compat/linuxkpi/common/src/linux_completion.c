@@ -32,6 +32,7 @@
 #include "linux/completion.h"
 #include "limits.h"
 #include "los_task_pri.h"
+#include "los_sched_pri.h"
 #include "los_mp.h"
 #include "los_exc.h"
 
@@ -77,7 +78,8 @@ void linux_complete(struct completion *x)
     SCHEDULER_LOCK(intSave);
     if (!LOS_ListEmpty(&x->comList)) {
         resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
-        OsTaskWake(resumedTask);
+        OsTaskWakeClearPendMask(resumedTask);
+        OsSchedTaskWake(resumedTask);
         SCHEDULER_UNLOCK(intSave);
         CompletionSchedule();
         return;
@@ -128,7 +130,8 @@ void linux_wait_for_completion(struct completion *x)
         return;
     }
 
-    (void)OsTaskWait(&x->comList, LOS_WAIT_FOREVER, TRUE);
+    OsTaskWaitSetPendMask(OS_TASK_WAIT_COMPLETE, (UINTPTR)x, LOS_WAIT_FOREVER);
+    (void)OsSchedTaskWait(&x->comList, LOS_WAIT_FOREVER, TRUE);
     SCHEDULER_UNLOCK(intSave);
     return;
 }
@@ -172,7 +175,8 @@ unsigned long linux_wait_for_completion_timeout(struct completion *x, unsigned l
         return timeout;
     }
 
-    ret = OsTaskWait(&x->comList, timeout, TRUE);
+    OsTaskWaitSetPendMask(OS_TASK_WAIT_COMPLETE, (UINTPTR)x, timeout);
+    ret = OsSchedTaskWait(&x->comList, timeout, TRUE);
     if (ret == LOS_ERRNO_TSK_TIMEOUT) {
         SCHEDULER_UNLOCK(intSave);
         return 0;
@@ -204,7 +208,8 @@ void linux_complete_all(struct completion *x)
 
     while (!LOS_ListEmpty(&x->comList)) {
         resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
-        OsTaskWake(resumedTask);
+        OsTaskWakeClearPendMask(resumedTask);
+        OsSchedTaskWake(resumedTask);
     }
     SCHEDULER_UNLOCK(intSave);
     CompletionSchedule();

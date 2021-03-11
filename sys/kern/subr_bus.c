@@ -326,6 +326,9 @@ devclass_find_internal(const char *classname, const char *parentname,
         if (parentname && dc && !dc->parent &&
             strcmp(classname, parentname) != 0) {
                 dc->parent = devclass_find_internal(parentname, NULL, TRUE);
+                if (dc->parent == NULL) {
+                    return (NULL);
+                }
                 dc->parent->flags = (unsigned int)dc->parent->flags | DC_HAS_CHILDREN;
         }
 

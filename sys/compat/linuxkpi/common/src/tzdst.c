@@ -29,13 +29,13 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "los_typedef.h"
-#include "los_printf.h"
 #include "tzdst.h"
 #include "tzdst_pri.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "unistd.h"
+#include "los_printf.h"
+#include "los_typedef.h"
 #include "securec.h"
 
 #ifdef __cplusplus

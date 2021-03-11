@@ -84,7 +84,7 @@ extern struct driver_module_data umass_uhub_driver_mod;
 extern struct driver_module_data usb_linux_uhub_driver_mod;
 #endif
 
-#ifdef LOSCFG_DRIVERS_USB_HID_CLASS
+#if defined (LOSCFG_DRIVERS_USB_HID_CLASS) && defined (LOSCFG_DRIVERS_HDF_INPUT)
 extern struct driver_module_data uhid_uhub_driver_mod;
 #endif
 

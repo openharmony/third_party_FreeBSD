@@ -31,9 +31,8 @@
 
 #include "linux/hrtimer.h"
 #include "los_task_pri.h"
-#include "los_hwi.h"
-#include "asm/hal_platform_ints.h"
 #include "los_spinlock.h"
+#include "target_config.h"
 
 #ifdef __cplusplus
 #if __cplusplus

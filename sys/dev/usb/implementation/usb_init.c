@@ -92,7 +92,7 @@ static struct driver_module_data* usb_driver_mode_list[] = {
 	&usb_linux_uhub_driver_mod,
 #endif
 
-#ifdef LOSCFG_DRIVERS_USB_HID_CLASS
+#if defined (LOSCFG_DRIVERS_USB_HID_CLASS) && defined (LOSCFG_DRIVERS_HDF_INPUT)
 	&uhid_uhub_driver_mod,
 #endif
 	NULL

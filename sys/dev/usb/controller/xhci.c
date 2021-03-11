@@ -62,9 +62,13 @@ static int xhcictlstep = 0;
 #define xhcictlstep 0
 #endif
 
-#ifndef USB_DEBUG_VAR
+#undef USB_DEBUG_VAR
 #define USB_DEBUG_VAR xhcidebug
+
+#ifdef LOSCFG_USB_DEBUG
+static int xhcidebug = 0;
 #endif
+
 
 #define XHCI_INTR_ENDPT 1
 

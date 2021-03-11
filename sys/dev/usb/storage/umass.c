@@ -1681,7 +1681,7 @@ umass_command_start(struct umass_softc *sc, uint8_t dir,
 	}
 
 	(void)LOS_EventRead(&sc->sc_event, 0xFF,
-	    LOS_WAITMODE_OR|LOS_WAITMODE_CLR, 1000);
+	    LOS_WAITMODE_OR | LOS_WAITMODE_CLR, 10 * LOSCFG_BASE_CORE_TICK_PER_SECOND); /* 10 seconds. */
 
 	return (0);
 }

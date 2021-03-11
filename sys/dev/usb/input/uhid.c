@@ -44,6 +44,7 @@ __FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/input/uhid.c 331722 2018-03-29 02:50
 #include "implementation/global_implementation.h"
 #include "input/usb_rdesc.h"
 #include "implementation/usbdevs.h"
+#include "event_hub.h"
 
 #undef USB_DEBUG_VAR
 #define	USB_DEBUG_VAR uhid_debug
@@ -54,6 +55,11 @@ static int uhid_debug = 0;
 
 #define	UHID_BSIZE	1024		/* bytes, buffer size */
 #define	UHID_FRAME_NUM 	  50		/* bytes, frame number */
+
+#define MOUSE_DATA_LEN 4
+#define BTN_LEFT_VALUE(v) ((v) & 0x01)
+#define BTN_RIGHT_VALUE(v) (((v) & 0x02)>>1)
+#define BTN_MIDDLE_VALUE(v) (((v) & 0x04)>>2)
 
 enum {
 	UHID_INTR_DT_WR,
@@ -74,6 +80,8 @@ struct uhid_softc {
 	uint32_t sc_isize;
 	uint32_t sc_osize;
 	uint32_t sc_fsize;
+
+	InputDevice *input_dev;
 
 	uint16_t sc_repdesc_size;
 
@@ -151,6 +159,33 @@ tr_setup:
 	}
 }
 
+void report_event(InputDevice *input_dev, uint32_t type, uint32_t code, int32_t value)
+{
+	DPRINTF("%s type = %u, code = %u, value = %d\n", input_dev->devName, type, code, value);
+	if (type == EV_SYN || type == EV_KEY) {
+		PushOnePackage(input_dev, type, code, value);
+	} else if (value) {
+		PushOnePackage(input_dev, type, code, value);
+	}
+}
+
+void mouse_report_events(InputDevice *input_dev, void *buffer, int len)
+{
+	if (len != MOUSE_DATA_LEN) {
+		DPRINTF("%s: invalid data len = %d\n", __func__, len);
+		return;
+	}
+
+	const char *buf = buffer;
+	report_event(input_dev, EV_KEY, BTN_LEFT, BTN_LEFT_VALUE((unsigned char)buf[0]));
+	report_event(input_dev, EV_KEY, BTN_RIGHT, BTN_RIGHT_VALUE((unsigned char)buf[0]));
+	report_event(input_dev, EV_KEY, BTN_MIDDLE, BTN_MIDDLE_VALUE((unsigned char)buf[0]));
+	report_event(input_dev, EV_REL, REL_X, buf[1]);
+	report_event(input_dev, EV_REL, REL_Y, buf[2]);
+	report_event(input_dev, EV_REL, REL_WHEEL, buf[3]);
+	report_event(input_dev, EV_SYN, SYN_REPORT, 0);
+}
+
 static void
 uhid_intr_read_callback(struct usb_xfer *xfer, usb_error_t error)
 {
@@ -158,44 +193,27 @@ uhid_intr_read_callback(struct usb_xfer *xfer, usb_error_t error)
 	struct usb_page_cache *pc;
 	int actlen;
 
+	DPRINTF("enter state of xfer is %u!\n", USB_GET_STATE(xfer));
+
 	usbd_xfer_status(xfer, &actlen, NULL, NULL, NULL);
 
 	switch (USB_GET_STATE(xfer)) {
 	case USB_ST_TRANSFERRED:
-		DPRINTF("transferred!\n");
-
 		pc = usbd_xfer_get_frame(xfer, 0);
-
-		/*
-		 * If the ID byte is non zero we allow descriptors
-		 * having multiple sizes:
-		 */
-		if ((actlen >= (int)sc->sc_isize) ||
-		    ((actlen > 0) && (sc->sc_iid != 0))) {
-			/* limit report length to the maximum */
-			if (actlen > (int)sc->sc_isize)
-				actlen = sc->sc_isize;
-			usb_fifo_put_data(sc->sc_fifo.fp[USB_FIFO_RX], pc,
-			    0, actlen, 1);
-		} else {
-			/* ignore it */
-			DPRINTF("ignored transfer, %d bytes\n", actlen);
+		if (sc->input_dev && sc->input_dev->devType == INDEV_TYPE_MOUSE) {
+			mouse_report_events(sc->input_dev, pc->buffer, actlen);
 		}
 
 	case USB_ST_SETUP:
-re_submit:
-		if (usb_fifo_put_bytes_max(
-		    sc->sc_fifo.fp[USB_FIFO_RX]) != 0) {
-			usbd_xfer_set_frame_len(xfer, 0, sc->sc_isize);
-			usbd_transfer_submit(xfer);
-		}
+		usbd_xfer_set_frame_len(xfer, 0, sc->sc_isize);
+		usbd_transfer_submit(xfer);
 		return;
 
-	default:			/* Error */
+	default:
 		if (error != USB_ERR_CANCELLED) {
-			/* try to clear stall first */
 			usbd_xfer_set_stall(xfer);
-			goto re_submit;
+			usbd_xfer_set_frame_len(xfer, 0, sc->sc_isize);
+			usbd_transfer_submit(xfer);
 		}
 		return;
 	}
@@ -292,6 +310,8 @@ uhid_read_callback(struct usb_xfer *xfer, usb_error_t error)
 	struct uhid_softc *sc = usbd_xfer_softc(xfer);
 	struct usb_device_request req;
 	struct usb_page_cache *pc;
+
+	DPRINTF("enter state of xfer is %u!\n", USB_GET_STATE(xfer));
 
 	pc = usbd_xfer_get_frame(xfer, 0);
 
@@ -696,6 +716,7 @@ uhid_attach(device_t dev)
 	struct uhid_softc *sc = device_get_softc(dev);
 	int unit = device_get_unit(dev);
 	int error = 0;
+	int32_t ret;
 
 	DPRINTFN(10, "sc=%p\n", sc);
 
@@ -824,6 +845,30 @@ uhid_attach(device_t dev)
 		goto detach;
 	}
 
+	sc->input_dev = (InputDevice*)zalloc(sizeof(InputDevice));
+	if (sc->input_dev) {
+		if (uaa->info.bInterfaceProtocol == UIPROTO_MOUSE) {
+			sc->input_dev->devType = INDEV_TYPE_MOUSE;
+			sc->input_dev->devName = "mouse";
+		} else {
+			sc->input_dev->devType = INDEV_TYPE_UNKNOWN;
+			sc->input_dev->devName = "other";
+		}
+
+		ret = RegisterInputDevice(sc->input_dev);
+		if (ret != HDF_SUCCESS) {
+			DPRINTF("%s register failed, ret = %d!\n", sc->input_dev->devName, ret);
+			free(sc->input_dev);
+			sc->input_dev = NULL;
+		} else if (sc->input_dev->devType == INDEV_TYPE_MOUSE) {
+			DPRINTF("mouse register success!\n");
+			mtx_lock(&sc->sc_mtx);
+			sc->sc_flags &= ~UHID_FLAG_IMMED;
+			usbd_transfer_start(sc->sc_xfer[UHID_INTR_DT_RD]);
+			mtx_unlock(&sc->sc_mtx);
+		}
+	}
+
 	return (0);			/* success */
 
 detach:
@@ -835,6 +880,18 @@ static int
 uhid_detach(device_t dev)
 {
 	struct uhid_softc *sc = device_get_softc(dev);
+
+	DPRINTF("enter\n");
+
+	if (sc->input_dev) {
+		if (sc->input_dev->devType == INDEV_TYPE_MOUSE) {
+			usbd_transfer_stop(sc->sc_xfer[UHID_INTR_DT_RD]);
+		}
+
+		UnregisterInputDevice(sc->input_dev);
+		free(sc->input_dev);
+		sc->input_dev = NULL;
+	}
 
 	usb_fifo_detach(&sc->sc_fifo);
 

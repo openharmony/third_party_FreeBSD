@@ -364,38 +364,35 @@ STATIC VOID DelayedWorkTimerFunc(unsigned long data)
 
 STATIC BOOL OsPerCpuSortLinkSearch(SortLinkAttribute *swtmrSortLink, OsSortLinkCond checkFunc, VOID *arg)
 {
-    UINT32 i;
-    SWTMR_CTRL_S *curSwtmr = NULL;
-    SortLinkList *listSorted = NULL;
-    LOS_DL_LIST *listObject = NULL;
+    LOS_DL_LIST *listObject = &swtmrSortLink->sortLink;
+    LOS_DL_LIST *list = listObject->pstNext;
 
-    for (i = 0; i < OS_TSK_SORTLINK_LEN; i++) {
-        listObject = swtmrSortLink->sortLink + i;
-        if (LOS_ListEmpty(listObject)) {
-            continue;
+    while (list != listObject) {
+        SortLinkList *listSorted = LOS_DL_LIST_ENTRY(list, SortLinkList, sortLinkNode);
+        SWTMR_CTRL_S *curSwtmr = LOS_DL_LIST_ENTRY(listSorted, SWTMR_CTRL_S, stSortList);
+        if (checkFunc(curSwtmr, arg)) {
+            return TRUE;
         }
-        listSorted = LOS_DL_LIST_ENTRY((listObject)->pstNext, SortLinkList, sortLinkNode);
-        do {
-            curSwtmr = LOS_DL_LIST_ENTRY(listSorted, SWTMR_CTRL_S, stSortList);
-            if (checkFunc(curSwtmr, arg)) {
-                return TRUE;
-            }
-            listSorted = LOS_DL_LIST_ENTRY(listSorted->sortLinkNode.pstNext, SortLinkList, sortLinkNode);
-        } while (&listSorted->sortLinkNode != (listObject));
+        list = list->pstNext;
     }
+
     return FALSE;
 }
 
 BOOL OsSortLinkSearch(OsSortLinkCond checkFunc, VOID *arg)
 {
+    UINT32 intSave;
     UINT32 i;
-    SortLinkAttribute *swtmrSortLink = NULL;
 
     for (i = 0; i < LOSCFG_KERNEL_CORE_NUM; i++) {
-        swtmrSortLink = &OsPercpuGetByID(i)->swtmrSortLink;
+        Percpu *cpu = OsPercpuGetByID(i);
+        SortLinkAttribute *swtmrSortLink = &OsPercpuGetByID(i)->swtmrSortLink;
+        LOS_SpinLockSave(&cpu->swtmrSortLinkSpin, &intSave);
         if (OsPerCpuSortLinkSearch(swtmrSortLink, checkFunc, arg)) {
+            LOS_SpinUnlockRestore(&cpu->swtmrSortLinkSpin, intSave);
             return TRUE;
         }
+        LOS_SpinUnlockRestore(&cpu->swtmrSortLinkSpin, intSave);
     }
     return FALSE;
 }

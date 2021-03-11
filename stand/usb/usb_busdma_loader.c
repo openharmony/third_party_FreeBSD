@@ -27,7 +27,6 @@
 #include <los_memory.h>
 #include "los_vm_iomap.h"
 #include "los_vm_map.h"
-#include <asm/dma.h>
 #include <user_copy.h>
 
 #include "implementation/global_implementation.h"

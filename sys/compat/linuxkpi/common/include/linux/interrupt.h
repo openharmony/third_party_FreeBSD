@@ -34,7 +34,6 @@
 #include "linux/kernel.h"
 #include "los_base.h"
 #include "linux/workqueue.h"
-#include "asm/hal_platform_ints.h"
 
 #ifdef __cplusplus
 #if __cplusplus
