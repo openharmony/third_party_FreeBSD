@@ -27,8 +27,7 @@
 #include "controller/xhci.h"
 #include "controller/xhcireg.h"
 
-extern void *ioremap(unsigned long phys_addr, unsigned int size);
-extern void iounmap(void *addr);
+#include <linux/kernel.h>
 
 static device_probe_t xhci_pci_probe;
 static device_attach_t xhci_pci_attach;
