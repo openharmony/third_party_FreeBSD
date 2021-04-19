@@ -34,11 +34,6 @@
 #include "los_spinlock.h"
 #include "target_config.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #define US_PER_SECOND 1000000
 
@@ -565,8 +560,3 @@ UINT32 HrtimersInit(VOID)
     return LOS_OK;
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif
-#endif

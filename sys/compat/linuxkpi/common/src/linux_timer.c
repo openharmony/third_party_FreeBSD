@@ -32,11 +32,6 @@
 #include "linux/timer.h"
 #include "los_swtmr.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 void linux_init_timer(struct timer_list *timer)
 {
@@ -149,8 +144,3 @@ ERROUT:
     return ret;
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif
-#endif

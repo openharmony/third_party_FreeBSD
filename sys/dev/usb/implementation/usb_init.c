@@ -32,11 +32,6 @@
 #include "usb_init.h"
 #include "usb_api_pri.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 typedef struct usb_info {
 	bool b_init;
@@ -264,8 +259,3 @@ usb_is_devicemode(void)
 	return (HiUsbIsDeviceMode());
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

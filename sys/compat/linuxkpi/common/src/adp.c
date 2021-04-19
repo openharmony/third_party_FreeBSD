@@ -46,11 +46,6 @@
 #endif
 #include "linux/rbtree.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #ifdef __LP64__
 int dl_iterate_phdr(int (*callback)(void *info, size_t size, void *data), void *data)
@@ -204,8 +199,3 @@ panic_cmp(struct rb_node *one, struct rb_node *two)
 
 RB_GENERATE(linux_root, rb_node, __entry, panic_cmp);
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

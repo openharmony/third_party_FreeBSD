@@ -32,11 +32,6 @@
 #include "linux/wakelock.h"
 #include "los_spinlock.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #define SET_BIT(bitmap, pos) ((bitmap) |= (1u << (pos)))
 #define CLEAR_BIT(bitmap, pos) ((bitmap) &= ~(1u << (pos)))
@@ -154,8 +149,3 @@ void linux_wake_lock_destroy(struct wake_lock *lock)
     LOS_SpinUnlockRestore(&g_wakeLockSpin, intSave);
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif
-#endif

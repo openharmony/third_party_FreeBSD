@@ -36,11 +36,6 @@
 #include "los_mp.h"
 #include "los_exc.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 void linux_init_completion(struct completion *x)
 {
@@ -228,8 +223,3 @@ int linux_completion_done(struct completion *x)
     return (isdone);
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

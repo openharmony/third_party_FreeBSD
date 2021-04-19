@@ -38,11 +38,6 @@
 #include "securec.h"
 #include "los_printf.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 static void eth_drv_send(struct netif *usb_netif, struct pbuf *p);
 
@@ -190,8 +185,3 @@ const struct los_eth_funs eth_drv_funs_usb = {
 	(void (*)(struct los_eth_driver *, unsigned int, int))eth_drv_tx_done
 };
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */
