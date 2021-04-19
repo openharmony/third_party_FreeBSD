@@ -45,6 +45,8 @@
 #include "lwip/netdb.h"
 #endif
 #include "linux/rbtree.h"
+#include "los_vm_zone.h"
+#include "los_vm_lock.h"
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -195,14 +197,126 @@ void *__dso_handle = NULL;
 #undef RB_ROOT
 #define RB_ROOT(head)   (head)->rbh_root
 
-int
-panic_cmp(struct rb_node *one, struct rb_node *two)
+int panic_cmp(struct rb_node *one, struct rb_node *two)
 {
     LOS_Panic("no cmp");
     return 0;
 }
 
 RB_GENERATE(linux_root, rb_node, __entry, panic_cmp);
+
+#define IS_PERIPH_ADDR(addr) \
+    (((addr) >= U32_C(PERIPH_PMM_BASE)) && ((addr) <= U32_C(PERIPH_PMM_BASE) + U32_C(PERIPH_PMM_SIZE)))
+#define IS_MEMORY_ADDR(addr) \
+    (((addr) >= U32_C(DDR_MEM_ADDR)) && ((addr) <= U32_C(DDR_MEM_ADDR) + U32_C(DDR_MEM_SIZE)))
+
+VOID *ioremap(PADDR_T paddr, unsigned long size)
+{
+    if (IS_PERIPH_ADDR(paddr) && IS_PERIPH_ADDR(paddr + size)) {
+        return (VOID *)(UINTPTR)IO_DEVICE_ADDR(paddr);
+    }
+
+    VM_ERR("ioremap failed invalid addr or size %p %d", paddr, size);
+    return (VOID *)(UINTPTR)paddr;
+}
+
+VOID iounmap(VOID *vaddr) {}
+
+VOID *ioremap_nocache(PADDR_T paddr, unsigned long size)
+{
+    if (IS_PERIPH_ADDR(paddr) && IS_PERIPH_ADDR(paddr + size)) {
+        return (VOID *)(UINTPTR)IO_UNCACHED_ADDR(paddr);
+    }
+
+    if (IS_MEMORY_ADDR(paddr) && IS_MEMORY_ADDR(paddr + size)) {
+        return (VOID *)(UINTPTR)MEM_UNCACHED_ADDR(paddr);
+    }
+
+    VM_ERR("ioremap_nocache failed invalid addr or size %p %d", paddr, size);
+    return (VOID *)(UINTPTR)paddr;
+}
+
+VOID *ioremap_cached(PADDR_T paddr, unsigned long size)
+{
+    if (IS_PERIPH_ADDR(paddr) && IS_PERIPH_ADDR(paddr + size)) {
+        return (VOID *)(UINTPTR)IO_CACHED_ADDR(paddr);
+    }
+
+    if (IS_MEMORY_ADDR(paddr) && IS_MEMORY_ADDR(paddr + size)) {
+        return (VOID *)(UINTPTR)MEM_CACHED_ADDR(paddr);
+    }
+
+    VM_ERR("ioremap_cached failed invalid addr or size %p %d", paddr, size);
+    return (VOID *)(UINTPTR)paddr;
+}
+
+#ifdef LOSCFG_KERNEL_VM
+int remap_pfn_range(VADDR_T vaddr, unsigned long pfn, unsigned long size, unsigned long prot)
+{
+    STATUS_T status = LOS_OK;
+    int ret;
+    LosVmMapRegion *region = NULL;
+    unsigned long vpos;
+    unsigned long end;
+    unsigned long paddr = pfn << PAGE_SHIFT;
+    LosVmSpace *space = LOS_SpaceGet(vaddr);
+
+    if (size == 0) {
+        VM_ERR("invalid map size %u", size);
+        return LOS_ERRNO_VM_INVALID_ARGS;
+    }
+    size = ROUNDUP(size, PAGE_SIZE);
+
+    if (!IS_PAGE_ALIGNED(vaddr) || pfn == 0) {
+        VM_ERR("invalid map map vaddr %x or pfn %x", vaddr, pfn);
+        return LOS_ERRNO_VM_INVALID_ARGS;
+    }
+
+    if (space == NULL) {
+        VM_ERR("aspace not exists");
+        return LOS_ERRNO_VM_NOT_FOUND;
+    }
+
+    (VOID)LOS_MuxAcquire(&space->regionMux);
+
+    region = LOS_RegionFind(space, vaddr);
+    if (region == NULL) {
+        VM_ERR("region not exists");
+        status = LOS_ERRNO_VM_NOT_FOUND;
+        goto OUT;
+    }
+    end = vaddr + size;
+    if (region->range.base + region->range.size < end) {
+        VM_ERR("out of range:base=%x size=%d vaddr=%x len=%u",
+               region->range.base, region->range.size, vaddr, size);
+        status = LOS_ERRNO_VM_INVALID_ARGS;
+        goto OUT;
+    }
+
+    /* check */
+    for (vpos = vaddr; vpos < end; vpos += PAGE_SIZE) {
+        status = LOS_ArchMmuQuery(&space->archMmu, (VADDR_T)vpos, NULL, NULL);
+        if (status == LOS_OK) {
+            VM_ERR("remap_pfn_range, address mapping already exist");
+            status = LOS_ERRNO_VM_INVALID_ARGS;
+            goto OUT;
+        }
+    }
+
+    /* map all */
+    ret = LOS_ArchMmuMap(&space->archMmu, vaddr, paddr, size >> PAGE_SHIFT, prot);
+    if (ret <= 0) {
+        VM_ERR("ioremap LOS_ArchMmuMap failed err = %d", ret);
+        goto OUT;
+    }
+
+    status = LOS_OK;
+
+OUT:
+    (VOID)LOS_MuxRelease(&space->regionMux);
+    return status;
+}
+#endif
 
 #ifdef __cplusplus
 #if __cplusplus
