@@ -48,11 +48,6 @@
 #include "los_vm_zone.h"
 #include "los_vm_lock.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #ifdef __LP64__
 int dl_iterate_phdr(int (*callback)(void *info, size_t size, void *data), void *data)
@@ -317,9 +312,3 @@ OUT:
     return status;
 }
 #endif
-
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

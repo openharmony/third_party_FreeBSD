@@ -38,11 +38,6 @@
 #include "los_typedef.h"
 #include "securec.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 /* 2: leap year or normal year */
 STATIC const INT32 g_monLengths[2][MONSPERYEAR] = {
@@ -639,8 +634,3 @@ int dst_inquire(int year, struct tm *pstDstStart, struct tm *pstDstEnd)
     return 0;
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif
-#endif

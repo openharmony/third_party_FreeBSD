@@ -35,11 +35,6 @@
 #include "los_task_pri.h"
 #include "los_swtmr.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 signed long linux_schedule_timeout(signed long timeout)
 {
@@ -66,8 +61,3 @@ signed long linux_schedule_timeout(signed long timeout)
     return ret;
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

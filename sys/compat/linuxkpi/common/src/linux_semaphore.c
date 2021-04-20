@@ -35,11 +35,6 @@
 #include "sys/types.h"
 #include "poll.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 int _sema_init(losMutexDef_t *sem, unsigned int value)
 {
@@ -160,8 +155,3 @@ void __wake_up_interruptible_poll(wait_queue_head_t *wait, pollevent_t key)
     notify_poll_with_key(wait, key);
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

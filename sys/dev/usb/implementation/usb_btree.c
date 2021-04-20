@@ -60,11 +60,6 @@
 
 #include "implementation/usb_btree.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #ifdef USB_BINARY_TREE_DEBUG
 #define	BT_DEBUG(x...) dprintf(x)
@@ -282,8 +277,3 @@ usbd_remove_bt_node(usbd_bt_tree tree, struct node_info *p_info, struct node_inf
 	return (0);
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */

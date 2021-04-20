@@ -34,11 +34,6 @@
 #include "los_event.h"
 #include "unistd.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 #define DELAY_TIME  10000
 
@@ -612,8 +607,3 @@ void linux_destroy_workqueue(struct workqueue_struct *wq)
     LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif
-#endif

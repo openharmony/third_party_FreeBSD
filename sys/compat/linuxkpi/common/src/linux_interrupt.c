@@ -32,11 +32,6 @@
 #include "linux/interrupt.h"
 #include "los_hwi.h"
 
-#ifdef __cplusplus
-#if __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-#endif /* __cplusplus */
 
 int linux_request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,
                 const char *name, void *dev)
@@ -121,8 +116,3 @@ bool irq_bottom_half(struct workqueue_struct *workQueue, irq_bottom_half_handler
     return TRUE;
 }
 
-#ifdef __cplusplus
-#if __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __cplusplus */
