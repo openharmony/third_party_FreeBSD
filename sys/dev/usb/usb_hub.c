@@ -2891,6 +2891,10 @@ repeat:
 		}
 	}
 
+	/* be NULL safe */
+	if (udev->bus == NULL)
+		return;
+
 	USB_BUS_LOCK(udev->bus);
 	/*
 	 * Checking for suspend condition and setting suspended bit
