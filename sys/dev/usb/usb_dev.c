@@ -226,7 +226,7 @@ error:
 		usbd_enum_unlock(cpd->udev);
 
 	if (crd->is_uref) {
-		if (--(cpd->udev->refcount) == 0)
+		if (cpd->udev && --(cpd->udev->refcount) == 0)
 			cv_broadcast(&cpd->udev->ref_cv);
 	}
 	mtx_unlock(&usb_ref_lock);
