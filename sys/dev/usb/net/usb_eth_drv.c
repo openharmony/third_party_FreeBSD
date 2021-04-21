@@ -176,7 +176,7 @@ eth_drv_send(struct netif *usb_netif, struct pbuf *p)
 		sg_list[sg_len++].len = q->len;
 	}
 
-	(drv_sc->funs->send) (sc, sg_list, sg_len, p->tot_len, (UINTPTR)p);
+	(drv_sc->funs->send) (sc, sg_list, sg_len, p ? p->tot_len : 0, (UINTPTR)p);
 }
 
 const struct los_eth_funs eth_drv_funs_usb = {
