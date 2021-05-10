@@ -34,7 +34,6 @@ __FBSDID("$FreeBSD: releng/11.4/sys/dev/random/yarrow.c 298923 2016-05-02 14:35:
 #include <sys/mutex.h>
 #include <sys/systm.h>
 
-
 #include <crypto/rijndael/rijndael-api-fst.h>
 #include <crypto/sha2/sha256.h>
 
@@ -51,6 +50,8 @@ __FBSDID("$FreeBSD: releng/11.4/sys/dev/random/yarrow.c 298923 2016-05-02 14:35:
 #include <stdint.h>
 #include <string.h>
 #include <sys/mutex.h>
+
+#include "los_init.h"
 
 #include "unit_test.h"
 
@@ -483,3 +484,12 @@ run_harvester_iterate(void *arg __unused)
 	(void)memset_s(buf, sizeof(buf), 0, sizeof(buf));
 #endif
 }
+
+#if defined(LOSCFG_HW_RANDOM_ENABLE) || defined(LOSCFG_DRIVERS_RANDOM)
+UINT32 OsDriverRandomInit(VOID)
+{
+    random_alg_context.ra_init_alg(NULL);
+    run_harvester_iterate(NULL);
+    return LOS_OK;
+}
+#endif
