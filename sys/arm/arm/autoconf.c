@@ -50,6 +50,9 @@
 __FBSDID("$FreeBSD: releng/11.4/sys/arm/arm/autoconf.c 331722 2018-03-29 02:50:57Z eadler $");
 
 #include <sys/bus.h>
+#include "linux/module.h"
+#include "los_config.h"
+#include "los_init.h"
 
 extern int nexus_init(void);
 device_t nexus;
@@ -63,3 +66,22 @@ configure(void)
 	nexus = device_add_child(root_bus, "nexus", 0);
 	nexus_init();
 }
+
+UINT32 OsBsdInit(VOID)
+{
+    /*
+     * WORKAROUND: Inside configure(), nexus_init() function calls
+     *             HiSi-specific, library procedure - machine_resource_init().
+     *             The latter one is defined in libhi35xx_bsp.a which is only
+     *             available for Hi3516 and Hi3518.
+     *             Temporarily ifdef configure until this routine is implemented
+     *             by other platforms.
+     */
+#if defined(LOSCFG_PLATFORM_HI3516DV300) || defined(LOSCFG_PLATFORM_HI3518EV300)
+    configure();
+#endif
+    mi_startup(SI_SUB_ARCH_INIT);
+    return LOS_OK;
+}
+
+LOS_MODULE_INIT(OsBsdInit, LOS_INIT_LEVEL_PLATFORM);

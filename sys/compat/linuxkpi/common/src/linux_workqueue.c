@@ -30,10 +30,10 @@
  */
 
 #include "linux/workqueue.h"
-#include "los_swtmr_pri.h"
-#include "los_event.h"
 #include "unistd.h"
-
+#include "los_event.h"
+#include "los_init.h"
+#include "los_swtmr_pri.h"
 
 #define DELAY_TIME  10000
 
@@ -607,3 +607,11 @@ void linux_destroy_workqueue(struct workqueue_struct *wq)
     LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
 }
 
+UINT32 OsSysWorkQueueInit(VOID)
+{
+    g_pstSystemWq = create_workqueue("system_wq");
+
+    return LOS_OK;
+}
+
+LOS_MODULE_INIT(OsSysWorkQueueInit, LOS_INIT_LEVEL_KMOD_EXTENDED);
