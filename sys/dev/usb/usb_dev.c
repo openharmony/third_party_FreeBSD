@@ -781,7 +781,8 @@ usb_fifo_close(struct usb_fifo *f, int fflags)
 static int
 usb_open(struct file *filep)
 {
-	struct usb_fs_privdata* pd = (struct usb_fs_privdata*)((struct drv_data*)filep->f_vnode->data)->priv;
+	struct drv_data* drvData = (struct drv_data* )filep->f_vnode->data;
+	struct usb_fs_privdata* pd = (struct usb_fs_privdata* )drvData->priv;
 	struct usb_cdev_refdata refs;
 	struct usb_cdev_privdata *cpd = NULL;
 	int err;
