@@ -45,6 +45,7 @@
 #include "lwip/netdb.h"
 #endif
 #include "linux/rbtree.h"
+#include "los_vm_common.h"
 #include "los_vm_zone.h"
 #include "los_vm_lock.h"
 
