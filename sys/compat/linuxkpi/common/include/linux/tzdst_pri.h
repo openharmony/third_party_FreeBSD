@@ -32,6 +32,8 @@
 #ifndef __LINUX_TZDST_PRI_H__
 #define __LINUX_TZDST_PRI_H__
 
+#include <los_typedef.h>
+
 #ifdef __cplusplus
 #if __cplusplus
 extern "C" {
