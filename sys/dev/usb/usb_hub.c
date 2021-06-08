@@ -1270,6 +1270,7 @@ uhub_attach(device_t dev)
 	uint8_t portno;
 	uint8_t removable;
 	uint8_t iface_index;
+	device_t device;
 	usb_error_t err;
 
 	if (!sc || !uaa || !uaa->device)
@@ -1558,7 +1559,12 @@ uhub_attach(device_t dev)
 			break;
 		if (portno == 1) { /* if it is the hub 1 port */
 			if (udev->parent_hub == NULL) { /* parent is bus */
-				parent_info.nameunit = device_get_nameunit(devclass_get_device(devclass_find("usbus"), 0));
+				device = devclass_get_device(devclass_find("usbus"), 0);
+				if (device == NULL) {
+					device_printf(dev, "Can't find device of class usbus\n");
+					goto error;
+				}
+				parent_info.nameunit = device_get_nameunit(device);
 				parent_info.port_no = 0;
 			} else {	/* parent is hub */
 				parent_info.nameunit = device_get_nameunit(udev->parent_dev);

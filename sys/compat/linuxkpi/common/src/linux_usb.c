@@ -656,7 +656,7 @@ usb_control_msg(struct usb_device *dev, struct usb_host_endpoint *uhe,
 	struct usb_device_request req;
 	struct urb *urb;
 	int err;
-	uint16_t actlen;
+	uint16_t actlen = 0;
 	uint8_t type;
 	uint8_t addr;
 
