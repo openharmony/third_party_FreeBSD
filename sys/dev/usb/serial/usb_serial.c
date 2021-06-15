@@ -68,7 +68,7 @@ __FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/serial/usb_serial.c 331722 2018-03-2
 #include <lwip/netifapi.h>
 #endif
 #include "implementation/global_implementation.h"
-#include "fs/fs.h"
+#include "fs/driver.h"
 
 extern int ucom_modem(struct ucom_softc *sc, int sigon, int sigoff);
 
