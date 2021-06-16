@@ -139,7 +139,7 @@ extern "C" {
 #endif
 
 #define BUG() do { \
-        diag_printf("BUG() at %s %d\n", __FUNCTION__, __LINE__); \
+        panic("BUG() at %s %d\n", __FUNCTION__, __LINE__); \
 } while (0)
 
 #define BUG_ON(condition) do {  \
