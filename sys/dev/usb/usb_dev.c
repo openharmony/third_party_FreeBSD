@@ -28,7 +28,8 @@
  */
 
 #include "implementation/global_implementation.h"
-#include "fs/fs.h"
+#include "fs/driver.h"
+#include "fs/file.h"
 #include <unistd.h>
 
 #undef USB_DEBUG_VAR

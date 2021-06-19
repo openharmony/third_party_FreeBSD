@@ -108,7 +108,6 @@ __FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/storage/umass.c 331722 2018-03-29 02
 #include "implementation/global_implementation.h"
 #include "scsi_all.h"
 #include "scsi.h"
-#include "umass_fs.h"
 #if USB_HAVE_DEVICE_TOPOLOGY
 #include "implementation/usb_btree.h"
 #endif
@@ -232,6 +231,10 @@ DEBUG_MODULE(umass, umass_debug_func);
 /* Bulk-Only features */
 #define	UR_BBB_RESET		0xff	/* Bulk-Only reset */
 #define	UR_BBB_GET_MAX_LUN	0xfe	/* Get maximum lun */
+
+#define UMASS_ATTACH_PRENAME		"/dev/sd"
+#define MASS_NAME		10
+#define MAX_DEVICE		5
 
 /*
  * SCSI I/O Request CCB used for the XPT_SCSI_IO and XPT_CONT_TARGET_IO
@@ -3158,21 +3161,21 @@ umass_status(void)
 }
 
 static int
-umass_open(FAR struct Vnode *filep)
+umass_open(struct Vnode *filep)
 {
 	(void)filep;
 	return (0);
 }
 
 static int
-umass_close(FAR struct Vnode *filep)
+umass_close(struct Vnode *filep)
 {
 	(void)filep;
 	return (0);
 }
 
 static ssize_t
-umass_read(FAR struct Vnode *umass_inode, FAR unsigned char *buffer,
+umass_read(struct Vnode *umass_inode, unsigned char *buffer,
 		    uint64_t start_sector, unsigned int nsectors)
 {
 	int status;
@@ -3193,7 +3196,7 @@ umass_read(FAR struct Vnode *umass_inode, FAR unsigned char *buffer,
 }
 
 static ssize_t
-umass_write(FAR struct Vnode *umass_inode, FAR const unsigned char *buffer,
+umass_write(struct Vnode *umass_inode, const unsigned char *buffer,
 		    uint64_t start_sector, unsigned int nsectors)
 {
 	int status;
@@ -3214,7 +3217,7 @@ umass_write(FAR struct Vnode *umass_inode, FAR const unsigned char *buffer,
 }
 
 static int
-umass_geometry(FAR struct Vnode *umass_inode, FAR struct geometry *ugeometry)
+umass_geometry(struct Vnode *umass_inode, struct geometry *ugeometry)
 {
 	struct umass_softc *sc;
 
@@ -3238,7 +3241,7 @@ umass_geometry(FAR struct Vnode *umass_inode, FAR struct geometry *ugeometry)
 }
 
 static int
-umass_ioctl(FAR struct Vnode *umass_inode, int cmd, unsigned long arg)
+umass_ioctl(struct Vnode *umass_inode, int cmd, unsigned long arg)
 {
 	(void)umass_inode;
 	(void)cmd;
