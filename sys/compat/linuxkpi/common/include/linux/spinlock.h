@@ -66,7 +66,7 @@ SPIN_MACRO_START;                         \
 SPIN_UNUSED_PARAM(spinlock_t *, lock);    \
 SPIN_MACRO_END
 
-#if (LOSCFG_KERNEL_SMP == YES)
+#ifdef LOSCFG_KERNEL_SMP
 #define spin_lock_init(lock) do {LOS_SpinInit(lock);} while (0)
 #define spin_lock(lock) do {LOS_SpinLock(lock);} while (0)
 #define spin_unlock(lock) do {LOS_SpinUnlock(lock);} while (0)
