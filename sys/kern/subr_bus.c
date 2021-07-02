@@ -985,7 +985,7 @@ device_set_desc_internal(device_t dev, const char* desc, int copy)
 		dev->desc = bsd_malloc(strlen(desc) + 1, M_BUS, M_NOWAIT);
 		if (dev->desc) {
 			if (strcpy_s(dev->desc, strlen(desc) + 1, desc) != EOK) {
-				PDEBUG("desc internal copy desc failed!\n");
+				PDEBUG(("desc internal copy desc failed!\n"));
 			}
 			dev->flags |= DF_DESCMALLOCED;
 		}
