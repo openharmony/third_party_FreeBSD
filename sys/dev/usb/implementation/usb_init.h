@@ -59,7 +59,8 @@ typedef enum device_type {
 	DEV_UVC,		/* used for USB video */
 	DEV_UAC,		/* used for USB audio */
 	DEV_CAMERA,		/* used for USB camera */
-	DEV_HID			/* used for USB hid */
+	DEV_HID,		/* used for USB hid */
+	DEV_GENERIC,	/* used for USB generic */
 } device_type;
 
 /*

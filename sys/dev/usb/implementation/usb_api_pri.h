@@ -88,6 +88,16 @@ extern struct driver_module_data usb_linux_uhub_driver_mod;
 extern struct driver_module_data uhid_uhub_driver_mod;
 #endif
 
+extern struct driver_module_data composite_hiudc3_driver_mod;
+
+extern struct driver_module_data fcdcacm_simple_driver_mod;
+extern struct driver_module_data fconfig_simple_driver_mod;
+
+extern int hiudc3_init(void);
+extern int usbd_load_driver(void);
+extern int usbd_start_udc(void);
+extern int usbd_enable_interrupt(void);
+
 #ifdef LOSCFG_DRIVERS_USB_HOST_XHCI
 int hixhci_init(void);
 #endif

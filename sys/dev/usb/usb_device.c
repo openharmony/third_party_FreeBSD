@@ -26,6 +26,9 @@
 
 #include "implementation/global_implementation.h"
 #include "fs/driver.h"
+#ifdef LOSCFG_DRIVERS_HDF_USB_PNP_NOTIFY
+#include "usb_pnp_notify.h"
+#endif
 
 #undef USB_DEBUG_VAR
 #define USB_DEBUG_VAR   usb_debug
@@ -1846,6 +1849,10 @@ config_done:
 	    device_get_nameunit(udev->bus->bdev));
 #endif
 
+#ifdef LOSCFG_DRIVERS_HDF_USB_PNP_NOTIFY
+    UsbPnpNotifyDevice("ATTACH", udev);
+#endif
+
 #if USB_HAVE_DEVCTL
 	usb_notify_addq("ATTACH", udev);
 #endif
@@ -2024,6 +2031,10 @@ usb_free_device(struct usb_device *udev, uint8_t flag)
 
 	/* set DETACHED state to prevent any further references */
 	usb_set_device_state(udev, USB_STATE_DETACHED);
+
+#ifdef LOSCFG_DRIVERS_HDF_USB_PNP_NOTIFY
+    UsbPnpNotifyDevice("DETACH", udev);
+#endif
 
 #if USB_HAVE_DEVCTL
 	usb_notify_addq("DETACH", udev);

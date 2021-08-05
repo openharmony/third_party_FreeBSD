@@ -280,7 +280,9 @@ struct urb {
 };
 
 /* various prototypes */
-
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_HOST
+int usb_create_usb_device(struct usb_device *udev);
+#endif
 int	usb_submit_urb(struct urb *urb, uint16_t mem_flags);
 int	usb_unlink_urb(struct urb *urb);
 int	usb_clear_halt(struct usb_device *dev, struct usb_host_endpoint *uhe);
