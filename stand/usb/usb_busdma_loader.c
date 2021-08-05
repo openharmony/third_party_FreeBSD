@@ -340,7 +340,11 @@ usb_pc_load_mem(struct usb_page_cache *pc, usb_size_t size, uint8_t data_sync)
 
 	if (size > 0) {
 		/* compute physical address */
+#if defined (LOSCFG_DRIVERS_HDF_USB_DDK_HOST) || defined (LOSCFG_DRIVERS_HDF_USB_DDK_DEVICE)
+		usb_pc_common_mem_cb(pc, (void *)VMM_TO_UNCACHED_ADDR((unsigned long)pc->buffer), size);
+#else
 		usb_pc_common_mem_cb(pc, (void *)(UINTPTR)LOS_DmaVaddrToPaddr(pc->buffer), size);
+#endif
 	}
 	if (data_sync == 0) {
 		/*

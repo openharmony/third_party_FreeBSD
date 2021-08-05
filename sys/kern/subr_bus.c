@@ -1441,6 +1441,20 @@ device_add_child(device_t dev, const char *name, int unit)
 	return (device_add_child_ordered(dev, 0, name, unit));
 }
 
+device_t
+bus_get_device(device_t dev, const char *name)
+{
+        device_t child;
+
+        PDEBUG(("+"));
+        TAILQ_FOREACH(child, &dev->children, link) {
+                if (!strcmp(device_get_name(child), name))
+                        return (child);
+        }
+        PDEBUG(("-"));
+        return (NULL);
+}
+
 /**
  * @brief Create a new device
  *

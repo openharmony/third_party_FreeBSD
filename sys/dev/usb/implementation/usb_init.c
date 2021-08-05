@@ -31,7 +31,8 @@
 
 #include "usb_init.h"
 #include "usb_api_pri.h"
-
+#include "devsvc_manager_clnt.h"
+#include "hdf_device_desc.h"
 
 typedef struct usb_info {
 	bool b_init;
@@ -62,7 +63,9 @@ static struct driver_module_data* usb_driver_mode_list[] = {
 #endif
 
 #ifdef LOSCFG_DRIVERS_USB_4G_MODEM
+#ifndef LOSCFG_DRIVERS_HDF_USB_DDK_HOST
 	&cdce_uhub_driver_mod,
+#endif
 	//&bsd_u3g_uhub_driver_mod,
 #endif
 
@@ -90,8 +93,15 @@ static struct driver_module_data* usb_driver_mode_list[] = {
 #if defined (LOSCFG_DRIVERS_USB_HID_CLASS) && defined (LOSCFG_DRIVERS_HDF_INPUT)
 	&uhid_uhub_driver_mod,
 #endif
+
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_DEVICE
+	&composite_hiudc3_driver_mod,
+#endif
 	NULL
 };
+
+extern device_t
+bus_get_device(device_t dev, const char *name);
 
 void
 usbinfo_clean(void)
@@ -151,7 +161,44 @@ usb_unloadonce(void)
 
 	return;
 }
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_DEVICE
+static int composite_add(void)
+{
+    device_t udc;
+    device_t composite;
 
+	udc = bus_get_device(nexus, "hiudc3");
+	if (udc == NULL) {
+		return -1;
+	}
+
+    composite = device_add_child(udc, "composite", -1);
+    if (composite == NULL) {
+    	return -1;
+    }
+
+    if (device_probe_and_attach(composite)) {
+        device_printf(composite, "WARNING: Probe and attach failed!\n");
+        return -1;
+    }
+    struct HdfDeviceObject *devObj = HdfRegisterDevice("usbfn_master", "usbfn_master", NULL);
+    if (devObj == NULL) {
+		dprintf("%s register usbfn_master may failed\n", __func__);
+    }
+
+	devObj = HdfRegisterDevice("usbfn_cdcacm", "usbfn_cdcacm", NULL);
+    if (devObj == NULL) {
+		dprintf("%s register usbfn_cdcacm may failed\n", __func__);
+    }
+    
+	devObj = HdfRegisterDevice("usbfn_cdcecm", "usbfn_cdcecm", NULL);
+    if (devObj == NULL) {
+		dprintf("%s register usbfn_cdcecm may failed\n", __func__);
+    }
+	dprintf("%s success\n", __func__);
+    return 0;
+}
+#endif
 /*
  * step1: modify DRIVER_MODULE,register all driver module
  * step2: make ehci/ohci device (direct skip pci bus)
@@ -192,12 +239,23 @@ usb_init(controller_type ctype, device_type dtype)
 		ret = hiehci_init();
 #endif
 	} else {
-		PRINT_ERR("controller type %d dtype %d is error\n", ctype, dtype);
-		goto err;
-	}
-
-	if (ret != LOS_OK) {
-		goto err;
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_DEVICE
+		ret = usbd_load_driver();
+		if (ret != LOS_OK) {
+			dprintf("usbd_load_driver failed ,ret = %d\n", ret);
+			goto err;
+		}
+		ret = composite_add();
+		if (ret != LOS_OK) {
+			dprintf("composite_add failed ,ret = %d\n", ret);
+			goto err;
+		}
+		ret = usbd_enable_interrupt();
+		if (ret != LOS_OK) {
+			dprintf("usbd_enable_interrupt failed, ret = %d\n", ret);
+			goto err;
+		}
+#endif
 	}
 
 	usb_info.b_init = true;

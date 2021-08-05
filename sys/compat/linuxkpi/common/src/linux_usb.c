@@ -824,6 +824,7 @@ usb_setup_endpoint_agg(struct usb_device *dev,
 		/* Allocate and setup one generic FreeBSD USB transfer */
 
 		cfg[0].type = type;
+#ifndef LOSCFG_DRIVERS_HDF_USB_DDK_HOST
 		cfg[0].endpoint = addr & UE_ADDR;
 		cfg[0].direction = addr & (UE_DIR_OUT | UE_DIR_IN);
 		if (packets > 0)
@@ -832,8 +833,27 @@ usb_setup_endpoint_agg(struct usb_device *dev,
 		cfg[0].bufsize = bufsize;
 		cfg[0].flags.ext_buffer = 1;	/* enable zero-copy */
 		cfg[0].flags.proxy_buffer = 1;
-		cfg[0].flags.short_xfer_ok = 1;
-
+#else
+		cfg[0].endpoint = UE_ADDR_ANY;
+		cfg[0].direction = addr & (UE_DIR_OUT | UE_DIR_IN);
+		if (packets > 0){
+			cfg[0].frames = packets <= USB_FRAMES_MAX ? packets : USB_FRAMES_MAX;
+        }
+		cfg[0].callback = &usb_linux_non_isoc_callback;
+		cfg[0].bufsize = bufsize;
+        cfg[0].frames = 4;
+        cfg[0].flags.pipe_bof = 1;
+        if(type == UE_INTERRUPT){
+            cfg[0].flags.no_pipe_ok = 1;
+            cfg[0].bufsize = 0;
+            cfg[0].direction = UE_DIR_IN;
+        }
+        if(addr & UE_DIR_IN){
+            cfg[0].flags.short_xfer_ok = 1;
+        }else{
+            cfg[0].flags.force_short_xfer = 1;
+        }
+#endif
 		if (usbd_transfer_setup(dev, &uhe->bsd_iface_index,
 		    uhe->bsd_xfer, cfg, 1, uhe, &Gcall)) {
 			return (-EINVAL);
@@ -978,6 +998,128 @@ usb_linux_create_usb_device(struct usb_device *udev, device_t dev)
 	return (0);
 }
 
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_HOST
+int usb_create_usb_device(struct usb_device *udev)
+{
+	struct usb_config_descriptor *cd = usbd_get_config_descriptor(udev);
+	struct usb_descriptor *desc;
+	struct usb_interface_descriptor *id;
+	struct usb_endpoint_descriptor *ed;
+	struct usb_interface *p_ui = NULL;
+	struct usb_host_interface *p_uhi = NULL;
+	struct usb_host_endpoint *p_uhe = NULL;
+	usb_size_t size;
+	uint16_t niface_total;
+	uint16_t nedesc;
+	uint16_t iface_no_curr;
+	uint16_t iface_index;
+	uint8_t pass;
+	uint8_t iface_no;
+
+	/*
+	 * We do two passes. One pass for computing necessary memory size
+	 * and one pass to initialize all the allocated memory structures.
+	 */
+	for (pass = 0; pass < 2; pass++) {
+
+		iface_no_curr = 0xFFFF;
+		niface_total = 0;
+		iface_index = 0;
+		nedesc = 0;
+		desc = NULL;
+
+		/*
+		 * Iterate over all the USB descriptors. Use the USB config
+		 * descriptor pointer provided by the FreeBSD USB stack.
+		 */
+		while ((desc = usb_desc_foreach(cd, desc))) {
+			/*
+			 * Build up a tree according to the descriptors we
+			 * find:
+			 */
+			switch (desc->bDescriptorType) {
+			case UDESC_DEVICE:
+				break;
+
+			case UDESC_ENDPOINT:
+				ed = (void *)desc;
+				if ((ed->bLength < sizeof(*ed)) ||
+				    (iface_index == 0))
+					break;
+				if (p_uhe != NULL) {
+					usb_bcopy(ed, &p_uhe->desc, sizeof(p_uhe->desc));
+					p_uhe->bsd_iface_index = iface_index - 1;
+					TAILQ_INIT(&p_uhe->bsd_urb_list);
+					p_uhe++;
+				}
+				if (p_uhi != NULL) {
+					(p_uhi - 1)->desc.bNumEndpoints++;
+				}
+				nedesc++;
+				break;
+
+			case UDESC_INTERFACE:
+				id = (void *)desc;
+				if (id->bLength < sizeof(*id))
+					break;
+				if (p_uhi != NULL) {
+					usb_bcopy(id, &p_uhi->desc, sizeof(p_uhi->desc));
+					p_uhi->desc.bNumEndpoints = 0;
+					p_uhi->endpoint = p_uhe;
+					p_uhi->string = "";
+					p_uhi->bsd_iface_index = iface_index;
+					p_uhi++;
+				}
+				iface_no = id->bInterfaceNumber;
+				niface_total++;
+				if (iface_no_curr != iface_no) {
+					if (p_ui) {
+						p_ui->altsetting = p_uhi - 1;
+						p_ui->cur_altsetting = p_uhi - 1;
+						p_ui->num_altsetting = 1;
+						p_ui->bsd_iface_index = iface_index;
+						p_ui->linux_udev = udev;
+						p_ui++;
+					}
+					iface_no_curr = iface_no;
+					iface_index++;
+				} else {
+					if (p_ui) {
+						(p_ui - 1)->num_altsetting++;
+					}
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		if (pass == 0) {
+			size = (sizeof(*p_uhe) * nedesc) +
+			    (sizeof(*p_ui) * iface_index) +
+			    (sizeof(*p_uhi) * niface_total);
+
+			p_uhe = zalloc(size);
+			if (p_uhe == NULL) {
+				return (-1);
+			}
+			p_ui = (void *)(p_uhe + nedesc);
+			p_uhi = (void *)(p_ui + iface_index);
+
+			udev->linux_iface_start = p_ui;
+			udev->linux_iface_end = p_ui + iface_index;
+			udev->linux_endpoint_start = p_uhe;
+			udev->linux_endpoint_end = p_uhe + nedesc;
+			usb_bcopy(&udev->ddesc, &udev->descriptor,
+			    sizeof(udev->descriptor));
+			usb_bcopy(udev->ctrl_ep.edesc, &udev->ep0.desc,
+			    sizeof(udev->ep0.desc));
+		}
+	}
+	return (0);
+}
+#endif
 /*------------------------------------------------------------------------*
  *	usb_alloc_urb
  *
@@ -1669,6 +1811,10 @@ setup_bulk:
 			usbd_copy_in(xfer->frbuffers + data_frame, 0,
 			    urb->bsd_data_ptr, max_bulk);
 			usbd_xfer_set_frame_len(xfer, data_frame, max_bulk);
+		}else{
+#ifdef LOSCFG_DRIVERS_HDF_USB_DDK_HOST
+            usbd_xfer_set_frame_len(xfer, data_frame, max_bulk);
+#endif
 		}
 		if (xfer->flags_int.control_xfr) {
 			if (max_bulk > 0) {
@@ -1753,7 +1899,7 @@ usb_bulk_msg(struct usb_device *udev, struct usb_host_endpoint *uhe,
 	if (len < 0)
 		return (-EINVAL);
 
-	err = usb_setup_endpoint(udev, uhe, 4096 /* bytes */);
+	err = usb_setup_endpoint(udev, uhe, 2048 /* bytes */);
 	if (err)
 		return (err);
 
