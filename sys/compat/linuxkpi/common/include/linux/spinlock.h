@@ -32,7 +32,6 @@
 #define	_LINUX_SPINLOCK_H_
 
 #include "los_typedef.h"
-#include "sys_config.h"
 #include "los_spinlock.h"
 
 #ifdef __cplusplus
