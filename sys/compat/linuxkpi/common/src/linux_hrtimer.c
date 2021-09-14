@@ -33,7 +33,7 @@
 #include "los_task_pri.h"
 #include "los_spinlock.h"
 #include "target_config.h"
-
+#include "los_init.h"
 
 #define US_PER_SECOND 1000000
 
@@ -560,3 +560,4 @@ UINT32 HrtimersInit(VOID)
     return LOS_OK;
 }
 
+LOS_MODULE_INIT(HrtimersInit, LOS_INIT_LEVEL_PLATFROM_EARLY);
