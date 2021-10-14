@@ -32,24 +32,21 @@
  */
 
 #include <sys/cdefs.h>
-__SCCSID("@(#)fts.c	8.6 (Berkeley) 8/14/94");
-__FBSDID("$FreeBSD$");
 
-#include "namespace.h"
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
+#include <sys/statfs.h>
 
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <fts.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "un-namespace.h"
 
-#include "gen-private.h"
+#include <linux/magic.h>
+#include "fts.h"
 
 static FTSENT	*fts_alloc(FTS *, char *, size_t);
 static FTSENT	*fts_build(FTS *, int);
@@ -97,12 +94,22 @@ struct _fts_private {
  * links and directories this way, so we must punt for others.
  */
 
-static const char *ufslike_filesystems[] = {
-	"ufs",
-	"zfs",
-	"nfs",
-	"ext2fs",
-	0
+//
+// Make it works on Linux compiler
+//
+//static const char *ufslike_filesystems[] = {
+//       "ufs",
+//       "zfs",
+//       "nfs",
+//       "ext2fs",
+//       0
+//};
+//
+// Values from "man 2 statfs". Linux not support zfs.
+static const uint64_t ufslike_filesystems[] = {
+	0x00011954, // ufs
+	0x6969,     // nfs
+	0xef53,     // ext2fs
 };
 
 FTS *
@@ -734,7 +741,7 @@ fts_build(FTS *sp, int type)
 	/* Read the directory, attaching each entry to the `link' pointer. */
 	doadjust = 0;
 	for (head = tail = NULL, nitems = 0; dirp && (dp = readdir(dirp));) {
-		dnamlen = dp->d_namlen;
+		dnamlen = strlen(dp->d_name);
 		if (!ISSET(FTS_SEEDOT) && ISDOT(dp->d_name))
 			continue;
 
@@ -1152,7 +1159,7 @@ static int
 fts_ufslinks(FTS *sp, const FTSENT *ent)
 {
 	struct _fts_private *priv;
-	const char **cpp;
+	size_t fsidx = 0;
 
 	priv = (struct _fts_private *)sp;
 	/*
@@ -1165,10 +1172,10 @@ fts_ufslinks(FTS *sp, const FTSENT *ent)
 		if (statfs(ent->fts_path, &priv->ftsp_statfs) != -1) {
 			priv->ftsp_dev = ent->fts_dev;
 			priv->ftsp_linksreliable = 0;
-			for (cpp = ufslike_filesystems; *cpp; cpp++) {
-				if (strcmp(priv->ftsp_statfs.f_fstypename,
-				    *cpp) == 0) {
-					priv->ftsp_linksreliable = 1;
+			for (fsidx = 0; fsidx < sizeof(ufslike_filesystems) / sizeof(ssize_t);
+				++fsidx) {
+				if ((uint64_t)priv->ftsp_statfs.f_type == ufslike_filesystems[fsidx]) {
+				    priv->ftsp_linksreliable = 1;
 					break;
 				}
 			}
