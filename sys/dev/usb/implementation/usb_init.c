@@ -31,8 +31,9 @@
 
 #include "usb_init.h"
 #include "usb_api_pri.h"
+#include "devmgr_service.h"
 #include "devsvc_manager_clnt.h"
-#include "hdf_device_desc.h"
+#include "hdf_device_object.h"
 
 typedef struct usb_info {
 	bool b_init;
@@ -162,41 +163,76 @@ usb_unloadonce(void)
 	return;
 }
 #ifdef LOSCFG_DRIVERS_HDF_USB_DDK_DEVICE
+static struct HdfDeviceObject *HdfLoadUsbDevice(const char *serv_name)
+{
+	struct IDevmgrService *devmgr = DevmgrServiceGetInstance();
+	if(devmgr== NULL || devmgr->LoadDevice(devmgr, serv_name) != HDF_SUCCESS) {
+		dprintf("failed to load %s", serv_name);
+		return NULL;
+	}
+
+	return DevSvcManagerClntGetDeviceObject(serv_name);
+}
+
+struct HdfDeviceObject *HdfRegisterUsbDevice(struct HdfDeviceObject *usb_fn_master,
+	const char *driver_name, const char *serv_name)
+{
+	struct HdfDeviceObject *dev = HdfDeviceObjectAlloc(usb_fn_master, driver_name);
+	if (dev == NULL) {
+		dprintf("%s: failed to alloc device object", __func__);
+		return NULL;
+	}
+
+	if (HdfDeviceObjectRegister(dev) != HDF_SUCCESS) {
+		dprintf("%s: failed to regitst device %s", __func__, serv_name);
+		HdfDeviceObjectRelease(dev);
+		return NULL;
+	}
+
+	if (HdfDeviceObjectPublishService(dev, serv_name, SERVICE_POLICY_PUBLIC, 0664) != HDF_SUCCESS) {
+		dprintf("%s: failed to regitst device %s", __func__, serv_name);
+		HdfDeviceObjectRelease(dev);
+		return NULL;
+	}
+
+	return dev;
+}
+
 static int composite_add(void)
 {
-    device_t udc;
-    device_t composite;
+	device_t udc;
+	device_t composite;
 
 	udc = bus_get_device(nexus, "hiudc3");
 	if (udc == NULL) {
 		return -1;
 	}
 
-    composite = device_add_child(udc, "composite", -1);
-    if (composite == NULL) {
-    	return -1;
-    }
+	composite = device_add_child(udc, "composite", -1);
+	if (composite == NULL) {
+		return -1;
+	}
 
-    if (device_probe_and_attach(composite)) {
-        device_printf(composite, "WARNING: Probe and attach failed!\n");
-        return -1;
-    }
-    struct HdfDeviceObject *devObj = HdfRegisterDevice("usbfn_master", "usbfn_master", NULL);
-    if (devObj == NULL) {
+	if (device_probe_and_attach(composite)) {
+		device_printf(composite, "WARNING: Probe and attach failed!\n");
+		return -1;
+	}
+	struct HdfDeviceObject *usb_fn_dev = HdfLoadUsbDevice("usbfn_master");
+	if (usb_fn_dev == NULL) {
 		dprintf("%s register usbfn_master may failed\n", __func__);
-    }
+	}
 
-	devObj = HdfRegisterDevice("usbfn_cdcacm", "usbfn_cdcacm", NULL);
-    if (devObj == NULL) {
+	struct HdfDeviceObject *devobj = HdfRegisterUsbDevice(usb_fn_dev, "usbfn_cdcacm", "usbfn_cdcacm");
+	if (devobj == NULL) {
 		dprintf("%s register usbfn_cdcacm may failed\n", __func__);
-    }
-    
-	devObj = HdfRegisterDevice("usbfn_cdcecm", "usbfn_cdcecm", NULL);
-    if (devObj == NULL) {
+	}
+
+	devobj = HdfRegisterUsbDevice(usb_fn_dev, "usbfn_cdcecm", "usbfn_cdcecm");
+	if (devobj == NULL) {
 		dprintf("%s register usbfn_cdcecm may failed\n", __func__);
-    }
+	}
 	dprintf("%s success\n", __func__);
-    return 0;
+	return 0;
 }
 #endif
 /*
