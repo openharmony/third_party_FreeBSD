@@ -469,12 +469,13 @@ run_harvester_iterate(void *arg __unused)
 		(void)memset_s(buf, sizeof(buf), 0, sizeof(buf));
 	}
 #elif defined(LOSCFG_DRIVERS_RANDOM)
-	extern LITE_OS_SEC_TEXT_MINOR UINT64 OsGetCpuCycle(VOID);
+	extern VOID LOS_GetCpuCycle(UINT32 *puwCntHi, UINT32 *puwCntLo);
 	int rdata1, rdata2;
 	char buf[8]; /* store random numbers */
 	int i;
 	for (i = 0; i < RANDOM_ITERATE_NUMBER; i++) {
-		srand((unsigned int)OsGetCpuCycle());
+		LOS_GetCpuCycle(&rdata1, &rdata2);
+		srand((unsigned int)rdata2);
 		rdata1 = (int)rand();
 		rdata2 = (int)rand();
 		(void)memcpy_s(buf, sizeof(int), &rdata1, sizeof(int));
