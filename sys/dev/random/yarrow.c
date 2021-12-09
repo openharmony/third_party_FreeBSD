@@ -407,21 +407,14 @@ random_hw_getnumber(char *pbuf, size_t len)
 	extern void HiRandomHwInit(void);
 	extern void HiRandomHwDeinit(void);
 	extern int HiRandomHwGetNumber(char *buffer, size_t buflen);
-	size_t wanted = 0;
-	int i;
 
 	HiRandomHwInit();
 
-	for (i = 0; i < len; ) {
-		wanted = len - i;
-		ssize_t ret = HiRandomHwGetNumber((char *)pbuf + i, wanted);
-
-		if (ret != 0) {
-			HiRandomHwDeinit();
-			errno = EIO;
-		}
-
-		i += wanted;
+	ssize_t ret = HiRandomHwGetNumber((char *)pbuf, len);
+	if (ret != 0) {
+		HiRandomHwDeinit();
+		errno = EIO;
+		return;
 	}
 
 	HiRandomHwDeinit();
