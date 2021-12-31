@@ -31,7 +31,7 @@
  * $OpenBSD: fts.c,v 1.22 1999/10/03 19:22:22 millert Exp $
  */
 
-#include <sys/cdefs.h>
+#include <sys/sys/cdefs.h>
 
 #include <sys/param.h>
 #include <sys/mount.h>
@@ -46,7 +46,7 @@
 #include <unistd.h>
 
 #include <linux/magic.h>
-#include "fts.h"
+#include "include/fts.h"
 
 static FTSENT	*fts_alloc(FTS *, char *, size_t);
 static FTSENT	*fts_build(FTS *, int);
