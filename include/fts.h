@@ -158,7 +158,7 @@ typedef struct _ftsent {
 	FTS *fts_fts;			/* back pointer to main FTS */
 } FTSENT;
 
-#include <sys/cdefs.h>
+#include <sys/sys/cdefs.h>
 
 __BEGIN_DECLS
 FTSENT	*fts_children(FTS *, int);
