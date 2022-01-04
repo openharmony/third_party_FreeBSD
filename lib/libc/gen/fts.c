@@ -31,8 +31,6 @@
  * $OpenBSD: fts.c,v 1.22 1999/10/03 19:22:22 millert Exp $
  */
 
-#include <sys/sys/cdefs.h>
-
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
@@ -44,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/sys/cdefs.h>
 
 #include <linux/magic.h>
 #include "include/fts.h"
