@@ -497,7 +497,7 @@ struct file_operations {
 
 #define simple_strtol       strtol
 #define do_gettimeofday(a)  gettimeofday(a, NULL)
-#define DEFINE_MUTEX(m)     pthread_mutex_t m;
+#define DEFINE_MUTEX(m)     pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 #define mutex_lock          pthread_mutex_lock
 #define mutex_unlock        pthread_mutex_unlock
 #define mutex_init(m)       pthread_mutex_init(m, NULL)
