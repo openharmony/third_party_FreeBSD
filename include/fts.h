@@ -59,9 +59,10 @@
 // __size_t is a macro defined in stddef.h, not a type, so we define a new type
 typedef size_t    __fts_size_t;
 typedef uint64_t  __dev_t;
+#ifndef WITH_FREEBSD
 typedef uint64_t  __ino_t;
 typedef uint64_t  __nlink_t;
-
+#endif
 //
 // From https://github.com/freebsd/freebsd-src/blob/e81e71b/sys/sys/stat.h
 //
@@ -158,7 +159,9 @@ typedef struct _ftsent {
 	FTS *fts_fts;			/* back pointer to main FTS */
 } FTSENT;
 
+#ifndef WITH_FREEBSD
 #include <sys/sys/cdefs.h>
+#endif
 
 __BEGIN_DECLS
 FTSENT	*fts_children(FTS *, int);
