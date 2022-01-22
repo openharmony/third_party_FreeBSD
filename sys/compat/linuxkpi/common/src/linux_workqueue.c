@@ -47,7 +47,6 @@ STATIC UINT32 CreateWorkqueueThread(cpu_workqueue_struct *cwq, INT32 cpu);
 STATIC VOID WorkerThread(cpu_workqueue_struct *cwq);
 STATIC VOID RunWorkqueue(cpu_workqueue_struct *cwq);
 STATIC VOID DelayedWorkTimerFunc(unsigned long data);
-typedef BOOL (*OsSortLinkCond)(SWTMR_CTRL_S *swtmr, struct delayed_work *dwork);
 
 /*
  * @ingroup workqueue
@@ -357,49 +356,15 @@ STATIC VOID DelayedWorkTimerFunc(unsigned long data)
     LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
 }
 
-STATIC BOOL OsPerCpuSortLinkSearch(SortLinkAttribute *swtmrSortLink, OsSortLinkCond checkFunc, VOID *arg)
+STATIC BOOL OsDelayWorkQueueCond(UINTPTR sortList, UINTPTR dwork)
 {
-    LOS_DL_LIST *listObject = &swtmrSortLink->sortLink;
-    LOS_DL_LIST *list = listObject->pstNext;
-
-    while (list != listObject) {
-        SortLinkList *listSorted = LOS_DL_LIST_ENTRY(list, SortLinkList, sortLinkNode);
-        SWTMR_CTRL_S *curSwtmr = LOS_DL_LIST_ENTRY(listSorted, SWTMR_CTRL_S, stSortList);
-        if (checkFunc(curSwtmr, arg)) {
-            return TRUE;
-        }
-        list = list->pstNext;
-    }
-
-    return FALSE;
-}
-
-BOOL OsSortLinkSearch(OsSortLinkCond checkFunc, VOID *arg)
-{
-    UINT32 intSave;
-    UINT32 i;
-
-    for (i = 0; i < LOSCFG_KERNEL_CORE_NUM; i++) {
-        Percpu *cpu = OsPercpuGetByID(i);
-        SortLinkAttribute *swtmrSortLink = &OsPercpuGetByID(i)->swtmrSortLink;
-        LOS_SpinLockSave(&cpu->swtmrSortLinkSpin, &intSave);
-        if (OsPerCpuSortLinkSearch(swtmrSortLink, checkFunc, arg)) {
-            LOS_SpinUnlockRestore(&cpu->swtmrSortLinkSpin, intSave);
-            return TRUE;
-        }
-        LOS_SpinUnlockRestore(&cpu->swtmrSortLinkSpin, intSave);
-    }
-    return FALSE;
-}
-
-STATIC BOOL OsDelayWorkQueueCond(SWTMR_CTRL_S *swtmr, struct delayed_work *dwork)
-{
-    return (((struct delayed_work *)swtmr->uwArg) == dwork);
+    SWTMR_CTRL_S *swtmr = LOS_DL_LIST_ENTRY(sortList, SWTMR_CTRL_S, stSortList);
+    return (((struct delayed_work *)swtmr->uwArg) == (struct delayed_work *)dwork);
 }
 
 bool queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork, unsigned int delayTime)
 {
-    UINT32 intSave, intSave1;
+    UINT32 intSave;
     struct work_struct *work = NULL;
 
     if ((wq == NULL) || (wq->name == NULL) || (wq->cpu_wq == NULL) || (dwork == NULL)) {
@@ -412,13 +377,11 @@ bool queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
     }
 
     LOS_SpinLockSave(&g_workqueueSpin, &intSave);
-    LOS_SpinLockSave(&g_swtmrSpin, &intSave1);
-    if (OsSortLinkSearch(OsDelayWorkQueueCond, dwork)) {
-        LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
+    if (OsSwtmrWorkQueueFind(OsDelayWorkQueueCond, (UINTPTR)dwork)) {
         LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
         return FALSE;
     }
-    LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
+
     if (!WorkqueueIsEmpty(wq->cpu_wq)) {
         LIST_FOR_WORK(work, &wq->cpu_wq->worklist, struct work_struct, entry) {
             if (work == &dwork->work) {
@@ -436,9 +399,10 @@ bool queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
 }
 
 
-STATIC BOOL OsDelayWorkCancelCond(SWTMR_CTRL_S *swtmr, struct delayed_work *dwork)
+STATIC BOOL OsDelayWorkCancelCond(UINTPTR sortList, UINTPTR dwork)
 {
-    if ((swtmr->usTimerID == dwork->timer.timerid) &&
+    SWTMR_CTRL_S *swtmr = LOS_DL_LIST_ENTRY(sortList, SWTMR_CTRL_S, stSortList);
+    if ((swtmr->usTimerID == ((struct delayed_work *)dwork)->timer.timerid) &&
         (swtmr->ucState == OS_SWTMR_STATUS_TICKING)) {
         return TRUE;
     }
@@ -449,7 +413,7 @@ bool linux_cancel_delayed_work(struct delayed_work *dwork)
 {
     struct work_struct *work = NULL;
     struct work_struct *workNext = NULL;
-    UINT32 intSave, intSave1;
+    UINT32 intSave;
     bool ret = FALSE;
 
     if ((dwork == NULL) || (dwork->wq == NULL)) {
@@ -459,9 +423,7 @@ bool linux_cancel_delayed_work(struct delayed_work *dwork)
     LOS_SpinLockSave(&g_workqueueSpin, &intSave);
 
     if (dwork->work.work_status & WORK_STRUCT_PENDING) {
-        LOS_SpinLockSave(&g_swtmrSpin, &intSave1);
-        if (OsSortLinkSearch(OsDelayWorkCancelCond, dwork)) {
-            LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
+        if (OsSwtmrWorkQueueFind(OsDelayWorkCancelCond, (UINTPTR)dwork)) {
             (VOID)del_timer(&dwork->timer);
             dwork->work.work_status = 0;
             dwork->wq->delayed_work_count--;
@@ -469,7 +431,6 @@ bool linux_cancel_delayed_work(struct delayed_work *dwork)
             return TRUE;
         }
 
-        LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
         if (dwork->work.work_status & WORK_STRUCT_RUNNING) {
             ret = FALSE;
         } else if (dwork->work.work_status & WORK_STRUCT_PENDING) {
@@ -495,7 +456,7 @@ bool linux_cancel_delayed_work_sync(struct delayed_work *dwork)
 
 bool linux_flush_delayed_work(struct delayed_work *dwork)
 {
-    UINT32 intSave, intSave1;
+    UINT32 intSave;
 
     if ((dwork == NULL) || (dwork->wq == NULL)) {
         return FALSE;
@@ -507,15 +468,11 @@ bool linux_flush_delayed_work(struct delayed_work *dwork)
         return FALSE;
     }
 
-    LOS_SpinLockSave(&g_swtmrSpin, &intSave1);
-    if (OsSortLinkSearch(OsDelayWorkCancelCond, dwork)) {
-        LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
+    if (OsSwtmrWorkQueueFind(OsDelayWorkCancelCond, (UINTPTR)dwork)) {
         (VOID)del_timer(&dwork->timer);
         dwork->wq->delayed_work_count--;
-        LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
         (VOID)queue_work(dwork->wq, &dwork->work);
     } else {
-        LOS_SpinUnlockRestore(&g_swtmrSpin, intSave1);
         LOS_SpinUnlockRestore(&g_workqueueSpin, intSave);
     }
     (VOID)flush_work(&dwork->work);
