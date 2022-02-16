@@ -918,6 +918,9 @@ xhci_check_transfer(struct xhci_softc *sc, struct xhci_trb *trb)
 			continue;
 
 		td = xfer->td_transfer_cache;
+		if (td == NULL) {
+			continue;
+		}
 
 		DPRINTFN(5, "Checking if 0x%016llx == (0x%016llx .. 0x%016llx)\n",
 			(long long)td_event,
