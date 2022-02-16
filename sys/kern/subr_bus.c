@@ -954,7 +954,7 @@ devclass_alloc_unit(devclass_t dc, device_t dev, int *unitp)
             return (ENOMEM);
 		PDEBUG(("start memcpy, size %d", sizeof(device_t) * dc->maxunit));
         if (oldlist != NULL)
-            (void)memcpy_s(oldlist, sizeof(device_t) * dc->maxunit, newlist, sizeof(device_t) * dc->maxunit);
+            (void)memcpy_s(newlist, sizeof(device_t) * dc->maxunit, oldlist, sizeof(device_t) * dc->maxunit);
         PDEBUG(("start memset, maxunit %d, size %d", dc->maxunit, sizeof(device_t) * (newsize - dc->maxunit)));
         (void)memset_s(newlist + dc->maxunit, sizeof(device_t) * (newsize - dc->maxunit), 0,
                        sizeof(device_t) * (newsize - dc->maxunit));
