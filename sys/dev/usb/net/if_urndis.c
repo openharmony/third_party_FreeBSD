@@ -21,7 +21,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/net/if_urndis.c 351015 2019-08-14 09:41:30Z hselasky $");
+__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/net/if_urndis.c 365748 2020-09-15 12:34:01Z lwhsu $");
 
 #include <lwip/netif.h>
 #include <lwip/dhcp.h>

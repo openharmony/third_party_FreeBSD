@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/ioctl.h 299664 2016-05-13 11:42:36Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/ioctl.h 299664 2016-05-13 11:42:36Z hselasky $
  */
 #ifndef	_LINUX_IOCTL_H_
 #define	_LINUX_IOCTL_H_
