@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2000,2003 Doug Rabson
  * All rights reserved.
  *
@@ -25,7 +27,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/kern/subr_kobj.c 318274 2017-05-14 14:21:09Z marius $");
+__FBSDID("$FreeBSD: releng/12.2/sys/kern/subr_kobj.c 343914 2019-02-08 16:38:30Z markj $");
 
 #include <sys/param.h>
 #include <sys/kobj.h>
