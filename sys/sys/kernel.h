@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-4-Clause
+ *
  * Copyright (c) 1995 Terrence R. Lambert
  * All rights reserved.
  *
@@ -39,7 +41,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)kernel.h	8.3 (Berkeley) 1/21/94
- * $FreeBSD: releng/11.4/sys/sys/kernel.h 358936 2020-03-13 08:53:26Z hselasky $
+ * $FreeBSD: releng/12.2/sys/sys/kernel.h 358962 2020-03-13 16:52:16Z markj $
  */
 
 #ifndef _SYS_KERNEL_H_

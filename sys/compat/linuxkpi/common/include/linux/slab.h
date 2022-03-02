@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/slab.h 345930 2019-04-05 11:26:33Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/slab.h 365383 2020-09-06 17:40:35Z wulf $
  */
 #ifndef	_LINUX_SLAB_H_
 #define	_LINUX_SLAB_H_
