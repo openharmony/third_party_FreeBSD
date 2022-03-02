@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 1999 John D. Polstra
  * Copyright (c) 1999,2001 Peter Wemm <peter@FreeBSD.org>
  * All rights reserved.
@@ -24,7 +26,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/sys/linker_set.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/sys/linker_set.h 331290 2018-03-21 10:26:39Z kib $
  */
 
 #ifndef _SYS_LINKER_SET_H_

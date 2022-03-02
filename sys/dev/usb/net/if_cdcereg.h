@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-4-Clause
+ *
  * Copyright (c) 2003-2005 Craig Boston
  * All rights reserved.
  *
@@ -29,7 +31,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/net/if_cdcereg.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/dev/usb/net/if_cdcereg.h 325966 2017-11-18 14:26:50Z pfg $
  */
 
 #ifndef _USB_IF_CDCEREG_H_

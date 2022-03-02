@@ -1,6 +1,8 @@
 /* $NetBSD: in_cksum.c,v 1.7 1997/09/02 13:18:15 thorpej Exp $ */
 
 /*-
+ * SPDX-License-Identifier: BSD-4-Clause
+ *
  * Copyright (c) 1988, 1992, 1993
  *	The Regents of the University of California.  All rights reserved.
  * Copyright (c) 1996
@@ -36,6 +38,9 @@
  *
  *	@(#)in_cksum.c	8.1 (Berkeley) 6/10/93
  */
+
+#include <sys/cdefs.h>			/* RCS ID & Copyright macro defns */
+__FBSDID("$FreeBSD: releng/12.2/sys/arm/arm/in_cksum.c 325966 2017-11-18 14:26:50Z pfg $");
 
 #include "los_base.h"
 #include "sys/types.h"

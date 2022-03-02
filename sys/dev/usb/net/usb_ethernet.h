@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/net/usb_ethernet.h 334757 2018-06-07 07:32:51Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/net/usb_ethernet.h 334158 2018-05-24 15:24:42Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/net/usb_ethernet.h 334757 2018-06-07 07:32:51Z hselasky $
+ * $FreeBSD: releng/12.2/sys/dev/usb/net/usb_ethernet.h 334158 2018-05-24 15:24:42Z hselasky $
  */
 
 #ifndef _USB_ETHERNET_H_

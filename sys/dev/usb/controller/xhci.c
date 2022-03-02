@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/controller/xhci.c 360334 2020-04-26 08:37:31Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/controller/xhci.c 365239 2020-09-02 10:10:28Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2010 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
