@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/jiffies.h 358700 2020-03-06 13:58:08Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/jiffies.h 364674 2020-08-24 13:19:16Z manu $
  */
 #ifndef	_LINUX_JIFFIES_H_
 #define	_LINUX_JIFFIES_H_

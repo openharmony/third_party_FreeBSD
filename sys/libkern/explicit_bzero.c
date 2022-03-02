@@ -5,7 +5,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/libkern/explicit_bzero.c 273189 2014-10-16 22:04:07Z delphij $");
+__FBSDID("$FreeBSD: releng/12.2/sys/libkern/explicit_bzero.c 273189 2014-10-16 22:04:07Z delphij $");
 
 #include <string.h>
 

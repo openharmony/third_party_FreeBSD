@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
  * Copyright (c) 1997 Berkeley Software Design, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +28,7 @@
  * SUCH DAMAGE.
  *
  *	from BSDI $Id: mutex.h,v 2.7.2.35 2000/04/27 03:10:26 cp Exp $
- * $FreeBSD: releng/11.4/sys/sys/mutex.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/sys/mutex.h 335873 2018-07-02 19:48:38Z mmacy $
  */
 
 #ifndef _SYS_MUTEX_H_

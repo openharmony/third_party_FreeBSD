@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2013-2014 Kevin Lo
  * All rights reserved.
  *
@@ -25,7 +27,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/net/if_axge.c 331722 2018-03-29 02:50:57Z eadler $");
+__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/net/if_axge.c 333813 2018-05-18 20:13:34Z mmacy $");
 
 /*
  * ASIX Electronics AX88178A/AX88179 USB 2.0/3.0 gigabit ethernet driver.

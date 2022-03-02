@@ -40,7 +40,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/arm/arm/nexus.c 308382 2016-11-06 18:40:12Z gonzo $");
+__FBSDID("$FreeBSD: releng/12.2/sys/arm/arm/nexus.c 320198 2017-06-21 18:25:35Z zbb $");
 
 #include <sys/kobj.h>
 #include <sys/systm.h>
