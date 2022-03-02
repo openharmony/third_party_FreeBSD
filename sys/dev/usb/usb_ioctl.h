@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_ioctl.h 353174 2019-10-07 08:13:10Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_ioctl.h 353173 2019-10-07 08:12:28Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
@@ -59,6 +61,8 @@ enum {
 	USB_TEMP_PHONE,		/* USB Phone */
 	USB_TEMP_SERIALNET,	/* USB CDC Ethernet and Modem */
 	USB_TEMP_MIDI,		/* USB MIDI */
+	USB_TEMP_MULTI,		/* USB Ethernet, serial, and storage */
+	USB_TEMP_CDCEEM,	/* USB Ethernet Emulation Model */
 	USB_TEMP_MAX,
 };
 

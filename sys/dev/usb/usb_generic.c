@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_generic.c 356395 2020-01-06 09:10:13Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_generic.c 363664 2020-07-29 14:30:42Z markj $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -182,7 +184,7 @@ ugen_open_pipe_write(struct usb_fifo *f)
 	struct usb_endpoint *ep = usb_fifo_softc(f);
 	struct usb_endpoint_descriptor *ed = ep->edesc;
 
-	mtx_assert(f->priv_mtx, MA_OWNED);
+	USB_MTX_ASSERT(f->priv_mtx, MA_OWNED);
 
 	if (f->xfer[0] || f->xfer[1]) {
 		/* transfers are already opened */
@@ -251,7 +253,7 @@ ugen_open_pipe_read(struct usb_fifo *f)
 	struct usb_endpoint *ep = usb_fifo_softc(f);
 	struct usb_endpoint_descriptor *ed = ep->edesc;
 
-	mtx_assert(f->priv_mtx, MA_OWNED);
+	USB_MTX_ASSERT(f->priv_mtx, MA_OWNED);
 
 	if (f->xfer[0] || f->xfer[1]) {
 		/* transfers are already opened */

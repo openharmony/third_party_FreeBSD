@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_request.c 343135 2019-01-18 08:48:30Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_request.c 366693 2020-10-14 06:25:55Z martymac $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
@@ -423,8 +425,8 @@ usbd_do_request_flags(struct usb_device *udev, struct mtx *mtx,
 		return (USB_ERR_INVAL);
 #endif
 	if ((mtx != NULL) && (mtx != &Giant)) {
-		mtx_unlock(mtx);
-		mtx_assert(mtx, MA_NOTOWNED);
+		USB_MTX_UNLOCK(mtx);
+		USB_MTX_ASSERT(mtx, MA_NOTOWNED);
 	}
 
 	/*
@@ -677,7 +679,7 @@ done:
 		usbd_ctrl_unlock(udev);
 
 	if ((mtx != NULL) && (mtx != &Giant))
-		mtx_lock(mtx);
+		USB_MTX_LOCK(mtx);
 
 	switch (err) {
 	case USB_ERR_NORMAL_COMPLETION:
