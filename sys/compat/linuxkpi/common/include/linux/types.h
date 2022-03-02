@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/types.h 346392 2019-04-19 15:46:08Z bz $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/types.h 361178 2020-05-18 09:10:21Z hselasky $
  */
 #ifndef	_LINUX_TYPES_H_
 #define	_LINUX_TYPES_H_

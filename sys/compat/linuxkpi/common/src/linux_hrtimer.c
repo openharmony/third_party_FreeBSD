@@ -30,6 +30,7 @@
  */
 
 #include "linux/hrtimer.h"
+
 #include "los_task_pri.h"
 #include "los_spinlock.h"
 #include "target_config.h"

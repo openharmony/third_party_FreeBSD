@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/11.3/sys/dev/usb/usbdevs 346655 2019-04-25 00:56:11Z gonzo $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usbdevs 346655 2019-04-25 00:56:11Z gonzo $ */
 /* $NetBSD: usbdevs,v 1.392 2004/12/29 08:38:44 imp Exp $ */
 
 /*

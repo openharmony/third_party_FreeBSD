@@ -1,6 +1,5 @@
 /*-
  * Copyright (c) 2017 Mark Johnston <markj@FreeBSD.org>
- * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/hrtimer.h 335411 2018-06-20 06:35:37Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/hrtimer.h 334482 2018-06-01 11:33:14Z hselasky $
  */
 
 #ifndef _LINUX_HRTIMER_H_

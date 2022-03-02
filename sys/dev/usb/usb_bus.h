@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_bus.h 356395 2020-01-06 09:10:13Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_bus.h 356394 2020-01-06 09:07:57Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008-2019 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

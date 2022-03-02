@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/errno.h 331756 2018-03-30 02:04:46Z emaste $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/errno.h 364654 2020-08-24 10:46:09Z manu $
  */
 #ifndef	_LINUX_ERRNO_H_
 #define	_LINUX_ERRNO_H_
