@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/quirk/usb_quirk.c 346655 2019-04-25 00:56:11Z gonzo $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/quirk/usb_quirk.c 345544 2019-03-26 13:52:01Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ *
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.

@@ -1,6 +1,8 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_hid.c 361972 2020-06-09 16:13:54Z gordon $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_hid.c 361918 2020-06-08 09:32:57Z hselasky $ */
 /*	$NetBSD: hid.c,v 1.17 2001/11/13 06:24:53 lukem Exp $	*/
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ *
  * Copyright (c) 1998 The NetBSD Foundation, Inc.
  * All rights reserved.
  *

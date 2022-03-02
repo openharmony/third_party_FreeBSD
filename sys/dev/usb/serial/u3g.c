@@ -16,7 +16,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/serial/u3g.c 359259 2020-03-23 18:52:57Z hselasky $
+ * $FreeBSD: releng/12.2/sys/dev/usb/serial/u3g.c 359256 2020-03-23 18:31:13Z hselasky $
  */
 
 /*
