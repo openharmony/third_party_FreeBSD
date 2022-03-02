@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_transfer.c 356680 2020-01-13 11:30:07Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_transfer.c 363664 2020-07-29 14:30:42Z markj $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -299,9 +301,9 @@ usbd_transfer_setup_sub_malloc(struct usb_setup_params *parm,
 			pc->buffer = USB_ADD_BYTES(buf, y * size);
 			pc->page_start = pg;
 
-			mtx_lock(pc->tag_parent->mtx);
+			USB_MTX_LOCK(pc->tag_parent->mtx);
 			(void)usb_pc_load_mem(pc, size, 1 /* synchronous */ );
-			mtx_unlock(pc->tag_parent->mtx);
+			USB_MTX_UNLOCK(pc->tag_parent->mtx);
 		}
 	}
 
@@ -2231,14 +2233,14 @@ usb_callback_proc(struct usb_proc_msg *_pm)
 	 * We exploit the fact that the mutex is the same for all
 	 * callbacks that will be called from this thread:
 	 */
-	mtx_lock(info->xfer_mtx);
+	USB_MTX_LOCK(info->xfer_mtx);
 	USB_BUS_LOCK(info->bus);
 
 	/* Continue where we lost track */
 	usb_command_wrapper(&info->done_q,
 	    info->done_q.curr);
 
-	mtx_unlock(info->xfer_mtx);
+	USB_MTX_UNLOCK(info->xfer_mtx);
 }
 
 /*------------------------------------------------------------------------*

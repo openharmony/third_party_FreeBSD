@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/compiler.h 334766 2018-06-07 07:46:39Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/compiler.h 364671 2020-08-24 12:59:55Z manu $
  */
 #ifndef	_LINUX_COMPILER_H_
 #define	_LINUX_COMPILER_H_

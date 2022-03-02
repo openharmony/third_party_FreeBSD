@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2009 Andrew Thompson
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/usbdi.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/dev/usb/usbdi.h 361910 2020-06-08 09:26:46Z hselasky $
  */
 #ifndef _USB_USBDI_H_
 #define _USB_USBDI_H_
@@ -394,6 +396,39 @@ struct usb_attach_arg {
 #define UAA_DEV_DISABLED	1
 #define UAA_DEV_EJECTING	2
 };
+
+/*
+ * General purpose locking wrappers to ease supporting
+ * USB polled mode:
+ */
+#ifdef INVARIANTS
+#define	USB_MTX_ASSERT(_m, _t) do {		\
+	if (!USB_IN_POLLING_MODE_FUNC())	\
+		mtx_assert(_m, _t);		\
+} while (0)
+#else
+#define	USB_MTX_ASSERT(_m, _t) do { } while (0)
+#endif
+
+#define	USB_MTX_LOCK(_m) do {			\
+	if (!USB_IN_POLLING_MODE_FUNC())	\
+		mtx_lock(_m);			\
+} while (0)
+
+#define	USB_MTX_UNLOCK(_m) do {			\
+	if (!USB_IN_POLLING_MODE_FUNC())	\
+		mtx_unlock(_m);			\
+} while (0)
+
+#define	USB_MTX_LOCK_SPIN(_m) do {		\
+	if (!USB_IN_POLLING_MODE_FUNC())	\
+		mtx_lock_spin(_m);		\
+} while (0)
+
+#define	USB_MTX_UNLOCK_SPIN(_m) do {		\
+	if (!USB_IN_POLLING_MODE_FUNC())	\
+		mtx_unlock_spin(_m);		\
+} while (0)
 
 /*
  * The following is a wrapper for the callout structure to ease
