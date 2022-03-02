@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/list.h 345922 2019-04-05 11:17:27Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/list.h 364652 2020-08-24 10:28:15Z manu $
  */
 #ifndef _LINUX_LIST_H_
 #define _LINUX_LIST_H_
@@ -416,6 +416,13 @@ static inline void list_cut_position(struct list_head *list,
 		INIT_LIST_HEAD(list);
 	else
 		__list_cut_position(list, head, entry);
+}
+
+static inline int list_is_first(const struct list_head *list,
+				const struct list_head *head)
+{
+
+	return (list->prev == head);
 }
 
 static inline int list_is_last(const struct list_head *list,
