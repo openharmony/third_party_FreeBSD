@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/rbtree.h 290135 2015-10-29 08:28:39Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/rbtree.h 290135 2015-10-29 08:28:39Z hselasky $
  */
 #ifndef	_LINUX_RBTREE_H_
 #define	_LINUX_RBTREE_H_

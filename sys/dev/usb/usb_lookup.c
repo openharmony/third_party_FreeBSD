@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_lookup.c 331722 2018-03-29 02:50:57Z eadler $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_lookup.c 329460 2018-02-17 14:44:03Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

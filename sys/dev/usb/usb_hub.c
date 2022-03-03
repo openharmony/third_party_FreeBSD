@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_hub.c 359317 2020-03-26 05:37:50Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_hub.c 361207 2020-05-18 09:45:59Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ *
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
  * Copyright (c) 2008-2010 Hans Petter Selasky. All rights reserved.
@@ -233,11 +235,11 @@ uhub_reset_tt_proc(struct usb_proc_msg *_pm)
 
 	/* Change lock */
 	USB_BUS_UNLOCK(udev->bus);
-	mtx_lock(&sc->sc_mtx);
+	USB_MTX_LOCK(&sc->sc_mtx);
 	/* Start transfer */
 	usbd_transfer_start(sc->sc_xfer[UHUB_RESET_TT_TRANSFER]);
 	/* Change lock */
-	mtx_unlock(&sc->sc_mtx);
+	USB_MTX_UNLOCK(&sc->sc_mtx);
 	USB_BUS_LOCK(udev->bus);
 }
 #endif
@@ -1585,9 +1587,9 @@ uhub_attach(device_t dev)
 
 	/* Start the interrupt endpoint, if any */
 
-	mtx_lock(&sc->sc_mtx);
+	USB_MTX_LOCK(&sc->sc_mtx);
 	usbd_transfer_start(sc->sc_xfer[UHUB_INTR_TRANSFER]);
-	mtx_unlock(&sc->sc_mtx);
+	USB_MTX_UNLOCK(&sc->sc_mtx);
 
 	/* Enable automatic power save on all USB HUBs */
 

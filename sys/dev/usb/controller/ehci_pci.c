@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ *
  * Copyright (c) 1998 The NetBSD Foundation, Inc.
  * All rights reserved.
  *
@@ -29,7 +31,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/dev/usb/controller/ehci_pci.c 358017 2020-02-17 09:57:40Z hselasky $");
+__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/controller/ehci_pci.c 358016 2020-02-17 09:57:03Z hselasky $");
 
 /*
  * USB Enhanced Host Controller Driver, a.k.a. USB 2.0 controller.
