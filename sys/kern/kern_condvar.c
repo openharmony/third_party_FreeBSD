@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2000 Jake Burkholder <jake@freebsd.org>.
  * All rights reserved.
  *
@@ -25,7 +27,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/kern/kern_condvar.c 315386 2017-03-16 07:10:08Z mjg $");
+__FBSDID("$FreeBSD: releng/12.2/sys/kern/kern_condvar.c 326271 2017-11-27 15:20:12Z pfg $");
 
 #include <sys/condvar.h>
 #include <sys/callout.h>

@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2013-2014 Kevin Lo
  * All rights reserved.
  *
@@ -23,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/net/if_axgereg.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/dev/usb/net/if_axgereg.h 326255 2017-11-27 14:52:40Z pfg $
  */
 
 #define	AXE_FLAG_178A	0x10000 /* AX88178A */

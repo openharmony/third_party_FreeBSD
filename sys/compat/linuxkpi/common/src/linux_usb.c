@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/src/linux_usb.c 331756 2018-03-30 02:04:46Z emaste $ */
+/* $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/src/linux_usb.c 363664 2020-07-29 14:30:42Z markj $ */
 /*-
  * Copyright (c) 2007 Luigi Rizzo - Universita` di Pisa. All rights reserved.
  * Copyright (c) 2007 Hans Petter Selasky. All rights reserved.

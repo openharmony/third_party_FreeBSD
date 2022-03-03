@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2009 Andrew Thompson
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/dev/usb/usbdi_util.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/dev/usb/usbdi_util.h 326255 2017-11-27 14:52:40Z pfg $
  */
 #ifndef _USB_USBDI_UTIL_H_
 #define _USB_USBDI_UTIL_H_

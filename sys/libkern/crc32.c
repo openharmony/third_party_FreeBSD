@@ -43,7 +43,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/11.4/sys/libkern/crc32.c 319404 2017-06-01 09:00:38Z tuexen $");
+__FBSDID("$FreeBSD: releng/12.2/sys/libkern/crc32.c 323923 2017-09-22 12:45:15Z mckusick $");
 
 const unsigned int crc32_tab[] = {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
