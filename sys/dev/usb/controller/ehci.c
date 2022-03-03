@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/controller/ehci.c 331722 2018-03-29 02:50:57Z eadler $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/controller/ehci.c 327173 2017-12-25 04:48:39Z kan $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  * Copyright (c) 2004 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 2004 Lennart Augustsson. All rights reserved.

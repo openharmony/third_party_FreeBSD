@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/11.4/stand/kshim/bsd_kernel.c 315221 2017-03-14 02:06:03Z pfg $ */
+/* $FreeBSD: releng/12.2/stand/kshim/bsd_kernel.c 314068 2017-02-22 02:35:59Z pfg $ */
 /*-
  * Copyright (c) 2013 Hans Petter Selasky. All rights reserved.
  *

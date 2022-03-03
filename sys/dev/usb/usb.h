@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb.h 359317 2020-03-26 05:37:50Z hselasky $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb.h 359316 2020-03-26 05:37:08Z hselasky $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
