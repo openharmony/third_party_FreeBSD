@@ -257,6 +257,15 @@ usb_pc_common_mem_cb(struct usb_page_cache *pc, void *dma_handle, uint32_t lengt
 	}
 }
 
+void *usb_mem_cache2Uncache(void *buffer)
+{
+	UINTPTR addr = (UINTPTR)buffer;
+	if ((addr >= KERNEL_VMM_BASE) && (addr < KERNEL_VMM_BASE + KERNEL_VMM_SIZE)) {
+		return (void*)VMM_TO_UNCACHED_ADDR(addr);
+	}
+	return buffer;
+}
+
 /*------------------------------------------------------------------------*
  *	usb_pc_alloc_mem - allocate DMA'able memory
  *

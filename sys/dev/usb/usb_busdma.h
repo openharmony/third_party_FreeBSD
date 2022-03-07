@@ -138,6 +138,7 @@ struct usb_dma_tag *usb_dma_tag_find(struct usb_dma_parent_tag *udpt,
 	    usb_size_t size, usb_size_t align);
 uint8_t	usb_pc_alloc_mem(struct usb_page_cache *pc, struct usb_page *pg,
 	    usb_size_t size, usb_size_t align);
+void *usb_mem_cache2Uncache(void *buffer);
 uint8_t	usb_pc_dmamap_create(struct usb_page_cache *pc, usb_size_t size);
 uint8_t	usb_pc_load_mem(struct usb_page_cache *pc, usb_size_t size,
 	    uint8_t sync);
