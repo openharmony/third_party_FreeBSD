@@ -1670,7 +1670,7 @@ umass_command_start(struct umass_softc *sc, uint8_t dir,
 	 */
 
 	sc->sc_transfer.dir = data_len ? dir : DIR_NONE;
-	sc->sc_transfer.data_ptr = (uint8_t *)data_ptr;
+	sc->sc_transfer.data_ptr = (uint8_t *)usb_mem_cache2Uncache(data_ptr);
 	sc->sc_transfer.data_len = data_len;
 	sc->sc_transfer.data_rem = data_len;
 	sc->sc_transfer.data_timeout = (data_timeout + UMASS_TIMEOUT);
