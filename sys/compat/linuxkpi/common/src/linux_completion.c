@@ -63,7 +63,6 @@ STATIC VOID CompletionSchedule(VOID)
 void linux_complete(struct completion *x)
 {
     UINT32 intSave;
-    LosTaskCB *resumedTask = NULL;
 
     if (x == NULL) {
         PRINT_ERR("%s failed, input param is invalid\n", __FUNCTION__);
@@ -72,9 +71,9 @@ void linux_complete(struct completion *x)
 
     SCHEDULER_LOCK(intSave);
     if (!LOS_ListEmpty(&x->comList)) {
-        resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
+        LosTaskCB *resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
         OsTaskWakeClearPendMask(resumedTask);
-        OsSchedTaskWake(resumedTask);
+        resumedTask->ops->wake(resumedTask);
         SCHEDULER_UNLOCK(intSave);
         CompletionSchedule();
         return;
@@ -100,6 +99,7 @@ STATIC BOOL NoNeedWait(struct completion *x)
 void linux_wait_for_completion(struct completion *x)
 {
     UINT32 intSave;
+    LosTaskCB *runTask = OsCurrTaskGet();
 
     if (x == NULL) {
         PRINT_ERR("%s failed, input param is invalid\n", __FUNCTION__);
@@ -113,7 +113,7 @@ void linux_wait_for_completion(struct completion *x)
     }
 
     /* DO NOT Call blocking API in system tasks */
-    if (OsCurrTaskGet()->taskStatus & OS_TASK_FLAG_SYSTEM_TASK) {
+    if (runTask->taskStatus & OS_TASK_FLAG_SYSTEM_TASK) {
         PRINTK("Warning: DO NOT call %s in system tasks.\n", __FUNCTION__);
         OsBackTrace();
         return;
@@ -126,7 +126,7 @@ void linux_wait_for_completion(struct completion *x)
     }
 
     OsTaskWaitSetPendMask(OS_TASK_WAIT_COMPLETE, (UINTPTR)x, LOS_WAIT_FOREVER);
-    (void)OsSchedTaskWait(&x->comList, LOS_WAIT_FOREVER, TRUE);
+    (void)runTask->ops->wait(runTask, &x->comList, LOS_WAIT_FOREVER);
     SCHEDULER_UNLOCK(intSave);
     return;
 }
@@ -136,7 +136,6 @@ unsigned long linux_wait_for_completion_timeout(struct completion *x, unsigned l
     UINT32 ret;
     UINT32 intSave;
     UINT64 lastTick;
-    LosTaskCB *runTask = NULL;
 
     if (x == NULL) {
         PRINT_ERR("%s failed, input param is invalid\n", __FUNCTION__);
@@ -149,7 +148,7 @@ unsigned long linux_wait_for_completion_timeout(struct completion *x, unsigned l
         return timeout;
     }
 
-    runTask = OsCurrTaskGet();
+    LosTaskCB *runTask = OsCurrTaskGet();
     /* DO NOT Call blocking API in systems task */
     if (runTask->taskStatus & OS_TASK_FLAG_SYSTEM_TASK) {
         PRINTK("Warning: DO NOT call %s in system tasks.\n", __FUNCTION__);
@@ -171,7 +170,7 @@ unsigned long linux_wait_for_completion_timeout(struct completion *x, unsigned l
     }
 
     OsTaskWaitSetPendMask(OS_TASK_WAIT_COMPLETE, (UINTPTR)x, timeout);
-    ret = OsSchedTaskWait(&x->comList, timeout, TRUE);
+    ret = runTask->ops->wait(runTask, &x->comList, timeout);
     if (ret == LOS_ERRNO_TSK_TIMEOUT) {
         SCHEDULER_UNLOCK(intSave);
         return 0;
@@ -186,7 +185,6 @@ unsigned long linux_wait_for_completion_timeout(struct completion *x, unsigned l
 void linux_complete_all(struct completion *x)
 {
     UINT32 intSave;
-    LosTaskCB *resumedTask = NULL;
 
     if (x == NULL) {
         PRINT_ERR("%s failed, input param is invalid\n", __FUNCTION__);
@@ -202,9 +200,9 @@ void linux_complete_all(struct completion *x)
     }
 
     while (!LOS_ListEmpty(&x->comList)) {
-        resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
+        LosTaskCB *resumedTask = OS_TCB_FROM_PENDLIST(LOS_DL_LIST_FIRST(&(x->comList)));
         OsTaskWakeClearPendMask(resumedTask);
-        OsSchedTaskWake(resumedTask);
+        resumedTask->ops->wake(resumedTask);
     }
     SCHEDULER_UNLOCK(intSave);
     CompletionSchedule();
