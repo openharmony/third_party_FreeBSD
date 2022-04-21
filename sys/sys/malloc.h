@@ -39,6 +39,9 @@
 
 #include <sys/types.h>
 #include <los_memory.h>
+#ifdef LOSCFG_LIBC_NEWLIB
+#include <malloc.h>
+#endif
 
 #define M_NOWAIT        0x0001          /* do not block */
 #define M_WAITOK        0x0002          /* ok to block */

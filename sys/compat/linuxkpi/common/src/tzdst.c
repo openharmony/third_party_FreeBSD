@@ -56,7 +56,7 @@ STATIC VOID BufferInsert(CHAR *buf, size_t bufLen, size_t positions, CHAR data)
         return;
     }
     if (memmove_s(&buf[positions + 1], bufLen - positions - 1, &buf[positions], bufLen - positions - 1) != EOK) {
-        dprintf("%s falied \n", __FUNCTION__);
+        PRINTK("%s falied \n", __FUNCTION__);
         return;
     }
 
