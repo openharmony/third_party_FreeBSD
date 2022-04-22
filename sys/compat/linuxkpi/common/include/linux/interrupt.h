@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/interrupt.h 352474 2019-09-18 07:24:33Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/interrupt.h 352472 2019-09-18 07:21:08Z hselasky $
  */
 #ifndef	_LINUX_INTERRUPT_H_
 #define	_LINUX_INTERRUPT_H_

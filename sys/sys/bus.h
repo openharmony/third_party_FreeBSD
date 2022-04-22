@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 1997,1998,2003 Doug Rabson
  * All rights reserved.
  *
@@ -23,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/sys/bus.h 350034 2019-07-16 15:28:41Z avg $
+ * $FreeBSD: releng/12.2/sys/sys/bus.h 360525 2020-05-01 09:46:27Z hselasky $
  */
 
 #ifndef _SYS_BUS_H_

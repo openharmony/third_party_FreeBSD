@@ -1,5 +1,7 @@
-/* $FreeBSD: releng/11.4/sys/dev/usb/usb_freebsd_loader.h 331722 2018-03-29 02:50:57Z eadler $ */
+/* $FreeBSD: releng/12.2/sys/dev/usb/usb_freebsd_loader.h 363664 2020-07-29 14:30:42Z markj $ */
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2013 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,6 +86,9 @@
 #define	USB_CS_RESET_LIMIT	20	/* failures = 20 * 50 ms = 1sec */
 
 #define	USB_MAX_AUTO_QUIRK	8	/* maximum number of dynamic quirks */
+
+#define	USB_IN_POLLING_MODE_FUNC() 0
+#define	USB_IN_POLLING_MODE_VALUE() 0
 
 typedef uint32_t usb_timeout_t;		/* milliseconds */
 typedef uint32_t usb_frlength_t;	/* bytes */
