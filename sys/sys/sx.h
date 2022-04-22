@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ *
  * Copyright (c) 2007 Attilio Rao <attilio@freebsd.org>
  * Copyright (c) 2001 Jason Evans <jasone@freebsd.org>
  * All rights reserved.
@@ -26,7 +28,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/sys/sx.h 331722 2018-03-29 02:50:57Z eadler $
+ * $FreeBSD: releng/12.2/sys/sys/sx.h 336230 2018-07-12 22:34:40Z mjg $
  */
 
 #ifndef	_SYS_SX_H_

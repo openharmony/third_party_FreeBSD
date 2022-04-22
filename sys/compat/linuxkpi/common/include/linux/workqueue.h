@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/11.4/sys/compat/linuxkpi/common/include/linux/workqueue.h 337897 2018-08-16 08:11:17Z hselasky $
+ * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/workqueue.h 364671 2020-08-24 12:59:55Z manu $
  */
 #ifndef	_LINUX_WORKQUEUE_H_
 #define	_LINUX_WORKQUEUE_H_
