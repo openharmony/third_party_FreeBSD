@@ -77,7 +77,7 @@ callout_reset(struct callout *c, int to_ticks, void (*func)(void *), void *arg)
 
         if (c != NULL) {
                 callout_stop(c);
-                LOS_SpinLockSave(&c->lock, &int_save);
+                LOS_SpinLockSave(&c->lock, (unsigned int *)&int_save);
 
                 c->callout_data.func = (timer_func)func;
                 c->callout_data.arg = arg;
@@ -103,7 +103,7 @@ callout_stop(struct callout *c)
 {
         uint32_t int_save;
         if (c != NULL) {
-                LOS_SpinLockSave(&c->lock, &int_save);
+                LOS_SpinLockSave(&c->lock, (unsigned int *)&int_save);
                 (void)LOS_SwtmrDelete(c->timer_id);
                 LOS_SpinUnlockRestore(&c->lock, int_save);
         }
