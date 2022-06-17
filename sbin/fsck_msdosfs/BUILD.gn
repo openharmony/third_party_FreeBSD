@@ -1,0 +1,66 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import("//build/ohos.gni")
+config("vfat-defaults") {
+  cflags = [
+    "-O2",
+    "-g",
+    "-Wall",
+    "-Werror",
+    "-D_BSD_SOURCE",
+    "-D_LARGEFILE_SOURCE",
+    "-D_FILE_OFFSET_BITS=64",
+    "-DELFTC_NEED_BYTEORDER_EXTENSIONS",
+    "-Wno-unused-variable",
+    "-Wno-unused-const-variable",
+    "-Wno-format",
+    "-Wno-sign-compare",
+    "-Wno-implicit-function-declaration",
+    "-Wno-return-type",
+    "-Wno-implicit-int",
+  ]
+  include_dirs = []
+}
+
+###################################################
+##Build fsck_msdos
+ohos_executable("fsck_msdos") {
+  configs = [ ":vfat-defaults" ]
+  sources = [
+    "boot.c",
+    "check.c",
+    "dir.c",
+    "fat.c",
+    "main.c",
+  ]
+
+  include_dirs = [
+    ".",
+    "//third_party/FreeBSD/sys",
+  ]
+
+  deps = []
+  install_enable = true
+  subsystem_name = "filemanagement"
+  part_name = "storage_service"
+  install_images = [ "system" ]
+}
