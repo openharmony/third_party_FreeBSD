@@ -34,7 +34,6 @@ config("vfat-defaults") {
     "-DSIGINFO=SIGUSR2",
     "-Dnitems(x)=(sizeof((x))/sizeof((x)[0]))",
     "-Wno-implicit-function-declaration",
-    "-DMAKEFS",
     "-D_MACHINE_IOCTL_FD_H_",
   ]
   include_dirs = [ "//third_party/FreeBSD/sys" ]

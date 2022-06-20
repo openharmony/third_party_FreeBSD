@@ -33,12 +33,16 @@ static const char rcsid[] =
 #include <sys/param.h>
 #ifdef MAKEFS
 /* In the makefs case we only want struct disklabel */
-// #include <sys/disk/bsd.h>
+#include <sys/disk/bsd.h>
+#elif defined(__linux__)
+#include <linux/fs.h>
+#include <linux/hdreg.h>
+#include <sys/ioctl.h>
 #else
-// #include <sys/fdcio.h>
-// #include <sys/disk.h>
-// #include <sys/disklabel.h>
-// #include <sys/mount.h>
+#include <sys/fdcio.h>
+#include <sys/disk.h>
+#include <sys/disklabel.h>
+#include <sys/mount.h>
 #endif
 #include <sys/stat.h>
 // #include <sys/sysctl.h>
@@ -807,7 +811,7 @@ check_mounted(const char *fname, mode_t mode)
  * If getmntinfo() is not available (e.g. Linux) don't check. This should
  * not be a problem since we will only be using makefs to create images.
  */
-#if !defined(MAKEFS)
+#if 0 && !defined(MAKEFS)
     struct statfs *mp;
     const char *s1, *s2;
     size_t len;
@@ -895,6 +899,7 @@ getstdfmt(const char *fmt, struct bpb *bpb)
     return 0;
 }
 
+#if 0
 static void
 compute_geometry_from_file(int fd, const char *fname, struct disklabel *lp)
 {
@@ -911,10 +916,41 @@ compute_geometry_from_file(int fd, const char *fname, struct disklabel *lp)
 	lp->d_ntracks = 255;
 	lp->d_secperunit = ms / lp->d_secsize;
 }
+#endif 
 
 /*
  * Get disk slice, partition, and geometry information.
  */
+#if defined(__linux__)
+static int getdiskinfo(int fd, const char *fname, const char *dtype,
+		int oflag, struct bpb *bpb)
+{
+	if (ioctl(fd, BLKSSZGET, &bpb->bpbBytesPerSec)) {
+		err(1, "ioctl(BLKSSZGET) for bytes/sector failed");
+	}
+
+	if (ckgeom(fname, bpb->bpbBytesPerSec, "bytes/sector") == -1) return -1;
+
+	u_int64_t device_size;
+	if (ioctl(fd, BLKGETSIZE64, &device_size)) {
+		err(1, "ioctl(BLKGETSIZE64) failed");
+	}
+
+	u_int64_t sectors = device_size/bpb->bpbBytesPerSec;
+	if (sectors > UINT_MAX) {
+		err(1, "too many sectors: %"PRIu64" (%"PRId64" byte device, %u bytes/sector)",
+			sectors, device_size, bpb->bpbBytesPerSec);
+	}
+	bpb->bpbHugeSectors = sectors;
+
+	bpb->bpbSecPerTrack = 63;
+	if (ckgeom(fname, bpb->bpbSecPerTrack, "sectors/track") == -1) return -1;
+
+	bpb->bpbHeads = 64;
+	if (ckgeom(fname, bpb->bpbHeads, "drive heads") == -1) return -1;
+	return 0;
+}
+#else
 static int
 getdiskinfo(int fd, const char *fname, const char *dtype, /* __unused */ int oflag,
 	    struct bpb *bpb)
@@ -1003,7 +1039,7 @@ getdiskinfo(int fd, const char *fname, const char *dtype, /* __unused */ int ofl
 	bpb->bpbHiddenSecs = hs;
     return 0;
 }
-
+#endif
 /*
  * Print out BPB values.
  */
