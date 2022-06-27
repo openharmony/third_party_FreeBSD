@@ -33,12 +33,16 @@ static const char rcsid[] =
 #include <sys/param.h>
 #ifdef MAKEFS
 /* In the makefs case we only want struct disklabel */
-// #include <sys/disk/bsd.h>
+#include <sys/disk/bsd.h>
+#elif defined(__linux__)
+#include <linux/fs.h>
+#include <linux/hdreg.h>
+#include <sys/ioctl.h>
 #else
-// #include <sys/fdcio.h>
-// #include <sys/disk.h>
-// #include <sys/disklabel.h>
-// #include <sys/mount.h>
+#include <sys/fdcio.h>
+#include <sys/disk.h>
+#include <sys/disklabel.h>
+#include <sys/mount.h>
 #endif
 #include <sys/stat.h>
 // #include <sys/sysctl.h>
@@ -222,7 +226,6 @@ static const u_int8_t bootcode[] = {
 static volatile sig_atomic_t got_siginfo;
 static void infohandler(int);
 
-static int check_mounted(const char *, mode_t);
 static ssize_t getchunksize(void);
 static int getstdfmt(const char *, struct bpb *);
 static int getdiskinfo(int, const char *, const char *, int, struct bpb *);
@@ -303,11 +306,6 @@ mkfs_msdos(const char *fname, const char *dtype, const struct msdos_options *op)
 	    warnx("warning, %s is not a character device", fname);
 #endif
     }
-#ifndef MAKEFS
-    if (!o.no_create)
-	if (check_mounted(fname, sb.st_mode) == -1)
-	    goto done;
-#endif
     if (o.offset && o.offset != lseek(fd, o.offset, SEEK_SET)) {
 	warnx("cannot seek to %jd", (intmax_t)o.offset);
 	goto done;
@@ -798,45 +796,6 @@ done:
 }
 
 /*
- * return -1 with error if file system is mounted.
- */
-static int
-check_mounted(const char *fname, mode_t mode)
-{
-/*
- * If getmntinfo() is not available (e.g. Linux) don't check. This should
- * not be a problem since we will only be using makefs to create images.
- */
-#if !defined(MAKEFS)
-    struct statfs *mp;
-    const char *s1, *s2;
-    size_t len;
-    int n, r;
-
-    if (!(n = getmntinfo(&mp, MNT_NOWAIT))) {
-	warn("getmntinfo");
-	return -1;
-    }
-    len = strlen(_PATH_DEV);
-    s1 = fname;
-    if (!strncmp(s1, _PATH_DEV, len))
-	s1 += len;
-    r = S_ISCHR(mode) && s1 != fname && *s1 == 'r';
-    for (; n--; mp++) {
-	s2 = mp->f_mntfromname;
-	if (!strncmp(s2, _PATH_DEV, len))
-	    s2 += len;
-	if ((r && s2 != mp->f_mntfromname && !strcmp(s1 + 1, s2)) ||
-	    !strcmp(s1, s2)) {
-	    warnx("%s is mounted on %s", fname, mp->f_mntonname);
-	    return -1;
-	}
-    }
-#endif
-    return 0;
-}
-
-/*
  * Get optimal I/O size
  */
 static ssize_t
@@ -895,26 +854,40 @@ getstdfmt(const char *fmt, struct bpb *bpb)
     return 0;
 }
 
-static void
-compute_geometry_from_file(int fd, const char *fname, struct disklabel *lp)
-{
-	struct stat st;
-	off_t ms;
-
-	if (fstat(fd, &st))
-		err(1, "cannot get disk size");
-	if (!S_ISREG(st.st_mode))
-		errx(1, "%s is not a regular file", fname);
-	ms = st.st_size;
-	lp->d_secsize = 512;
-	lp->d_nsectors = 63;
-	lp->d_ntracks = 255;
-	lp->d_secperunit = ms / lp->d_secsize;
-}
-
 /*
  * Get disk slice, partition, and geometry information.
  */
+#if defined(__linux__)
+static int
+getdiskinfo(int fd, const char *fname, const char *dtype, int oflag,
+		struct bpb *bpb)
+{
+	if (ioctl(fd, BLKSSZGET, &bpb->bpbBytesPerSec) == -1) {
+		err(1, "ioctl(BLKSSZGET) for bytes/sector failed");
+	}
+
+	if (ckgeom(fname, bpb->bpbBytesPerSec, "bytes/sector") == -1) return -1;
+
+	u_int64_t device_size;
+	if (ioctl(fd, BLKGETSIZE64, &device_size) == -1) {
+		err(1, "ioctl(BLKGETSIZE64) failed");
+	}
+
+	u_int64_t sectors = device_size/bpb->bpbBytesPerSec;
+	if (sectors > UINT_MAX) {
+		err(1, "too many sectors: %"PRIu64" (%"PRId64" byte device, %u bytes/sector)",
+			sectors, device_size, bpb->bpbBytesPerSec);
+	}
+	bpb->bpbHugeSectors = sectors;
+
+	bpb->bpbSecPerTrack = 63;
+	if (ckgeom(fname, bpb->bpbSecPerTrack, "sectors/track") == -1) return -1;
+
+	bpb->bpbHeads = 64;
+	if (ckgeom(fname, bpb->bpbHeads, "drive heads") == -1) return -1;
+	return 0;
+}
+#else
 static int
 getdiskinfo(int fd, const char *fname, const char *dtype, /* __unused */ int oflag,
 	    struct bpb *bpb)
@@ -1003,7 +976,7 @@ getdiskinfo(int fd, const char *fname, const char *dtype, /* __unused */ int ofl
 	bpb->bpbHiddenSecs = hs;
     return 0;
 }
-
+#endif
 /*
  * Print out BPB values.
  */
