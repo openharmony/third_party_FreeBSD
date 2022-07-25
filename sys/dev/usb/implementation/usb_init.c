@@ -239,7 +239,7 @@ static int composite_add(void)
  * step1: modify DRIVER_MODULE,register all driver module
  * step2: make ehci/ohci device (direct skip pci bus)
  * step3: insert ehci/ohci device into usb controller
- * step4: creat ehci/ohci root hub device
+ * step4: create ehci/ohci root hub device
  * step5: ehci/ohci transfer setup/start
  */
 uint32_t
