@@ -547,6 +547,9 @@ urndis_ctrl_handle_query(struct urndis_softc *sc,
 {
 	const struct urndis_query_comp *msg;
 	uint64_t limit;
+        if (hdr == NULL || buf == NULL || bufsz == NULL) {
+            return RNDIS_STATUS_FAILURE;
+        }
 
 	msg = (const struct urndis_query_comp *)hdr;
 
