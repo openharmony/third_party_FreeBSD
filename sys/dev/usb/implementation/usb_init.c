@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2019, Huawei Technologies Co., Ltd. All rights reserved.
+ * Copyright (c) 2013-2023, Huawei Technologies Co., Ltd. All rights reserved.
  * Copyright (c) 2020, Huawei Device Co., Ltd. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -217,9 +217,9 @@ static int composite_add(void)
 		device_printf(composite, "WARNING: Probe and attach failed!\n");
 		return -1;
 	}
-	struct HdfDeviceObject *usb_fn_dev = HdfLoadUsbDevice("usbfn_master");
+	struct HdfDeviceObject *usb_fn_dev = HdfLoadUsbDevice("usbfn");
 	if (usb_fn_dev == NULL) {
-		dprintf("%s register usbfn_master may failed\n", __func__);
+		dprintf("%s register usbfn may failed\n", __func__);
 	}
 
 	struct HdfDeviceObject *devobj = HdfRegisterUsbDevice(usb_fn_dev, "usbfn_cdcacm", "usbfn_cdcacm");
