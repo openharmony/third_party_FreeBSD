@@ -14,14 +14,16 @@
         "en": "README"
     },
     "component": {
-        "name": "thirdparty_freebsd",
+        "name": "freebsd",
         "subsystem": "",
         "syscap": [],
         "features": [],
-        "adapted_system_type": [],
-        "rom": "",
-        "ram": "",
-        "deps": {
+        "adapted_system_type": [
+            "small"
+        ],
+        "rom": "16KB",
+        "ram": "32KB",
+        "external_deps": {
             "components": [],
             "third_party": []
         },

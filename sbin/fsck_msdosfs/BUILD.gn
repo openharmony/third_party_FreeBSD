@@ -55,7 +55,7 @@ ohos_executable("fsck_msdos") {
 
   include_dirs = [
     ".",
-    "//third_party/FreeBSD/sys",
+    "../../sys",
   ]
 
   deps = []
