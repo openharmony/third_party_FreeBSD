@@ -36,7 +36,7 @@ config("vfat-defaults") {
     "-Wno-implicit-function-declaration",
     "-D_MACHINE_IOCTL_FD_H_",
   ]
-  include_dirs = [ "//third_party/FreeBSD/sys" ]
+  include_dirs = [ "../../sys" ]
 }
 
 ###################################################
