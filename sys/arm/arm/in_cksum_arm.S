@@ -150,6 +150,7 @@ ASENTRY_NP(L_cksumdata)
     movlt    r5, #0x00
     ldrbgt    r6, [r0], #0x01        /* Fetch 3rd byte */
     movle    r6, #0x00
+
     /* Combine the three bytes depending on endianness and alignment */
 #ifdef __ARMEB__
     orreq    r2, r5, r4, lsl #8
@@ -163,7 +164,7 @@ ASENTRY_NP(L_cksumdata)
     orrne    r2, r2, r6, lsl #24
 #endif
     subs    r1, r1, r7        /* Update length */
-    RETeq            /* All done? */
+    RETeq                     /* All done? */
 
     /* Buffer is now word aligned */
 .Lcksumdata_wordaligned:

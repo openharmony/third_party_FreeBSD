@@ -29,6 +29,12 @@
 #ifndef SYS_DEV_RANDOM_HASH_H_INCLUDED
 #define	SYS_DEV_RANDOM_HASH_H_INCLUDED
 
+#include <dev/random/uint128.h>
+
+#ifndef _KERNEL
+#define	__read_frequently
+#endif
+
 /* Keys are formed from cipher blocks */
 #define	RANDOM_KEYSIZE		32	/* (in bytes) == 256 bits */
 #define	RANDOM_KEYSIZE_WORDS	(RANDOM_KEYSIZE/sizeof(uint32_t))
@@ -47,6 +53,9 @@ struct randomdev_key {
 	keyInstance key;	/* Key schedule */
 	cipherInstance cipher;	/* Rijndael internal */
 };
+
+
+extern bool random_chachamode;
 
 void randomdev_hash_init(struct randomdev_hash *);
 void randomdev_hash_iterate(struct randomdev_hash *, const void *, size_t);

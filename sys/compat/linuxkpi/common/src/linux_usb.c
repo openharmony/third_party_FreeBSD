@@ -132,7 +132,6 @@ usb_linux_lookup_id(const struct usb_device_id *id, struct usb_attach_arg *uaa)
 	 * array:
 	 */
 	for (; id->match_flags; id++) {
-
 		if ((id->match_flags & USB_DEVICE_ID_MATCH_VENDOR) &&
 		    (id->idVendor != uaa->info.idVendor)) {
 			continue;
@@ -507,7 +506,6 @@ usb_unlink_urb_sub(struct urb *urb, uint8_t drain)
 	uhe = urb->endpoint;
 
 	if (urb->bsd_urb_list.tqe_prev) {
-
 		/* not started yet, just remove it from the queue */
 		LOS_SpinLockSave(&g_usb_urb_list_spinlock, &int_save);
 		TAILQ_REMOVE(&uhe->bsd_urb_list, urb, bsd_urb_list);
@@ -524,7 +522,6 @@ usb_unlink_urb_sub(struct urb *urb, uint8_t drain)
 			(urb->complete)(urb);
 		}
 	} else {
-
 		/*
 		 * If the URB is not on the URB list, then check if one of
 		 * the FreeBSD USB transfer are processing the current URB.
@@ -792,7 +789,6 @@ usb_setup_endpoint_agg(struct usb_device *dev,
 	(void)memset_s(cfg, sizeof(cfg), 0, sizeof(cfg));
 
 	if (type == UE_ISOCHRONOUS) {
-
 		/*
 		 * Isochronous transfers are special in that they don't fit
 		 * into the BULK/INTR/CONTROL transfer model.
@@ -898,7 +894,6 @@ usb_linux_create_usb_device(struct usb_device *udev, device_t dev)
 	 * and one pass to initialize all the allocated memory structures.
 	 */
 	for (pass = 0; pass < 2; pass++) {
-
 		iface_no_curr = 0xFFFF;
 		niface_total = 0;
 		iface_index = 0;
@@ -1515,7 +1510,6 @@ usb_linux_isoc_callback(struct usb_xfer *xfer, usb_error_t error)
 	case USB_ST_TRANSFERRED:
 
 		if (urb->bsd_isread) {
-
 			/* copy in data with regard to the URB */
 
 			offset = 0;
@@ -1602,7 +1596,6 @@ tr_setup:
 			usbd_xfer_set_frame_data(xfer, 0, urb->transfer_buffer, 0);
 		}
 		if (!(urb->bsd_isread)) {
-
 			/* copy out data with regard to the URB */
 
 			offset = 0;
@@ -1655,7 +1648,6 @@ tr_setup:
 			return;
 		}
 		goto tr_setup;
-
 	}
 }
 
@@ -1688,7 +1680,6 @@ usb_linux_non_isoc_callback(struct usb_xfer *xfer, usb_error_t error)
 	case USB_ST_TRANSFERRED:
 
 		if (xfer->flags_int.control_xfr) {
-
 			/* don't transfer the setup packet again: */
 
 			usbd_xfer_set_frame_len(xfer, 0, 0);
@@ -1745,7 +1736,6 @@ tr_setup:
 		xfer->timeout = urb->timeout;
 
 		if (xfer->flags_int.control_xfr) {
-
 			/*
 			 * USB control transfers need special handling.
 			 * First copy in the header, then copy in data!
@@ -1767,7 +1757,6 @@ tr_setup:
 			urb->bsd_length_rem = ptr[6] | (ptr[7] << 8);
 
 		} else {
-
 			/* setup data transfer direction */
 
 			urb->bsd_length_rem = urb->transfer_buffer_length;

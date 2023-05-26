@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_SCHED_H_
-#define	_LINUX_SCHED_H_
+#ifndef	_LINUXKPI_LINUX_SCHED_H_
+#define	_LINUXKPI_LINUX_SCHED_H_
 
 #include "linux/kernel.h"
 #include "los_sched_pri.h"
@@ -57,4 +57,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SCHED_H_ */
+#endif /* _LINUXKPI_LINUX_SCHED_H_ */

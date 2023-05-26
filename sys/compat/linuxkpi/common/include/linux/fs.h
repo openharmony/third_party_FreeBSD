@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_FS_H_
-#define	_LINUX_FS_H_
+#ifndef	_LINUXKPI_LINUX_FS_H_
+#define	_LINUXKPI_LINUX_FS_H_
 
 #include "sys/stat.h"
 #include "linux/ioctl.h"
@@ -51,4 +51,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_FS_H_ */
+#endif /* _LINUXKPI_LINUX_FS_H_ */

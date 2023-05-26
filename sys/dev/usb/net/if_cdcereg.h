@@ -48,6 +48,8 @@
  */
 #define	ETHER_ALIGN		2				/* driver adjust for IP hdr alignment */
 
+#define CDCE_BIT(x) (1 << (x))
+
 #define	CDCE_FRAMES_MAX	8				/* units */
 #define	CDCE_IND_SIZE_MAX 32			/* bytes */
 
@@ -104,6 +106,7 @@ struct cdce_softc {
 #define	CDCE_FLAG_ZAURUS	0x0001
 #define	CDCE_FLAG_NO_UNION	0x0002
 #define	CDCE_FLAG_RX_DATA	0x0010
+#define	CDCE_FLAG_VLAN		0x0020
 
 	uint8_t sc_eaddr_str_index;
 	uint8_t	sc_ifaces_index[2];
@@ -112,6 +115,19 @@ struct cdce_softc {
 #define	CDCE_NOTIFY_SPEED_CHANGE	1
 #define	CDCE_NOTIFY_DONE	2
 };
+
+/*
+ * Taken from USB CDC Subclass Specification for Ethernet Devices v1.2,
+ * section 6.2.4.
+ */
+
+#define	CDC_SET_ETHERNET_PACKET_FILTER	0x43	/* Command code. */
+
+#define	CDC_PACKET_TYPE_PROMISC		CDCE_BIT(0)
+#define	CDC_PACKET_TYPE_ALL_MULTICAST	CDCE_BIT(1)	/* Allmulti. */
+#define	CDC_PACKET_TYPE_DIRECTED	CDCE_BIT(2)	/* Filter unicast by mac. */
+#define	CDC_PACKET_TYPE_BROADCAST	CDCE_BIT(3)
+#define	CDC_PACKET_TYPE_MULTICAST	CDCE_BIT(4)	/* Multicast filtering, not supported. */
 
 /*
  * Structure of a DEC/Intel/Xerox or 802.3 Ethernet header.

@@ -28,9 +28,9 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_TYPES_H_
-#define	_LINUX_TYPES_H_
+#ifndef	_LINUXKPI_LINUX_TYPES_H_
+#define	_LINUXKPI_LINUX_TYPES_H_
 
 #include "sys/types.h"
 
-#endif /* _LINUX_TYPES_H_ */
+#endif /* _LINUXKPI_LINUX_TYPES_H_ */

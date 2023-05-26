@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef __LINUX_STRING_H__
-#define __LINUX_STRING_H__
+#ifndef __LINUXKPI_LINUX_STRING_H__
+#define __LINUXKPI_LINUX_STRING_H__
 
 #include_next "string.h"
 
@@ -48,4 +48,4 @@ extern size_t strlcpy(char *dest, const char *src, size_t size);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUX_STRING_H__ */
+#endif /* __LINUXKPI_LINUX_STRING_H__ */

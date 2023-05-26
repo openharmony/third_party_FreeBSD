@@ -96,7 +96,6 @@ DEBUG_MODULE(cdce, usb_cdce_debug_func);
 #endif
 
 static const struct usb_config cdce_config[CDCE_N_TRANSFER] = {
-
 	[CDCE_BULK_RX] = {
 		.type = UE_BULK,
 		.endpoint = UE_ADDR_ANY,
@@ -150,7 +149,6 @@ static const struct usb_config cdce_config[CDCE_N_TRANSFER] = {
 
 #if CDCE_HAVE_NCM
 static const struct usb_config cdce_ncm_config[CDCE_N_TRANSFER] = {
-
 	[CDCE_BULK_RX] = {
 		.type = UE_BULK,
 		.endpoint = UE_ADDR_ANY,
@@ -498,11 +496,9 @@ cdce_attach(device_t dev)
 	DPRINTFN(1, "data_iface_no = %d!\n", data_iface_no);
 
 	for (i = 0;; i++) {
-
 		iface = usbd_get_iface(uaa->device, i);
 
 		if (iface) {
-
 			id = usbd_get_interface_descriptor(iface);
 
 			if (id && (id->bInterfaceNumber == data_iface_no)) {
@@ -583,7 +579,6 @@ alloc_transfers:
 	}
 
 	if (error) {
-
 		/* fake MAC address */
 
 		device_printf(dev, "faking MAC address\n");
@@ -593,11 +588,9 @@ alloc_transfers:
 		sc->sc_ue.ue_eaddr[5] = device_get_unit(dev);
 
 	} else {
-
 		(void)memset_s(sc->sc_ue.ue_eaddr, sizeof(sc->sc_ue.ue_eaddr), 0, sizeof(sc->sc_ue.ue_eaddr));
 
 		for (i = 0; i != (NETIF_MAX_HWADDR_LEN * 2); i++) {
-
 			char c = eaddr_str[i];
 
 			if (('0' <= c) && (c <= '9'))
@@ -875,7 +868,6 @@ cdce_bulk_read_callback(struct usb_xfer *xfer, usb_error_t error)
 		DPRINTF("received %u bytes in %u frames\n", actlen, aframes);
 
 		for (x = 0; x != aframes; x++) {
-
 			m = sc->sc_rx_buf[x];
 			sc->sc_rx_buf[x] = NULL;
 			len = usbd_xfer_frame_len(xfer, x);
@@ -1068,7 +1060,6 @@ cdce_handle_request(device_t dev,
 	 */
 	if (req->bmRequestType == UT_WRITE_CLASS_INTERFACE && \
 	    req->bRequest == UCDC_NCM_SET_ETHERNET_PACKET_FILTER) {
-
 		if (is_complete == 1) {
 			mtx_lock(&sc->sc_mtx);
 			sc->sc_notify_state = CDCE_NOTIFY_SPEED_CHANGE;
@@ -1131,7 +1122,6 @@ cdce_ncm_fill_tx_frames(struct usb_xfer *xfer, uint8_t index)
 	retval = 2;
 
 	for (n = 0; n != sc->sc_ncm.tx_nframe; n++) {
-
 		/* check if end of transmit buffer is reached */
 
 		if (offset >= sc->sc_ncm.tx_max)

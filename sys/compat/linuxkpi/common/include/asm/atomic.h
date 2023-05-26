@@ -29,8 +29,8 @@
  * $FreeBSD$
  */
 
-#ifndef _ASM_ATOMIC_H_
-#define	_ASM_ATOMIC_H_
+#ifndef _LINUXKPI_ASM_ATOMIC_H_
+#define	_LINUXKPI_ASM_ATOMIC_H_
 
 #include "los_atomic.h"
 
@@ -75,4 +75,4 @@ typedef Atomic64 atomic64_t;
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _ASM_ATOMIC_H_ */
+#endif /* _LINUXKPI_ASM_ATOMIC_H_ */

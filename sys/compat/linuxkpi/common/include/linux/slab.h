@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_SLAB_H_
-#define	_LINUX_SLAB_H_
+#ifndef	_LINUXKPI_LINUX_SLAB_H_
+#define	_LINUXKPI_LINUX_SLAB_H_
 
 #include "stdlib.h"
 #include "asm/page.h"
@@ -58,4 +58,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif					/* _LINUX_SLAB_H_ */
+#endif					/* _LINUXKPI_LINUX_SLAB_H_ */

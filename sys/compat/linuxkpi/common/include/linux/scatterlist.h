@@ -30,8 +30,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_SCATTERLIST_H_
-#define	_LINUX_SCATTERLIST_H_
+#ifndef	_LINUXKPI_LINUX_SCATTERLIST_H_
+#define	_LINUXKPI_LINUX_SCATTERLIST_H_
 
 #include "linux/kernel.h"
 #include "los_printf.h"
@@ -107,4 +107,4 @@ static inline void sg_init_one(scatterlist_t *psg, const void *buf, unsigned int
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SCATTERLIST_H_ */
+#endif /* _LINUXKPI_LINUX_SCATTERLIST_H_ */

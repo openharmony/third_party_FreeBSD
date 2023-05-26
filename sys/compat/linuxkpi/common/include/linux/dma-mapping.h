@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_DMA_MAPPING_H_
-#define _LINUX_DMA_MAPPING_H_
+#ifndef	_LINUXKPI_LINUX_DMA_MAPPING_H_
+#define _LINUXKPI_LINUX_DMA_MAPPING_H_
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -51,4 +51,4 @@ enum dma_data_direction {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 #endif
-#endif	/* _LINUX_DMA_MAPPING_H_ */
+#endif	/* _LINUXKPI_LINUX_DMA_MAPPING_H_ */
