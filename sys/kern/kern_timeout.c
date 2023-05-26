@@ -37,7 +37,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/12.2/sys/kern/kern_timeout.c 360633 2020-05-04 16:30:36Z jhb $");
+__FBSDID("$FreeBSD$");
 
 #include <sys/callout.h>
 #include <sys/mutex.h>

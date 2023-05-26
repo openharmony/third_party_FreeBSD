@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/dev/usb/usbdi.h 361910 2020-06-08 09:26:46Z hselasky $
+ * $FreeBSD$
  */
 #ifndef _USB_USBDI_H_
 #define _USB_USBDI_H_
@@ -169,6 +169,7 @@ struct usb_endpoint {
 struct usb_interface {
 	struct usb_interface_descriptor *idesc;
 	device_t subdev;
+	/* Current alternate interface index, from 0 to 255 */
 	uint8_t	alt_index;
 	uint8_t	parent_iface_index;
 

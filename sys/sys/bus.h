@@ -25,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/sys/bus.h 360525 2020-05-01 09:46:27Z hselasky $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_BUS_H_

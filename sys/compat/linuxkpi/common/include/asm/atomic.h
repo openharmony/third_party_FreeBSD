@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/asm/atomic.h 361180 2020-05-18 09:11:41Z hselasky $
+ * $FreeBSD$
  */
 
 #ifndef _ASM_ATOMIC_H_

@@ -1,7 +1,7 @@
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
- * Copyright (c) 2010 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2010-2022 Hans Petter Selasky
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,7 +26,7 @@
  */
 
 #include "implementation/global_implementation.h"
-__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/controller/xhci_pci.c 358016 2020-02-17 09:57:03Z hselasky $");
+__FBSDID("$FreeBSD$");
 #include "controller/xhci.h"
 #include "controller/xhcireg.h"
 

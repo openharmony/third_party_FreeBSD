@@ -29,7 +29,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)queue.h	8.5 (Berkeley) 8/20/94
- * $FreeBSD: releng/12.2/sys/sys/queue.h 349826 2019-07-07 18:49:39Z mav $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_QUEUE_H_
@@ -91,6 +91,7 @@
  * _CLASS_ENTRY			+	+	+	+
  * _INIT			+	+	+	+
  * _EMPTY			+	+	+	+
+ * _END				+	+	+	+
  * _FIRST			+	+	+	+
  * _NEXT			+	+	+	+
  * _PREV			-	+	-	+
@@ -817,7 +818,7 @@ struct {								\
 /*
  * The FAST function is fast in that it causes no data access other
  * then the access to the head. The standard LAST function above
- * will cause a data access of both the element you want and 
+ * will cause a data access of both the element you want and
  * the previous element. FAST is very useful for instances when
  * you may want to prefetch the last data element.
  */

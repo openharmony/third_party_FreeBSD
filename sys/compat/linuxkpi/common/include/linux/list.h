@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/list.h 364652 2020-08-24 10:28:15Z manu $
+ * $FreeBSD$
  */
 #ifndef _LINUX_LIST_H_
 #define _LINUX_LIST_H_

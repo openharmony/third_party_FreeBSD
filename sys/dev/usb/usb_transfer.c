@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_transfer.c 363664 2020-07-29 14:30:42Z markj $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *

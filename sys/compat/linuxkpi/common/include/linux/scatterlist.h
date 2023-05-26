@@ -4,6 +4,7 @@
  * Copyright (c) 2010 Panasas, Inc.
  * Copyright (c) 2013-2017 Mellanox Technologies, Ltd.
  * Copyright (c) 2015 Matthew Dillon <dillon@backplane.com>
+ * Copyright (c) 2016 Matthew Macy
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +28,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/scatterlist.h 361205 2020-05-18 09:44:26Z hselasky $
+ * $FreeBSD$
  */
 #ifndef	_LINUX_SCATTERLIST_H_
 #define	_LINUX_SCATTERLIST_H_
