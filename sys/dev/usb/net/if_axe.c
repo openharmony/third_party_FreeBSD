@@ -33,7 +33,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/net/if_axe.c 333813 2018-05-18 20:13:34Z mmacy $");
+__FBSDID("$FreeBSD$");
 
 /*
  * ASIX Electronics AX88172/AX88178/AX88778 USB 2.0 ethernet driver.
@@ -63,7 +63,7 @@ __FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/net/if_axe.c 333813 2018-05-18 20:13
  *   to send any packets.
  *
  * Note that this device appears to only support loading the station
- * address via autload from the EEPROM (i.e. there's no way to manaully
+ * address via autload from the EEPROM (i.e. there's no way to manually
  * set it).
  *
  * (Adam Weinberger wanted me to name this driver if_gir.c.)

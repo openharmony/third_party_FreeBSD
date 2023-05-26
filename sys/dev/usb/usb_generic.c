@@ -1,8 +1,8 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_generic.c 363664 2020-07-29 14:30:42Z markj $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
- * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2008-2022 Hans Petter Selasky
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

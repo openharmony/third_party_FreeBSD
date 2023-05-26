@@ -48,7 +48,7 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/net/if_cdce.c 328162 2018-01-19 12:59:14Z hselasky $");
+__FBSDID("$FreeBSD$");
 
 #include "los_crc32.h"
 

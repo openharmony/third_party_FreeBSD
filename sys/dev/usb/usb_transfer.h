@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_transfer.h 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -30,23 +30,14 @@
 #define	_USB_TRANSFER_H_
 
 /*
- * Definition of internal USB transfer states:
- * ===========================================
+ * A few words about USB transfer states:
+ * ======================================
  *
- * The main reason there are many USB states is that we are allowed to
- * cancel USB transfers, then start the USB transfer again and that
- * this state transaction cannot always be done in a single atomic
- * operation without blocking the calling thread. One reason for this
- * is that the USB hardware sometimes needs to wait for DMA
- * controllers to finish which is done asynchronously and grows the
- * statemachine.
- *
- * When extending the following statemachine there are basically two
- * things you should think about: Which states should be executed or
- * modified in case of USB transfer stop and which states should be
- * executed or modified in case of USB transfer start. Also respect
- * the "can_cancel_immed" flag which basically tells if you can go
- * directly from a wait state to the cancelling states.
+ * USB transfers can have multiple states, because they can be
+ * cancelled and started again and this cannot always be done
+ * atomically under a mutex. One reason for this is that the USB
+ * hardware sometimes needs to wait for DMA controllers to finish
+ * which is done asynchronously and grows the statemachine.
  */
 
 enum {

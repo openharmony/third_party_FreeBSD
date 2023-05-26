@@ -1,4 +1,4 @@
- Updating Information for FreeBSD stable/12 users.
+ Updating Information for FreeBSD stable/13 users.
 
 This file is maintained and copyrighted by M. Warner Losh <imp@freebsd.org>.
 See end of file for further details.  For commonly done items, please see the
@@ -9,63 +9,314 @@ handbook:
     https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/makeworld.html
 
 Items affecting the ports and packages system can be found in
-/usr/ports/UPDATING.  Please read that file before running portupgrade.
+/usr/ports/UPDATING.  Please read that file before updating system packages
+and/or ports.
 
-NOTE: FreeBSD has switched from gcc to clang. If you have trouble bootstrapping
-from older versions of FreeBSD, try WITHOUT_CLANG and WITH_GCC to bootstrap to
-the tip of head, and then rebuild without this option. The bootstrap process
-from older version of current across the gcc/clang cutover is a bit fragile.
+20220516:
+	13.1-RELEASE.
 
-20201027:
-	12.2-RELEASE.
+20220123:
+	For 64-bit architectures the base system is now built with Position
+	Independent Executable (PIE) support enabled by default.  It may be
+	disabled using the WITHOUT_PIE knob.  A clean build is required.
 
-20200915:	p1	FreeBSD-SA-20:27.ure
-			FreeBSD-SA-20:28.bhyve_vmcs
-			FreeBSD-SA-20:29.bhyve_svm
-			FreeBSD-SA-20:30.ftpd
+20220114:
+	The macros provided for the manipulation of CPU sets (e.g. CPU_AND)
+	have been modified to take 2 source arguments instead of only 1.
+	Externally maintained sources that use these macros will have to
+	be adapted. The FreeBSD version has been bumped to 1300524 to
+	reflect this change.
 
-        Fix ure device driver susceptible to packet-in-packet attack.
-          [SA-20:27.ure]
+20211218:
+	Commit 18f5b477ee66 adds two arguments to VOP_ALLOCATE().
+	Normally changes to VOP calls are not MFC'd, but a
+	discussion on freebsd-current@ seemed to agree that
+	it was acceptable in this case, to fix the NFSv4.2 server.
+	Any out of source tree file system with a custom
+	VOP_ALLOCATE() call will need to be modified.
+	Bump __FreeBSD_version to 1300523 since the NFS modules need
+	to be rebuilt from sources.
 
-        Fix bhyve privilege escalation via VMCS access. [SA-20:28.bhyve_vmcs]
+20211124:
+	Commit 6e8e261f0d4e changed the internal KAPI between the NFS
+	modules.  As such, all the modules must be rebuilt from sources.
+	__FreeBSD_version has been bumped to 1300522.
 
-        Fix bhyve SVM guest escape. [SA-20:29.bhyve_svm]
+20211119:
+	Bump __FreeBSD_version to 1300521 after merging LinuxKPI and
+	net80211 changes in order to support building various wireless
+	drivers.  This is to help other external consumers of LinuxKPI
+	and net80211 to deal accordingly.
 
-        Fix ftpd privilege escalation via ftpchroot. [SA-20:30.ftpd]
+20211003:
+	Commit a599f9f7620b deleted the variable called nfs_maxcopyrange
+	from nfscommon.ko, since it no longer needs to be global.  As such,
+	the other nfs modules must be rebuilt from up to date sources.
+	Bump __FreeBSD_version to 1300516 for this.
 
-20200912:
-	The make.conf(5) MALLOC_PRODUCTION variable, used for disabling and
-	enabling assertions and statistics gathering in malloc(3), has been
-	migrated to a src.conf(5) WITH/WITHOUT_MALLOC_PRODUCTION option.
+20210823:
+	As of commit 622809b0868f OpenSSL no longer enables kernel TLS
+	by default.  Users can enable kernel TLS via the "KTLS" SSL
+	option.  This can be enabled globally by using a custom
+	OpenSSL config file via OPENSSL_CONF or via an
+	application-specific configuration option for applications
+	which permit setting SSL options via SSL_CONF_cmd(3).
 
-	On stable branches, WITH_MALLOC_PRODUCTION is set by default, which
-	means that malloc(3) has assertions and statistics gathering disabled,
-	for improved performance.
+20210803:
+	Commits 9fb6e613373c and 9ec7dbf46b0a both changed the internal
+	KAPI between the NFS modules.  Bump __FreeBSD_version to 1300514.
+	All NFS modules must be rebuilt from sources.
 
-	For backwards compatibility, the make.conf(5) MALLOC_PRODUCTION is still
-	honored, but it is now deprecated and undocumented.
+20210730:
+	Commit b69019c14cd8 removes pf's DIOCGETSTATESNV ioctl.
+	As of be70c7a50d32 it is no longer used by userspace, but it does mean
+	users may not be able to enumerate pf states if they update the kernel
+	past c021ff986e2b without first updating userspace past be70c7a50d32.
 
-20200909:
+20210718:
+	Bump __FreeBSD_version to 1300512 after merging LinuxKPI, OFED,
+	net80211, and driver changes in order to support building
+	Intel wireless iwlwifi drivers.  This is especially needed for
+	drm-kmod which needs updates after this.
+
+20210715:
+	The 20210707 awk update brought in a change in behavior. This has
+	been corrected as of d4d252c49976. Between these dates, if you
+	installed a new awk binary, you may not be able to build a new
+	kernel because the change in behavior affected the genoffset
+	script used to build the kernel. If you did update, the fix is
+	to update your sources past the above hash and do
+		% cd usr.bin/awk
+		% make clean all
+		% sudo -E make install
+	to enable building kernels again.
+
+20210711:
+	Commit 8a04edfdcbd2 changes the default minor version
+	used for NFSv4 mounts to the highest minor version supported
+	by the NFSv4 server.  This default can be overridden by using
+	the "minorversion" mount option.
+	The consensus of a discussion on freebsd-current@ indicated
+	that this would be acceptable to do and would not be considered
+	a POLA violation.
+
+20210710:
+	awk has been updated to the latest one-true-awk version 20210215.
+	This contains a number of minor bug fixes.
+
+20210630:
+        Commit ca179c4d74f2/632e3f2f3a66 changed the package in which
+	the OpenSSL libraries and utilities are packaged.
+        It is recommended for pkgbase user to do:
+        pkg install -f FreeBSD-openssl
+        before pkg upgrade otherwise some dependencies might not be met
+        and pkg will stop working as libssl will not be present anymore
+        on the system.
+
+20210626:
+	Commit 841006678745 changed the internal KAPI between the krpc
+	and nfsd modules.  As such, they must both be rebuilt from
+	sources.
+	__FreeBSD_version is bumped to 1300510.
+
+20210510:
+	Commit 272f39942254 changed the internal KAPI between the
+	nscl.ko and nfscommon.ko modules, so they both need to be
+	rebuilt from sources.
+
+20210429:
+	Commit 5a45802b3c8c changed the internal KAPI between
+	the krpc and NFS.  As such, the krpc, nfscommon and
+	nfscl modules must all be rebuilt from sources.
+	Without this patch, NFSv4.1/4.2 mounts should not
+	be done with the nfscbd(8) daemon running, to avoid
+	needing a working back channel for server->client RPCs.
+
+20210202:
+	Various LinuxKPI functionality was added which conflicts with DRM.
+	Please update your drm-kmod port to after the __FreeBSD_verison 1300139
+	update.
+
+20210122:
+	The stable/13 branch has been created from main.
+
+20210108:
+	PC Card attachments for all devices have been removed. In the case of
+	wi and cmx, the entire drivers were removed because they were only
+	PC Card devices. FreeBSD_version 1300134 should be used for this
+	since it was bumped so recently.
+
+20210107:
+	Transport-independent parts of HID support have been split off the USB
+	code in to separate subsystem.  Kernel configs which include one of
+	ums, ukbd, uhid, atp, wsp, wmt, uaudio, ugold or ucycom drivers should
+	be updated with adding of "device hid" line.
+
+20210105:
+	ncurses installation has been modified to only keep the widechar
+	enabled version.  Incremental build is broken for that change, so it
+	requires a clean build.
+
+20201223:
+	The FreeBSD project has migrated from Subversion to Git. Temporary
+	instructions can be found at
+	https://github.com/bsdimp/freebsd-git-docs/blob/main/src-cvt.md
+	and other documents in that repo.
+
+20201216:
+	The services database has been updated to cover more of the basic
+	services expected in a modern system. The database is big enough
+	that it will cause issues in mergemaster in Releases previous to
+	12.2 and 11.3, or in very old current systems from before r358154.
+
+20201215:
+	Obsolete in-tree GDB 6.1.1 has been removed.  GDB (including kgdb)
+	may be installed from ports or packages.
+
+20201124:
+	ping6 has been merged into ping.  It can now be called as "ping -6".
+	See ping(8) for details.
+
+20201108:
+	Default value of net.add_addr_allfibs has been changed to 0.
+	If you have multi-fib configuration and rely on existence of all
+	interface routes in every fib, you need to set the above sysctl to 1.
+20201030:
+	The internal pre-processor in the calendar(1) program has been
+	extended to support more C pre-processor commands (e.g. #ifdef, #else,
+	and #undef) and to detect unbalanced conditional statements.
+	Error messages have been extended to include the filename and line
+	number if processing stops to help fixing malformed data files.
+
+20201026:
+	All the data files for the calendar(1) program, except calendar.freebsd,
+	have been moved to the deskutils/calendar-data port, much like the
+	jewish calendar entries were moved to deskutils/hebcal years ago. After
+	make delete-old-files, you need to install it to retain full
+	functionality. calendar(1) will issue a reminder for files it can't
+	find.
+
+20200923:
+	LINT files are no longer generated. We now include the relevant NOTES
+	files. Note: This may cause conflicts with updating in some cases.
+	        find sys -name LINT\* -delete
+	is suggested across this commit	to remove the generated	LINT files.
+
+	If you have tried to update with generated files there, the svn
+	command you want to un-auger the tree is
+		cd sys/amd64/conf
+		svn revert -R .
+	and then do the above find from the top level. Substitute 'amd64'
+	above with where the error message indicates a conflict.
+
+20200824:
+	OpenZFS support has been integrated. Do not upgrade root pools until
+	the loader is updated to support zstd. Furthermore, we caution against
+	'zpool upgrade' for the next few weeks. The change should be transparent
+	unless you  want to use new features.
+
+	Not all "NO_CLEAN" build scenarios work across these changes. Many
+	scenarios have been tested and fixed, but rebuilding kernels without
+	rebuilding world may fail.
+
+	The ZFS cache file has moved from /boot to /etc to match the OpenZFS
+	upstream default. A fallback to /boot has been added for mountroot.
+
+	Pool auto import behavior at boot has been moved from the kernel module
+	to an explicit "zpool import -a" in one of the rc scripts enabled by
+	zfs_enable=YES. This means your non-root zpools won't auto import until
+	you upgrade your /etc/rc.d files.
+
+20200824:
 	The resume code now notifies devd with the 'kernel' system
 	rather than the old 'kern' subsystem to be consistent with
 	other use. The old notification will be created as well, but
 	will be removed prior to FreeBSD 14.0.
 
-20200722:
+20200821:
+	r362275 changed the internal API between the kernel RPC and the
+	NFS modules. As such, all the modules must be recompiled from
+	sources.
+
+20200817:
+	r364330 modified the internal API used between the NFS modules.
+	As such, all the NFS modules must be re-compiled from sources.
+
+20200816:
+	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
+	been upgraded to 11.0.0.  Please see the 20141231 entry below for
+	information about prerequisites and upgrading, if you are not already
+	using clang 3.5.0 or higher.
+
+20200810:
+	r364092 modified the internal ABI used between the kernel NFS
+	modules.  As such, all of these modules need to be rebuilt
+	from sources, so a version bump was done.
+
+20200807:
+	Makefile.inc has been updated to work around the issue documented in
+	20200729. It was a case where the optimization of using symbolic links
+	to point to binaries created a situation where we'd run new binaries
+	with old libraries starting midway through the installworld process.
+
+20200729:
+	r363679 has redefined some undefined behavior in regcomp(3); notably,
+	extraneous escapes of most ordinary characters will no longer be
+	accepted.  An exp-run has identified all of the problems with this in
+	ports, but other non-ports software may need extra escapes removed to
+	continue to function.
+
+	Because of this change, installworld may encounter the following error
+	from rtld: Undefined symbol "regcomp@FBSD_1.6" -- It is imperative that
+	you do not halt installworld. Instead, let it run to completion (whether
+	successful or not) and run installworld once more.
+
+20200627:
+	A new implementation of bc and dc has been imported in r362681. This
+	implementation corrects non-conformant behavior of the previous bc
+	and adds GNU bc compatible options. It offers a number of extensions,
+	is much faster on large values, and has support for message catalogs
+	(a number of languages are already supported, contributions of further
+	languages welcome). The option WITHOUT_GH_BC can be used to build the
+	world with the previous versions of bc and dc.
+
+20200625:
+	r362639 changed the internal API used between the NFS kernel modules.
+	As such, they all need to be rebuilt from sources.
+
+20200613:
+	r362158 changed the arguments for VFS_CHECKEXP().  As such, any
+	out of tree file systems need to be modified and rebuilt.
+	Also, any file systems that are modules must be rebuilt.
+
+20200604:
+	read(2) of a directory fd is now rejected by default.  root may
+	re-enable it for system root only on non-ZFS filesystems with the
+	security.bsd.allow_read_dir sysctl(8) MIB if
+	security.bsd.suser_enabled=1.
+
+	It may be advised to setup aliases for grep to default to `-d skip` if
+	commonly non-recursively grepping a list that includes directories and
+	the potential for the resulting stderr output is not tolerable.  Example
+	aliases are now installed, commented out, in /root/.cshrc and
+	/root/.shrc.
+
+20200523:
 	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
 	been upgraded to 10.0.1.  Please see the 20141231 entry below for
 	information about prerequisites and upgrading, if you are not already
 	using clang 3.5.0 or higher.
 
-20200708:
-	read(2) of a directory fd is now rejected by default.  root may
-	re-enable it for the entire system with the
-	security.bsd.allow_read_dir sysctl(8) MIB.
+20200512:
+	Support for obsolete compilers has been removed from the build system.
+	Clang 6 and GCC 6.4 are the minimum supported versions.
 
-	It may be advised to setup aliases for grep to default to `-d skip` if
-	commonly non-recursively grepping a list that includes directories and
-	the potential for the resulting stderr output is not tolerable.  Example
-	aliases are now installed, commented out, in /root/.cshrc.
+20200424:
+	closefrom(2) has been moved under COMPAT12, and replaced in libc with a
+	stub that calls close_range(2).  If using a custom kernel configuration,
+	you may want to ensure that the COMPAT_FREEBSD12 option is included, as
+	a slightly older -CURRENT userland and older FreeBSD userlands may not
+	be functional without closefrom(2).
 
 20200414:
 	Upstream DTS from Linux 5.6 was merged and they now have the SID
@@ -75,13 +326,96 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	deal with upstream DTS. If you are using those overlays you need to
 	remove them from loader.conf and update the DTBs on the FAT partition.
 
-20200501:
+20200310:
 	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
 	been upgraded to 10.0.0.  Please see the 20141231 entry below for
 	information about prerequisites and upgrading, if you are not already
 	using clang 3.5.0 or higher.
 
-20200430:
+20200309:
+	The amd(8) automount daemon has been removed from the source tree.
+	As of FreeBSD 10.1 autofs(5) is the preferred tool for automounting.
+	amd is still available in the sysutils/am-utils port.
+
+20200301:
+	Removed brooktree driver (bktr.4) from the tree.
+
+20200229:
+	The WITH_GPL_DTC option has been removed.  The BSD-licenced device tree
+	compiler in usr.bin/dtc is used on all architectures which use dtc, and
+	the GPL dtc is available (if needed) from the sysutils/dtc port.
+
+20200229:
+	The WITHOUT_LLVM_LIBUNWIND option has been removed.  LLVM's libunwind
+	is used by all supported CPU architectures.
+
+20200229:
+	GCC 4.2.1 has been removed from the tree.  The WITH_GCC,
+	WITH_GCC_BOOTSTRAP, and WITH_GNUCXX options are no longer available.
+	Users who wish to build FreeBSD with GCC must use the external toolchain
+	ports or packages.
+
+20200220:
+	ncurses has been updated to a newer version (6.2-20200215). Given the ABI
+	has changed, users will have to rebuild all the ports that are linked to
+	ncurses.
+
+20200217:
+	The size of struct vnet and the magic cookie have changed.
+	Users need to recompile libkvm and all modules using VIMAGE
+	together with their new kernel.
+
+20200212:
+	Defining the long deprecated NO_CTF, NO_DEBUG_FILES, NO_INSTALLLIB,
+	NO_MAN, NO_PROFILE, and NO_WARNS variables is now an error.  Update
+	your Makefiles and scripts to define MK_<var>=no instead as required.
+
+	One exception to this is that program or library Makefiles should
+	define MAN to empty rather than setting MK_MAN=no.
+
+20200108:
+	Clang/LLVM is now the default compiler and LLD the default
+	linker for riscv64.
+
+20200107:
+	make universe no longer uses GCC 4.2.1 on any architectures.
+	Architectures not supported by in-tree Clang/LLVM require an
+	external toolchain package.
+
+20200104:
+	GCC 4.2.1 is now not built by default, as part of the GCC 4.2.1
+	retirement plan.  Specifically, the GCC, GCC_BOOTSTRAP, and GNUCXX
+	options default to off for all supported CPU architectures.  As a
+	short-term transition aid they may be enabled via WITH_* options.
+	GCC 4.2.1 is expected to be removed from the tree on 2020-03-31.
+
+20200102:
+	Support for armv5 has been disconnected and is being removed. The
+	machine combination MACHINE=arm MACHINE_ARCH=arm is no longer valid.
+	You must now use a MACHINE_ARCH of armv6 or armv7. The default
+	MACHINE_ARCH for MACHINE=arm is now armv7.
+
+20191226:
+	Clang/LLVM is now the default compiler for all powerpc architectures.
+	LLD is now the default linker for powerpc64.  The change for powerpc64
+	also includes a change to the ELFv2 ABI, incompatible with the existing
+	ABI.
+
+20191226:
+	Kernel-loadable random(4) modules are no longer unloadable.
+
+20191222:
+	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
+	been upgraded to 9.0.1.  Please see the 20141231 entry below for
+	information about prerequisites and upgrading, if you are not already
+	using clang 3.5.0 or higher.
+
+20191212:
+	r355677 has modified the internal interface used between the
+	NFS modules in the kernel. As such, they must all be upgraded
+	simultaneously. I will do a version bump for this.
+
+20191205:
 	The root certificates of the Mozilla CA Certificate Store have been
 	imported into the base system and can be managed with the certctl(8)
 	utility.  If you have installed the security/ca_root_nss port or package
@@ -91,11 +425,10 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	frequency.  Note also that certctl(8) cannot manage certs in the
 	format used by the security/ca_root_nss port.
 
-20200107:
-	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
-	been upgraded to 9.0.1.  Please see the 20141231 entry below for
-	information about prerequisites and upgrading, if you are not already
-	using clang 3.5.0 or higher.
+20191120:
+	The amd(8) automount daemon has been disabled by default, and will be
+	removed in the future.  As of FreeBSD 10.1 the autofs(5) is available
+	for automounting.
 
 20191107:
 	The nctgpio and wbwd drivers have been moved to the superio bus.
@@ -104,13 +437,38 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	as a module and you compile a custom set of modules, then you should
 	add superio to the set.
 
-20191024:
-	The tap(4) driver has been folded into tun(4), and the module has been
-	renamed to tuntap.  You should update any kld_list="if_tap" or
-	kld_list="if_tun" entries in /etc/rc.conf, if_tap_load="YES" or
-	if_tun_load="YES" entries in /boot/loader.conf to load the if_tuntap
-	module instead, and "device tap" or "device tun" entries in kernel
-	config files to select the tuntap device instead.
+20191021:
+	KPIs for network drivers to access interface addresses have changed.
+	Users need to recompile NIC driver modules together with kernel.
+
+20191021:
+	The net.link.tap.user_open sysctl no longer prevents user opening of
+	already created /dev/tapNN devices.  Access is still controlled by
+	node permissions, just like tun devices.  The net.link.tap.user_open
+	sysctl is now used only to allow users to perform devfs cloning of
+	tap devices, and the subsequent open may not succeed if the user is not
+	in the appropriate group.  This sysctl may be deprecated/removed
+	completely in the future.
+
+20191009:
+	mips, powerpc, and sparc64 are no longer built as part of
+	universe / tinderbox unless MAKE_OBSOLETE_GCC is defined. If
+	not defined, mips, powerpc, and sparc64 builds will look for
+	the xtoolchain binaries and if installed use them for universe
+	builds. As llvm 9.0 becomes vetted for these architectures, they
+	will be removed from the list.
+
+20191009:
+	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
+	been upgraded to 9.0.0.  Please see the 20141231 entry below for
+	information about prerequisites and upgrading, if you are not already
+	using clang 3.5.0 or higher.
+
+20191003:
+	The hpt27xx, hptmv, hptnr, and hptrr drivers have been removed from
+	GENERIC.  They are available as modules and can be loaded by adding
+	to /boot/loader.conf hpt27xx_load="YES", hptmv_load="YES",
+	hptnr_load="YES", or hptrr_load="YES", respectively.
 
 20190913:
 	ntpd no longer by default locks its pages in memory, allowing them
@@ -118,7 +476,12 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	historic BSD behaviour. For example, add "rlimit memlock 32"
 	to ntp.conf to lock up to 32 MB of ntpd address space in memory.
 
-20190914:
+20190823:
+	Several of ping6's options have been renamed for better consistency
+	with ping.  If you use any of -ARWXaghmrtwx, you must update your
+	scripts.  See ping6(8) for details.
+
+20190727:
 	The vfs.fusefs.sync_unmount and vfs.fusefs.init_backgrounded sysctls
 	and the "-o sync_unmount" and "-o init_backgrounded" mount options have
 	been removed from mount_fusefs(8).  You can safely remove them from
@@ -130,46 +493,99 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	sysctls have been removed.  If you felt the need to set any of them to
 	a non-default value, please tell asomers@FreeBSD.org why.
 
-20190906:
-	The fuse(4) module has been renamed to fusefs(4) for consistency with
-	other filesystems.  You should update any kld_load="fuse" entries in
-	/etc/rc.conf, fuse_load="YES" entries in /boot/loader.conf, and
-	"options FUSE" enties in kernel config files.
+20190713:
+	Default permissions on the /var/account/acct file (and copies of it
+	rotated by periodic daily scripts) are changed from 0644 to 0640
+	because the file contains sensitive information that should not be
+	world-readable.  If the /var/account directory must be created by
+	rc.d/accounting, the mode used is now 0750.  Admins who use the
+	accounting feature are encouraged to change the mode of an existing
+	/var/account directory to 0750 or 0700.
 
-20190811:
-	Default permissions on the /var/account/acct file (and copies of it 
-	rotated by periodic daily scripts) are changed from 0644 to 0640 
-	because the file contains sensitive information that should not be 
-	world-readable.  If the /var/account directory must be created by 
-	rc.d/accounting, the mode used is now 0750.  Admins who use the 
-	accounting feature are encouraged to change the mode of an existing 
-	/var/account directory to 0750 or 0700.  
+20190620:
+	Entropy collection and the /dev/random device are no longer optional
+	components.  The "device random" option has been removed.
+	Implementations of distilling algorithms can still be made loadable
+	with "options RANDOM_LOADABLE" (e.g., random_fortuna.ko).
 
-20190723:
+20190612:
 	Clang, llvm, lld, lldb, compiler-rt, libc++, libunwind and openmp have
 	been upgraded to 8.0.1.  Please see the 20141231 entry below for
 	information about prerequisites and upgrading, if you are not already
 	using clang 3.5.0 or higher.
 
-20190413:
-	Now Clang 8 has been merged (see the 20190412 entry below), the ifunc
-	functionality needed for the RETPOLINE option should work properly
-	again.  The RETPOLINE option has been removed from BROKEN_OPTIONS.
+20190608:
+	A fix was applied to i386 kernel modules to avoid panics with
+	dpcpu or vnet.  Users need to recompile i386 kernel modules
+	having pcpu or vnet sections or they will refuse to load.
 
-20190412:
+20190513:
+	User-wired pages now have their own counter,
+	vm.stats.vm.v_user_wire_count.  The vm.max_wired sysctl was renamed
+	to vm.max_user_wired and changed from an unsigned int to an unsigned
+	long.  bhyve VMs wired with the -S are now subject to the user
+	wiring limit; the vm.max_user_wired sysctl may need to be tuned to
+	avoid running into the limit.
+
+20190507:
+	The IPSEC option has been removed from GENERIC.  Users requiring
+	ipsec(4) must now load the ipsec(4) kernel module.
+
+20190507:
+	The tap(4) driver has been folded into tun(4), and the module has been
+	renamed to tuntap.  You should update any kld_list="if_tap" or
+	kld_list="if_tun" entries in /etc/rc.conf, if_tap_load="YES" or
+	if_tun_load="YES" entries in /boot/loader.conf to load the if_tuntap
+	module instead, and "device tap" or "device tun" entries in kernel
+	config files to select the tuntap device instead.
+
+20190418:
+	The following knobs have been added related to tradeoffs between
+	safe use of the random device and availability in the absence of
+	entropy:
+
+	kern.random.initial_seeding.bypass_before_seeding: tunable; set
+	non-zero to bypass the random device prior to seeding, or zero to
+	block random requests until the random device is initially seeded.
+	For now, set to 1 (unsafe) by default to restore pre-r346250 boot
+	availability properties.
+
+	kern.random.initial_seeding.read_random_bypassed_before_seeding:
+	read-only diagnostic sysctl that is set when bypass is enabled and
+	read_random(9) is bypassed, to enable programmatic handling of this
+	initial condition, if desired.
+
+	kern.random.initial_seeding.arc4random_bypassed_before_seeding:
+	Similar to the above, but for for arc4random(9) initial seeding.
+
+	kern.random.initial_seeding.disable_bypass_warnings: tunable; set
+	non-zero to disable warnings in dmesg when the same conditions are
+	met as for the diagnostic sysctls above.  Defaults to zero, i.e.,
+	produce warnings in dmesg when the conditions are met.
+
+20190416:
+	The loadable random module KPI has changed; the random_infra_init()
+	routine now requires a 3rd function pointer for a bool (*)(void)
+	method that returns true if the random device is seeded (and
+	therefore unblocked).
+
+20190404:
+	r345895 reverts r320698. This implies that an nfsuserd(8) daemon
+	built from head sources between r320757 (July 6, 2017) and
+	r338192 (Aug. 22, 2018) will not work unless the "-use-udpsock"
+	is added to the command line.
+	nfsuserd daemons built from head sources that are post-r338192 are
+	not affected and should continue to work.
+
+20190320:
+	The fuse(4) module has been renamed to fusefs(4) for consistency with
+	other filesystems.  You should update any kld_load="fuse" entries in
+	/etc/rc.conf, fuse_load="YES" entries in /boot/loader.conf, and
+	"options FUSE" entries in kernel config files.
+
+20190304:
 	Clang, llvm, lld, lldb, compiler-rt and libc++ have been upgraded to
 	8.0.0.  Please see the 20141231 entry below for information about
-	prerequisites and upgrading, if you are not already using clang 3.5.0
-	or higher.
-
-20190307:
-	The RETPOLINE option produces non-functional ifunc-using binaries
-	with Clang 7.0.1, and has been forced off (via BROKEN_OPTIONS).
-	Once Clang 8 is merged it may be enabled again.
-
-20190216:
-	Clang, llvm, lld, lldb, compiler-rt and libc++ have been upgraded to
-	7.0.1.  Please see the 20141231 entry below for information about
 	prerequisites and upgrading, if you are not already using clang 3.5.0
 	or higher.
 
@@ -178,37 +594,85 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	compiled into your custom kernel, add 'device xz' statement to the
 	kernel config.
 
-20190214:
+20190219:
+	drm and drm2 have been removed from the tree. Please see
+	https://wiki.freebsd.org/Graphics for the latest information on
+	migrating to the drm ports.
+
+20190131:
 	Iflib is no longer unconditionally compiled into the kernel.  Drivers
 	using iflib and statically compiled into the kernel, now require
 	the 'device iflib' config option.  For the same drivers loaded as
 	modules on kernels not having 'device iflib', the iflib.ko module
 	is loaded automatically.
 
-20181228:
-	r342561 modifies the NFSv4 server so that it obeys vfs.nfsd.nfs_privport
+20190125:
+	The IEEE80211_AMPDU_AGE and AH_SUPPORT_AR5416 kernel configuration
+	options no longer exist since r343219 and r343427 respectively;
+	nothing uses them, so they should be just removed from custom
+	kernel config files.
+
+20181230:
+	r342635 changes the way efibootmgr(8) works by requiring users to add
+	the -b (bootnum) parameter for commands where the bootnum was previously
+	specified with each option. For example 'efibootmgr -B 0001' is now
+	'efibootmgr -B -b 0001'.
+
+20181220:
+	r342286 modifies the NFSv4 server so that it obeys vfs.nfsd.nfs_privport
 	in the same as it is applied to NFSv2 and 3.  This implies that NFSv4
 	servers that have vfs.nfsd.nfs_privport set will only allow mounts
 	from clients using a reserved port#. Since both the FreeBSD and Linux
 	NFSv4 clients use reserved port#s by default, this should not affect
 	most NFSv4 mounts.
 
-20181129:
+20181219:
+	The XLP config has been removed. We can't support 64-bit atomics in this
+	kernel because it is running in 32-bit mode. XLP users must transition
+	to running a 64-bit kernel (XLP64 or XLPN32).
+
+	The mips GXEMUL support has been removed from FreeBSD. MALTA* + qemu is
+	the preferred emulator today and we don't need two different ones.
+
+	The old sibyte / swarm / Broadcom BCM1250 support has been
+	removed from the mips port.
+
+20181211:
+	Clang, llvm, lld, lldb, compiler-rt and libc++ have been upgraded to
+	7.0.1.  Please see the 20141231 entry below for information about
+	prerequisites and upgrading, if you are not already using clang 3.5.0
+	or higher.
+
+20181211:
+	Remove the timed and netdate programs from the base tree.  Setting
+	the time with these daemons has been obsolete for over a decade.
+
+20181126:
 	On amd64, arm64 and armv7 (architectures that install LLVM's ld.lld
 	linker as /usr/bin/ld) GNU ld is no longer installed as ld.bfd, as
 	it produces broken binaries when ifuncs are in use.  Users needing
 	GNU ld should install the binutils port or package.
 
+20181123:
+	The BSD crtbegin and crtend code has been enabled by default. It has
+	had extensive testing on amd64, arm64, and i386. It can be disabled
+	by building a world with -DWITHOUT_BSD_CRTBEGIN.
+
 20181115:
 	The set of CTM commands (ctm, ctm_smail, ctm_rmail, ctm_dequeue)
 	has been converted to a port (misc/ctm) and will be removed from
-	FreeBSD-13.  A depreciation warning will be printed to stderr by
-	the ctm command, but the functionality will remain in base for all
-	FreeBSD-12 releases.
+	FreeBSD-13.  It is available as a package (ctm) for all supported
+	FreeBSD versions.
 
-20181019:
-	The stable/12 branch has been created in subversion from head
-	revision r339432.
+20181110:
+	The default newsyslog.conf(5) file has been changed to only include
+	files in /etc/newsyslog.conf.d/ and /usr/local/etc/newsyslog.conf.d/ if
+	the filenames end in '.conf' and do not begin with a '.'.
+
+	You should check the configuration files in these two directories match
+	this naming convention. You can verify which configuration files are
+	being included using the command:
+		$ newsyslog -Nrv
 
 20181015:
 	Ports for the DRM modules have been simplified. Now, amd64 users should
@@ -226,8 +690,8 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 
 	Other than KPI chasing, drm-legacy-kmod will not be updated. As outlined
 	elsewhere, the drm and drm2 modules will be eliminated from the src base
-	soon (with a limited exception for arm). Please update to the package asap
-	and report any issues to x11@freebsd.org.
+	soon (with a limited exception for arm). Please update to the package
+	asap and report any issues to x11@freebsd.org.
 
 	Generally, anybody using the drm*-kmod packages should add
 	WITHOUT_DRM_MODULE=t and WITHOUT_DRM2_MODULE=t to avoid nasty
@@ -244,7 +708,7 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 
 20181009:
 	OpenSSL has been updated to version 1.1.1.  This update included
-	additional various API changes througout the base system.  It is
+	additional various API changes throughout the base system.  It is
 	important to rebuild third-party software after upgrading.  The value
 	of __FreeBSD_version has been bumped accordingly.
 
@@ -341,13 +805,13 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 20180719:
 	ARM64 now have efifb support, if you want to have serial console
 	on your arm64 board when an screen is connected and the bootloader
-	setup a frambuffer for us to use, just add :
+	setup a frame buffer for us to use, just add :
 	boot_serial=YES
 	boot_multicons=YES
 	in /boot/loader.conf
 	For Raspberry Pi 3 (RPI) users, this is needed even if you don't have
-	an screen connected as the firmware will setup a framebuffer are that
-	u-boot will expose as an EFI framebuffer.
+	an screen connected as the firmware will setup a frame buffer are that
+	u-boot will expose as an EFI frame buffer.
 
 20180719:
 	New uid:gid added, ntpd:ntpd (123:123).  Be sure to run mergemaster
@@ -402,7 +866,8 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 20180628:
 	r335753 introduced a new quoting method. However, etc/devd/devmatch.conf
 	needed to be changed to work with it. This change was made with r335763
-	and requires a mergemaster / etcupdate / etc to update the installed file.
+	and requires a mergemaster / etcupdate / etc to update the installed
+	file.
 
 20180612:
 	r334930 changed the interface between the NFS modules, so they all
@@ -445,7 +910,7 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 
 20180508:
 	The nxge(4) driver has been removed.  This driver was for PCI-X 10g
-	cards made by s2io/Neterion.  The company was aquired by Exar and
+	cards made by s2io/Neterion.  The company was acquired by Exar and
 	no longer sells or supports Ethernet products.  If you have device
 	nxge in your kernel config file it must be removed.
 
@@ -536,15 +1001,16 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 20180212:
 	FreeBSD boot loader enhanced with Lua scripting. It's purely opt-in for
 	now by building WITH_LOADER_LUA and WITHOUT_FORTH in /etc/src.conf.
-	Co-existance for the transition period will come shortly. Booting is a
+	Co-existence for the transition period will come shortly. Booting is a
 	complex environment and test coverage for Lua-enabled loaders has been
 	thin, so it would be prudent to assume it might not work and make
 	provisions for backup boot methods.
 
 20180211:
 	devmatch functionality has been turned on in devd. It will automatically
-	load drivers for unattached devices. This may cause unexpected drivers to
-	be loaded. Please report any problems to current@ and imp@freebsd.org.
+	load drivers for unattached devices. This may cause unexpected drivers
+	to be loaded. Please report any problems to current@ and
+	imp@freebsd.org.
 
 20180114:
 	Clang, llvm, lld, lldb, compiler-rt and libc++ have been upgraded to
@@ -558,13 +1024,13 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	executables, but is not yet installed as /usr/bin/ld by default.
 
 	To revert to ld.bfd as the bootstrap linker, in /etc/src.conf set
-        WITHOUT_LLD_BOOTSTRAP=yes
+	WITHOUT_LLD_BOOTSTRAP=yes
 
 20180110:
 	On i386, pmtimer has been removed. Its functionality has been folded
-	into apm. It was a no-op on ACPI in current for a while now (but was still
-	needed on i386 in FreeBSD 11 and earlier). Users may need to remove it
-	from kernel config files.
+	into apm. It was a no-op on ACPI in current for a while now (but was
+	still needed on i386 in FreeBSD 11 and earlier). Users may need to
+	remove it from kernel config files.
 
 20180104:
 	The use of RSS hash from the network card aka flowid has been
@@ -805,11 +1271,13 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 	system will be running the ino64 kernel with the existing world).
 
 	For the safest in-place upgrade begin by removing previous build
-	artifacts via "rm -rf /usr/obj/*".   Then, carefully follow the
-	full procedure documented below under the heading "To rebuild
-	everything and install it on the current system."  Specifically,
-	a reboot is required after installing the new kernel before
-	installing world.
+	artifacts via "rm -rf /usr/obj/*".  Then, carefully follow the full
+	procedure documented below under the heading "To rebuild everything and
+	install it on the current system."  Specifically, a reboot is required
+	after installing the new kernel before installing world. While an
+	installworld normally works by accident from multiuser after rebooting
+	the proper kernel, there are many cases where this will fail across this
+	upgrade and installworld from single user is required.
 
 20170424:
 	The NATM framework including the en(4), fatm(4), hatm(4), and
@@ -906,7 +1374,8 @@ from older version of current across the gcc/clang cutover is a bit fragile.
 20170109:
 	The igb(4), em(4) and lem(4) ethernet drivers are now implemented via
 	IFLIB.  If you have a custom kernel configuration that excludes em(4)
-	but you use igb(4), you need to re-add em(4) to your custom configuration.
+	but you use igb(4), you need to re-add em(4) to your custom
+	configuration.
 
 20161217:
 	Clang, llvm, lldb, compiler-rt and libc++ have been upgraded to 3.9.1.
@@ -1849,19 +2318,14 @@ COMMON ITEMS:
 
 	General Notes
 	-------------
-	Avoid using make -j when upgrading.  While generally safe, there are
-	sometimes problems using -j to upgrade.  If your upgrade fails with
-	-j, please try again without -j.  From time to time in the past there
-	have been problems using -j with buildworld and/or installworld.  This
-	is especially true when upgrading between "distant" versions (eg one
-	that cross a major release boundary or several minor releases, or when
-	several months have passed on the -current branch).
-
 	Sometimes, obscure build problems are the result of environment
 	poisoning.  This can happen because the make utility reads its
 	environment when searching for values for global variables.  To run
 	your build attempts in an "environmental clean room", prefix all make
 	commands with 'env -i '.  See the env(1) manual page for more details.
+	Occasionally a build failure will occur with "make -j" due to a race
+	condition.  If this happens try building again without -j, and please
+	report a bug if it happens consistently.
 
 	When upgrading from one major version to another it is generally best to
 	upgrade to the latest code in the currently installed branch first, then
@@ -1872,6 +2336,12 @@ COMMON ITEMS:
 	anywhere in the most recent stable branch to head / current (or even the
 	last couple of stable branches). See the top of this file when there's
 	an exception.
+
+	The update process will emit an error on an attempt to perform a build
+	or install from a FreeBSD version below the earliest supported version.
+	When updating from an older version the update should be performed one
+	major release at a time, including running `make delete-old` at each
+	step.
 
 	When upgrading a live system, having a root shell around before
 	installing anything can help undo problems. Not having a root shell
@@ -1895,9 +2365,11 @@ COMMON ITEMS:
 
 	2.) update the ZFS boot block on your boot drive
 
-	The following example updates the ZFS boot block on the first
-	partition (freebsd-boot) of a GPT partitioned drive ada0:
-	"gpart bootcode -p /boot/gptzfsboot -i 1 ada0"
+	The following example updates the ZFS boot block on the
+	freebsd-boot partition of a GPT partitioned drive ada0:
+	"gpart bootcode -p /boot/gptzfsboot -i $N ada0"
+	The value $N will typically be 1 (if booting from BIOS) or 2 (if
+	booting from EFI).
 
 	Non-boot pools do not need these updates.
 
@@ -1986,18 +2458,26 @@ COMMON ITEMS:
 	messages there.  If in doubt, please track -stable which has
 	much fewer pitfalls.
 
-	[1] If you have third party modules, such as vmware, you
-	should disable them at this point so they don't crash your
-	system on reboot.
+	[1] If you have third party modules, such as vmware, you should disable
+	them at this point so they don't crash your system on
+	reboot. Alternatively, you should rebuild all the modules you have in
+	your system and install them as well.  If you are running -current, you
+	should seriously consider placing all sources to all the modules for
+	your system (or symlinks to them) in /usr/local/sys/modules so this
+	happens automatically. If all your modules come from ports, then adding
+	the port origin directories to PORTS_MODULES instead is also automatic
+	and effective, eg:
+	     PORTS_MODULES+=x11/nvidia-driver
 
 	[3] From the bootblocks, boot -s, and then do
 		fsck -p
 		mount -u /
 		mount -a
-		cd src
+		sh /etc/rc.d/zfs start	# mount zfs filesystem, if needed
+		cd src			# full path to source
 		adjkerntz -i		# if CMOS is wall time
-	Also, when doing a major release upgrade, it is required that
-	you boot into single user mode to do the installworld.
+	Also, when doing a major release upgrade, it is required that you boot
+	into single user mode to do the installworld.
 
 	[4] Note: This step is non-optional.  Failure to do this step
 	can result in a significant reduction in the functionality of the
@@ -2018,16 +2498,19 @@ COMMON ITEMS:
 	can be deleted by "make delete-old-libs", but you have to make
 	sure that no program is using those libraries anymore.
 
-	[8] The new kernel must be able to run existing binaries used by
-	an installworld.  When upgrading across major versions, the new
-	kernel's configuration must include the correct COMPAT_FREEBSD<n>
-	option for existing binaries (e.g. COMPAT_FREEBSD11 to run 11.x
-	binaries).  Failure to do so may leave you with a system that is
-	hard to boot to recover.  A GENERIC kernel will include suitable
-	compatibility options to run binaries from older branches.
+	[8] The new kernel must be able to run existing binaries used by an
+	installworld.  When upgrading across major versions, the new kernel's
+	configuration must include the correct COMPAT_FREEBSD<n> option for
+	existing binaries (e.g. COMPAT_FREEBSD11 to run 11.x binaries).  Failure
+	to do so may leave you with a system that is hard to boot to recover. A
+	GENERIC kernel will include suitable compatibility options to run
+	binaries from older branches.  Note that the ability to run binaries
+	from unsupported branches is not guaranteed.
 
 	Make sure that you merge any new devices from GENERIC since the
-	last time you updated your kernel config file.
+	last time you updated your kernel config file. Options also
+	change over time, so you may need to adjust your custom kernels
+	for these as well.
 
 	[9] If CPUTYPE is defined in your /etc/make.conf, make sure to use the
 	"?=" instead of the "=" assignment operator, so that buildworld can
@@ -2046,7 +2529,7 @@ to fetch an UPDATING file from an older FreeBSD release.
 
 Copyright information:
 
-Copyright 1998-2009 M. Warner Losh.  All Rights Reserved.
+Copyright 1998-2009 M. Warner Losh <imp@FreeBSD.org>
 
 Redistribution, publication, translation and use, with or without
 modification, in full or in part, in any form or format of this
@@ -2067,4 +2550,4 @@ POSSIBILITY OF SUCH DAMAGE.
 Contact Warner Losh if you have any questions about your use of
 this document.
 
-$FreeBSD: releng/12.2/UPDATING 366954 2020-10-23 00:00:52Z gjb $
+$FreeBSD$
