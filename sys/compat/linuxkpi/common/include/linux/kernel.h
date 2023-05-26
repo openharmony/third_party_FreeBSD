@@ -29,8 +29,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_KERNEL_H_
-#define	_LINUX_KERNEL_H_
+#ifndef	_LINUXKPI_LINUX_KERNEL_H_
+#define	_LINUXKPI_LINUX_KERNEL_H_
 
 #include "errno.h"
 #include "string.h"
@@ -536,4 +536,4 @@ extern int munmap(void *addr, size_t length);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_KERNEL_H_ */
+#endif /* _LINUXKPI_LINUX_KERNEL_H_ */

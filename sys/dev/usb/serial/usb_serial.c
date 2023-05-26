@@ -252,7 +252,6 @@ ucom_detach(struct ucom_super_softc *ssc, struct ucom_softc *sc)
 
 	for (subunit = 0; subunit < ssc->sc_subunits; subunit++) {
 		if (sc[subunit].sc_flag & UCOM_FLAG_ATTACHED) {
-
 			ucom_detach_tty(ssc, &sc[subunit]);
 
 			/* avoid duplicate detach */
@@ -500,11 +499,9 @@ ucom_cfg_open(struct usb_proc_msg *_task)
 	DPRINTF("\n");
 
 	if (sc->sc_flag & UCOM_FLAG_LL_READY) {
-
 		/* already opened */
 
 	} else {
-
 		sc->sc_flag |= UCOM_FLAG_LL_READY;
 
 		if (sc->sc_callback->ucom_cfg_open) {
@@ -637,7 +634,6 @@ ucom_modem(struct ucom_softc *sc, int sigon, int sigoff)
 		return (0);
 	}
 	if ((sigon == 0) && (sigoff == 0)) {
-
 		if (sc->sc_mcr & SER_DTR) {
 			sigon |= SER_DTR;
 		}

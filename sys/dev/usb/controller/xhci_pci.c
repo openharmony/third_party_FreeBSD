@@ -32,6 +32,9 @@ __FBSDID("$FreeBSD$");
 
 #include <linux/kernel.h>
 
+#define	PCI_XHCI_VENDORID_AMD		0x1022
+#define	PCI_XHCI_VENDORID_INTEL		0x8086
+
 static device_probe_t xhci_pci_probe;
 static device_attach_t xhci_pci_attach;
 static device_detach_t xhci_pci_detach;

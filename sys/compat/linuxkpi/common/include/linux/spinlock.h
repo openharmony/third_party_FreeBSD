@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_SPINLOCK_H_
-#define	_LINUX_SPINLOCK_H_
+#ifndef	_LINUXKPI_LINUX_SPINLOCK_H_
+#define	_LINUXKPI_LINUX_SPINLOCK_H_
 
 #include "los_typedef.h"
 #include "los_spinlock.h"
@@ -92,4 +92,4 @@ SPIN_MACRO_END
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SPINLOCK_H_ */
+#endif /* _LINUXKPI_LINUX_SPINLOCK_H_ */

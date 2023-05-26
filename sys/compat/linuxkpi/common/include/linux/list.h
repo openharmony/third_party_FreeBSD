@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef _LINUX_LIST_H_
-#define _LINUX_LIST_H_
+#ifndef _LINUXKPI_LINUX_LIST_H_
+#define _LINUXKPI_LINUX_LIST_H_
 
 #include "linux/compiler.h"
 #include "los_list.h"
@@ -235,6 +235,13 @@ list_move_tail(struct list_head *entry, struct list_head *head)
 }
 
 static inline void
+list_rotate_to_front(struct list_head *entry, struct list_head *head)
+{
+
+	list_move_tail(entry, head);
+}
+
+static inline void
 list_bulk_move_tail(struct list_head *head, struct list_head *first,
 	struct list_head *last)
 {
@@ -292,7 +299,6 @@ list_splice_tail_init(struct list_head *list, struct list_head *head)
 	linux_list_splice(list, head->prev, head);
 	INIT_LIST_HEAD(list);
 }
-
 
 struct hlist_head {
 	struct hlist_node *first;
@@ -471,4 +477,4 @@ extern void list_sort(void *priv, struct list_head *head, int (*cmp)(void *priv,
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_LIST_H_ */
+#endif /* _LINUXKPI_LINUX_LIST_H_ */

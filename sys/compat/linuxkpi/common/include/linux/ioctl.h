@@ -28,9 +28,9 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_IOCTL_H_
-#define	_LINUX_IOCTL_H_
+#ifndef	_LINUXKPI_LINUX_IOCTL_H_
+#define	_LINUXKPI_LINUX_IOCTL_H_
 
 #include "sys/ioctl.h"
 
-#endif	/* _LINUX_IOCTL_H_ */
+#endif	/* _LINUXKPI_LINUX_IOCTL_H_ */

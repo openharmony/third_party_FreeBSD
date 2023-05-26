@@ -854,6 +854,23 @@ getstdfmt(const char *fmt, struct bpb *bpb)
     return 0;
 }
 
+static void
+compute_geometry_from_file(int fd, const char *fname, struct disklabel *lp)
+{
+	struct stat st;
+	off_t ms;
+
+	if (fstat(fd, &st))
+		err(1, "cannot get disk size");
+	if (!S_ISREG(st.st_mode))
+		errx(1, "%s is not a regular file", fname);
+	ms = st.st_size;
+	lp->d_secsize = 512;
+	lp->d_nsectors = 63;
+	lp->d_ntracks = 255;
+	lp->d_secperunit = ms / lp->d_secsize;
+}
+
 /*
  * Get disk slice, partition, and geometry information.
  */

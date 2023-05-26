@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_COMPLETION_H_
-#define	_LINUX_COMPLETION_H_
+#ifndef	_LINUXKPI_LINUX_COMPLETION_H_
+#define	_LINUXKPI_LINUX_COMPLETION_H_
 
 #include "los_sys.h"
 
@@ -211,4 +211,4 @@ extern int linux_completion_done(struct completion *x);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_COMPLETION_H_ */
+#endif /* _LINUXKPI_LINUX_COMPLETION_H_ */

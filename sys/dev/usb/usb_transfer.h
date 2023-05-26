@@ -40,100 +40,6 @@
  * which is done asynchronously and grows the statemachine.
  */
 
-enum {
-	/* XFER start execute state */
-
-	/* USB_ST_SETUP = 0 (already defined) */
-
-	/* XFER transferred execute state */
-
-	/* USB_ST_TRANSFERRED = 1 (already defined) */
-
-	/* XFER error execute state */
-
-	/* USB_ST_ERROR = 2 (already defined) */
-
-	/* XFER restart after error execute state */
-
-	USB_ST_RESTART = 8,
-
-	/* XFER transfer idle state */
-
-	USB_ST_WAIT_SETUP,
-
-	/* Other XFER execute states */
-
-	USB_ST_PIPE_OPEN = 16,
-	USB_ST_PIPE_OPEN_ERROR,
-	USB_ST_PIPE_OPEN_RESTART,
-
-	USB_ST_BDMA_LOAD,
-	USB_ST_BDMA_LOAD_ERROR,
-	USB_ST_BDMA_LOAD_RESTART,
-
-	USB_ST_IVAL_DLY,
-	USB_ST_IVAL_DLY_ERROR,
-	USB_ST_IVAL_DLY_RESTART,
-
-	USB_ST_PIPE_STALL,
-	USB_ST_PIPE_STALL_ERROR,
-	USB_ST_PIPE_STALL_RESTART,
-
-	USB_ST_ENTER,
-	USB_ST_ENTER_ERROR,
-	USB_ST_ENTER_RESTART,
-
-	USB_ST_START,
-	USB_ST_START_ERROR,
-	USB_ST_START_RESTART,
-
-	USB_ST_PIPE_CLOSE,
-	USB_ST_PIPE_CLOSE_ERROR,
-	USB_ST_PIPE_CLOSE_RESTART,
-
-	USB_ST_BDMA_DLY,
-	USB_ST_BDMA_DLY_ERROR,
-	USB_ST_BDMA_DLY_RESTART,
-
-	/* XFER transfer wait states */
-
-	USB_ST_WAIT_PIPE_OPEN = 64,
-	USB_ST_WAIT_PIPE_OPEN_ERROR,
-	USB_ST_WAIT_PIPE_OPEN_RESTART,
-
-	USB_ST_WAIT_BDMA_LOAD,
-	USB_ST_WAIT_BDMA_LOAD_ERROR,
-	USB_ST_WAIT_BDMA_LOAD_RESTART,
-
-	USB_ST_WAIT_IVAL_DLY,
-	USB_ST_WAIT_IVAL_DLY_ERROR,
-	USB_ST_WAIT_IVAL_DLY_RESTART,
-
-	USB_ST_WAIT_PIPE_STALL,
-	USB_ST_WAIT_PIPE_STALL_ERROR,
-	USB_ST_WAIT_PIPE_STALL_RESTART,
-
-	USB_ST_WAIT_ENTER,
-	USB_ST_WAIT_ENTER_ERROR,
-	USB_ST_WAIT_ENTER_RESTART,
-
-	USB_ST_WAIT_START,
-	USB_ST_WAIT_START_ERROR,
-	USB_ST_WAIT_START_RESTART,
-
-	USB_ST_WAIT_PIPE_CLOSE,
-	USB_ST_WAIT_PIPE_CLOSE_ERROR,
-	USB_ST_WAIT_PIPE_CLOSE_RESTART,
-
-	USB_ST_WAIT_BDMA_DLY,
-	USB_ST_WAIT_BDMA_DLY_ERROR,
-	USB_ST_WAIT_BDMA_DLY_RESTART,
-
-	USB_ST_WAIT_TRANSFERRED,
-	USB_ST_WAIT_TRANSFERRED_ERROR,
-	USB_ST_WAIT_TRANSFERRED_RESTART,
-};
-
 /*
  * The following structure defines the messages that is used to signal
  * the "done_p" USB process.
@@ -243,5 +149,6 @@ void	usbd_transfer_timeout_ms(struct usb_xfer *xfer,
 	    void (*cb) (void *arg), usb_timeout_t ms);
 usb_timeout_t usbd_get_dma_delay(struct usb_device *udev);
 void	usbd_transfer_power_ref(struct usb_xfer *xfer, int val);
+uint8_t	usbd_xfer_get_isochronous_start_frame(struct usb_xfer *, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t *);
 
 #endif					/* _USB_TRANSFER_H_ */

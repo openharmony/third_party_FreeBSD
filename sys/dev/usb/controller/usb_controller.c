@@ -342,7 +342,6 @@ usb_bus_explore(struct usb_proc_msg *pm)
 	}
 
 	if ((udev != NULL) && (udev->hub != NULL)) {
-
 		if (bus->do_probe) {
 			bus->do_probe = 0;
 			bus->driver_added_refcount++;

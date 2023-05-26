@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef _LINUX_SEMAPHORE_H_
-#define _LINUX_SEMAPHORE_H_
+#ifndef _LINUXKPI_LINUX_SEMAPHORE_H_
+#define _LINUXKPI_LINUX_SEMAPHORE_H_
 
 #include "los_sem_pri.h"
 
@@ -84,4 +84,4 @@ extern int _sema_trylock(losMutexDef_t *sem);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SEMAPHORE_H_ */
+#endif /* _LINUXKPI_LINUX_SEMAPHORE_H_ */

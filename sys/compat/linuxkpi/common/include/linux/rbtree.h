@@ -28,11 +28,12 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_RBTREE_H_
-#define	_LINUX_RBTREE_H_
+#ifndef	_LINUXKPI_LINUX_RBTREE_H_
+#define	_LINUXKPI_LINUX_RBTREE_H_
 
 #include <linux/list.h>
 #include <linux/tree.h>
+#include <sys/types.h>
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -52,6 +53,11 @@ struct rb_node {
  */
 struct rb_root {
     struct    rb_node    *rb_node;
+};
+
+struct rb_root_cached {
+	struct rb_root rb_root;
+	struct rb_node *rb_leftmost;
 };
 
 /*
@@ -82,6 +88,7 @@ RB_PROTOTYPE(linux_root, rb_node, __entry, panic_cmp);
 #define    rb_prev(node)    RB_PREV(linux_root, NULL, (node))
 #define    rb_first(root)    RB_MIN(linux_root, (struct linux_root *)(root))
 #define	rb_last(root)	RB_MAX(linux_root, (struct linux_root *)(root))
+#define	rb_first_cached(root)	(root)->rb_leftmost
 
 static inline void
 rb_link_node(struct rb_node *node, struct rb_node *parent,
@@ -114,8 +121,40 @@ rb_replace_node(struct rb_node *victim, struct rb_node *newnode,
     *newnode = *victim;
 }
 
+static inline void
+rb_insert_color_cached(struct rb_node *node, struct rb_root_cached *root,
+    bool leftmost)
+{
+	linux_root_RB_INSERT_COLOR((struct linux_root *)&root->rb_root, node);
+	if (leftmost)
+		root->rb_leftmost = node;
+}
+
+static inline struct rb_node *
+rb_erase_cached(struct rb_node *node, struct rb_root_cached *root)
+{
+	struct rb_node *retval;
+
+	if (node == root->rb_leftmost)
+		retval = root->rb_leftmost = linux_root_RB_NEXT(node);
+	else
+		retval = NULL;
+	linux_root_RB_REMOVE((struct linux_root *)&root->rb_root, node);
+	return (retval);
+}
+
+static inline void
+rb_replace_node_cached(struct rb_node *old, struct rb_node *new,
+    struct rb_root_cached *root)
+{
+	rb_replace_node(old, new, &root->rb_root);
+	if (root->rb_leftmost == old)
+		root->rb_leftmost = new;
+}
+
 #undef RB_ROOT
 #define RB_ROOT        (struct rb_root) { NULL }
+#define	RB_ROOT_CACHED	(struct rb_root_cached) { RB_ROOT, NULL }
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -123,4 +162,4 @@ rb_replace_node(struct rb_node *victim, struct rb_node *newnode,
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif    /* _LINUX_RBTREE_H_ */
+#endif    /* _LINUXKPI_LINUX_RBTREE_H_ */

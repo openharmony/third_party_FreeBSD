@@ -28,8 +28,8 @@
  *
  * $FreeBSD$
  */
-#ifndef	_LINUX_RWSEM_H_
-#define	_LINUX_RWSEM_H_
+#ifndef	_LINUXKPI_LINUX_RWSEM_H_
+#define	_LINUXKPI_LINUX_RWSEM_H_
 
 #include "linux/semaphore.h"
 
@@ -53,4 +53,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_RWSEM_H_ */
+#endif /* _LINUXKPI_LINUX_RWSEM_H_ */

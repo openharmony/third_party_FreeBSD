@@ -102,7 +102,6 @@ typedef int (usb_fifo_ioctl_t)(struct usb_fifo *fifo, u_long cmd, void *addr, in
 typedef void (usb_fifo_cmd_t)(struct usb_fifo *fifo);
 typedef void (usb_fifo_filter_t)(struct usb_fifo *fifo, struct usb_mbuf *m);
 
-
 /* USB events */
 typedef void (*usb_dev_configured_t)(void *, struct usb_device *,
     struct usb_attach_arg *);
@@ -262,7 +261,6 @@ struct usb_config {
  * "usb_device_id".
  */
 struct usb_device_id {
-
 	/* Hook for driver specific information */
 	unsigned long driver_info;
 

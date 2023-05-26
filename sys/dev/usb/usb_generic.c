@@ -63,8 +63,6 @@ static int	ugen_set_interface(struct usb_fifo *, uint8_t, uint8_t);
 static int	ugen_get_cdesc(struct usb_fifo *, struct usb_gen_descriptor *);
 static int	ugen_get_sdesc(struct usb_fifo *, struct usb_gen_descriptor *);
 static int	ugen_get_iface_driver(struct usb_fifo *f, struct usb_gen_descriptor *ugd);
-static int	usb_gen_fill_deviceinfo(struct usb_fifo *,
-		    struct usb_device_info *);
 static int	ugen_re_enumerate(struct usb_fifo *);
 static int	ugen_iface_ioctl(struct usb_fifo *, u_long, void *, int);
 static uint8_t	ugen_fs_get_complete(struct usb_fifo *, uint8_t *);
@@ -103,7 +101,6 @@ ugen_transfer_setup(struct usb_fifo *f,
 	error = usbd_transfer_setup(udev, &iface_index, f->xfer,
 	    setup, n_setup, f, f->priv_mtx);
 	if (error == 0) {
-
 		if (f->xfer[0]->nframes == 1) {
 			error = usb_fifo_alloc_buffer(f,
 			    f->xfer[0]->max_data_length, 2);
@@ -680,7 +677,6 @@ ugen_get_sdesc(struct usb_fifo *f, struct usb_gen_descriptor *ugd)
 	    size, ugd->ugd_lang_id, ugd->ugd_string_index)) {
 		error = EINVAL;
 	} else {
-
 		if (size > ((uint8_t *)ptr)[0]) {
 			size = ((uint8_t *)ptr)[0];
 		}
@@ -737,7 +733,6 @@ ugen_get_iface_driver(struct usb_fifo *f, struct usb_gen_descriptor *ugd)
 	    device_is_attached(iface->subdev) &&
 	    (ptr = device_get_nameunit(iface->subdev)) &&
 	    (desc = device_get_desc(iface->subdev))) {
-
 		/* print description */
 		error = snprintf_s(buf, sizeof(buf), sizeof(buf) - 1, "%s: <%s>", ptr, desc);
 		if (error != EOK) {
@@ -763,7 +758,7 @@ ugen_get_iface_driver(struct usb_fifo *f, struct usb_gen_descriptor *ugd)
 }
 
 /*------------------------------------------------------------------------*
- *	usb_gen_fill_deviceinfo
+ *	ugen_fill_deviceinfo
  *
  * This function dumps information about an USB device to the
  * structure pointed to by the "di" argument.
@@ -772,8 +767,8 @@ ugen_get_iface_driver(struct usb_fifo *f, struct usb_gen_descriptor *ugd)
  *    0: Success
  * Else: Failure
  *------------------------------------------------------------------------*/
-static int
-usb_gen_fill_deviceinfo(struct usb_fifo *f, struct usb_device_info *di)
+int
+ugen_fill_deviceinfo(struct usb_fifo *f, struct usb_device_info *di)
 {
 	struct usb_device *udev = NULL;
 	struct usb_device *hub = NULL;
@@ -813,55 +808,6 @@ usb_gen_fill_deviceinfo(struct usb_fifo *f, struct usb_device_info *di)
 	return (0);
 }
 
-/*------------------------------------------------------------------------*
- *	ugen_check_request
- *
- * Return values:
- * 0: Access allowed
- * Else: No access
- *------------------------------------------------------------------------*/
-static int
-ugen_check_request(struct usb_device *udev, struct usb_device_request *req)
-{
-	struct usb_endpoint *ep = NULL;
-	int error;
-
-	/*
-	 * Avoid requests that would damage the bus integrity:
-	 */
-	if (((req->bmRequestType == UT_WRITE_DEVICE) &&
-	    (req->bRequest == UR_SET_ADDRESS)) ||
-	    ((req->bmRequestType == UT_WRITE_DEVICE) &&
-	    (req->bRequest == UR_SET_CONFIG)) ||
-	    ((req->bmRequestType == UT_WRITE_INTERFACE) &&
-	    (req->bRequest == UR_SET_INTERFACE))) {
-		/*
-		 * These requests can be useful for testing USB drivers.
-		 */
-		error = priv_check(curthread, PRIV_DRIVER);
-		if (error) {
-			return (error);
-		}
-	}
-	/*
-	 * Special case - handle clearing of stall
-	 */
-	if (req->bmRequestType == UT_WRITE_ENDPOINT) {
-
-		ep = usbd_get_ep_by_addr(udev, req->wIndex[0]);
-		if (ep == NULL) {
-			return (EINVAL);
-		}
-		if ((req->bRequest == UR_CLEAR_FEATURE) &&
-		    (UGETW(req->wValue) == UF_ENDPOINT_HALT)) {
-			usbd_clear_data_toggle(udev, ep);
-		}
-	}
-	/* TODO: add more checks to verify the interface index */
-
-	return (0);
-}
-
 int
 ugen_do_request(struct usb_fifo *f, struct usb_ctl_request *ur)
 {
@@ -869,7 +815,7 @@ ugen_do_request(struct usb_fifo *f, struct usb_ctl_request *ur)
 	uint16_t len;
 	uint16_t actlen;
 
-	if (ugen_check_request(f->udev, &ur->ucr_request)) {
+	if (usb_check_request(f->udev, &ur->ucr_request)) {
 		return (EPERM);
 	}
 	len = UGETW(ur->ucr_request.wLength);
@@ -957,7 +903,6 @@ ugen_fs_get_complete(struct usb_fifo *f, uint8_t *pindex)
 
 		return (0);		/* success */
 	} else {
-
 		*pindex = 0;		/* fix compiler warning */
 
 		f->flag_iscomplete = 0;
@@ -1040,7 +985,6 @@ ugen_fs_copy_in(struct usb_fifo *f, uint8_t ep_index)
 	usbd_xfer_set_frame_offset(xfer, 0, 0);
 
 	if (xfer->flags_int.control_xfr) {
-
 		req = xfer->frbuffers[0].buffer;
 
 		error = copyin(fs_ep.pLength,
@@ -1058,7 +1002,7 @@ ugen_fs_copy_in(struct usb_fifo *f, uint8_t ep_index)
 				return (error);
 			}
 		}
-		if (ugen_check_request(f->udev, req)) {
+		if (usb_check_request(f->udev, req)) {
 			xfer->error = USB_ERR_INVAL;
 			goto complete;
 		}
@@ -1112,7 +1056,6 @@ ugen_fs_copy_in(struct usb_fifo *f, uint8_t ep_index)
 		xfer->flags.stall_pipe = 0;
 
 	for (; n != xfer->nframes; n++) {
-
 		error = copyin(fs_ep.pLength + n,
 		    &length, sizeof(length));
 		if (error) {
@@ -1127,7 +1070,6 @@ ugen_fs_copy_in(struct usb_fifo *f, uint8_t ep_index)
 		rem -= length;
 
 		if (!isread) {
-
 			/* we need to know the source buffer */
 			error = copyin(fs_ep.ppBuffer + n, &uaddr, sizeof(void *));
 			if (error) {
@@ -1272,7 +1214,6 @@ ugen_fs_copy_out(struct usb_fifo *f, uint8_t ep_index)
 	offset = 0;
 
 	for (; n != xfer->nframes; n++) {
-
 		/* get initial length into "temp" */
 		error = copyin(fs_ep.pLength + n,
 		    &temp, sizeof(temp));
@@ -1298,7 +1239,6 @@ ugen_fs_copy_out(struct usb_fifo *f, uint8_t ep_index)
 			goto complete;
 		}
 		if (isread) {
-
 			/* we need to know the destination buffer */
 			error = copyin(fs_ep.ppBuffer + n, &uaddr, sizeof(void *));
 			if (error) {
@@ -1546,7 +1486,6 @@ ugen_ioctl(struct usb_fifo *f, u_long cmd, void *addr, int fflags)
 				break;
 			}
 		} else {
-
 			isread = ((usb_config[0].endpoint &
 			    (UE_DIR_IN | UE_DIR_OUT)) == UE_DIR_IN);
 
@@ -2338,7 +2277,7 @@ ugen_ioctl_post(struct usb_fifo *f, u_long cmd, void *addr, int fflags)
 	case USB_DEVICEINFO:
 	case USB_GET_DEVICEINFO: {
 		struct usb_device_info di;
-		error = usb_gen_fill_deviceinfo(f, &di);
+		error = ugen_fill_deviceinfo(f, &di);
 		if (error != ENOERR) {
 			break;
 		}
@@ -2354,7 +2293,6 @@ ugen_ioctl_post(struct usb_fifo *f, u_long cmd, void *addr, int fflags)
 		}
 		u.stat = &stat;
 		for (n = 0; n != 4; n++) {
-
 			u.stat->uds_requests_fail[n] =
 			    f->udev->stats_err.uds_requests[n];
 			u.stat->uds_requests_ok[n] =
