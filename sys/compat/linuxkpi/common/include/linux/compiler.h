@@ -27,10 +27,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/compiler.h 364671 2020-08-24 12:59:55Z manu $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_COMPILER_H_
-#define	_LINUX_COMPILER_H_
+#ifndef	_LINUXKPI_LINUX_COMPILER_H_
+#define	_LINUXKPI_LINUX_COMPILER_H_
+
+#define	____cacheline_aligned_in_smp	__aligned(CACHE_LINE_SIZE)
+#define	fallthrough			/* FALLTHROUGH */ do { } while(0)
 
 #define	likely(x)			__builtin_expect(!!(x), 1)
 #define	unlikely(x)			__builtin_expect(!!(x), 0)
@@ -51,4 +54,6 @@
 	__var;				\
 })
 
-#endif	/* _LINUX_COMPILER_H_ */
+#define	sizeof_field(_s, _m)	sizeof(((_s *)0)->_m)
+
+#endif	/* _LINUXKPI_LINUX_COMPILER_H_ */

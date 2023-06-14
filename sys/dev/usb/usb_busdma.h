@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_busdma.h 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -80,7 +80,6 @@ struct usb_page_search {
  * memory allocation.
  */
 struct usb_page_cache {
-
 #if USB_HAVE_BUSDMA
 	bus_dma_tag_t tag;
 	bus_dmamap_t map;

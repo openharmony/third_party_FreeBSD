@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_lookup.c 329460 2018-02-17 14:44:03Z hselasky $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -58,7 +58,6 @@ usbd_lookup_id_by_info(const struct usb_device_id *id, usb_size_t sizeof_id,
 	 * until we reach the end of the matching array:
 	 */
 	for (; id != id_end; id++) {
-
 		if ((id->match_flag_vendor) &&
 		    (id->idVendor != info->idVendor)) {
 			continue;

@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/controller/usb_controller.c 336770 2018-07-27 18:28:22Z imp $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -342,7 +342,6 @@ usb_bus_explore(struct usb_proc_msg *pm)
 	}
 
 	if ((udev != NULL) && (udev->hub != NULL)) {
-
 		if (bus->do_probe) {
 			bus->do_probe = 0;
 			bus->driver_added_refcount++;

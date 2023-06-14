@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/dev/usb/usbdi.h 361910 2020-06-08 09:26:46Z hselasky $
+ * $FreeBSD$
  */
 #ifndef _USB_USBDI_H_
 #define _USB_USBDI_H_
@@ -102,7 +102,6 @@ typedef int (usb_fifo_ioctl_t)(struct usb_fifo *fifo, u_long cmd, void *addr, in
 typedef void (usb_fifo_cmd_t)(struct usb_fifo *fifo);
 typedef void (usb_fifo_filter_t)(struct usb_fifo *fifo, struct usb_mbuf *m);
 
-
 /* USB events */
 typedef void (*usb_dev_configured_t)(void *, struct usb_device *,
     struct usb_attach_arg *);
@@ -169,6 +168,7 @@ struct usb_endpoint {
 struct usb_interface {
 	struct usb_interface_descriptor *idesc;
 	device_t subdev;
+	/* Current alternate interface index, from 0 to 255 */
 	uint8_t	alt_index;
 	uint8_t	parent_iface_index;
 
@@ -261,7 +261,6 @@ struct usb_config {
  * "usb_device_id".
  */
 struct usb_device_id {
-
 	/* Hook for driver specific information */
 	unsigned long driver_info;
 

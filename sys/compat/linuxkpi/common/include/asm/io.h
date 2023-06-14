@@ -26,11 +26,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/asm/io.h 290135 2015-10-29 08:28:39Z hselasky $
+ * $FreeBSD$
  */
-#ifndef _ASM_IO_H_
-#define _ASM_IO_H_
+#ifndef _LINUXKPI_ASM_IO_H_
+#define _LINUXKPI_ASM_IO_H_
 
 #include <linux/io.h>
 
-#endif	/* _ASM_IO_H_ */
+#endif	/* _LINUXKPI_ASM_IO_H_ */

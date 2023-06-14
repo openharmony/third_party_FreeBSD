@@ -34,7 +34,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)systm.h	8.7 (Berkeley) 3/29/95
- * $FreeBSD: releng/12.2/sys/sys/systm.h 361315 2020-05-21 02:08:34Z kevans $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_SYSTM_H_

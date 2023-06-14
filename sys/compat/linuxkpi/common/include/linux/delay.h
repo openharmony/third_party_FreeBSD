@@ -27,10 +27,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/delay.h 330353 2018-03-03 19:26:40Z hselasky $
+ * $FreeBSD$
  */
-#ifndef _LINUX_DELAY_H_
-#define	_LINUX_DELAY_H_
+#ifndef _LINUXKPI_LINUX_DELAY_H_
+#define	_LINUXKPI_LINUX_DELAY_H_
 
 #include "los_typedef.h"
 #include "los_tick.h"
@@ -77,4 +77,4 @@ usleep_range(unsigned long min, unsigned long max)
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_DELAY_H_ */
+#endif /* _LINUXKPI_LINUX_DELAY_H_ */

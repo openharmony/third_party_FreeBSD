@@ -1,5 +1,5 @@
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/storage/umass.c 327173 2017-12-25 04:48:39Z kan $");
+__FBSDID("$FreeBSD$");
 
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
@@ -29,7 +29,7 @@ __FBSDID("$FreeBSD: releng/12.2/sys/dev/usb/storage/umass.c 327173 2017-12-25 04
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *	$FreeBSD: releng/12.2/sys/dev/usb/storage/umass.c 327173 2017-12-25 04:48:39Z kan $
+ *	$FreeBSD$
  *	$NetBSD: umass.c,v 1.28 2000/04/02 23:46:53 augustss Exp $
  */
 
@@ -539,7 +539,6 @@ static int32_t umass_attach_dev(struct umass_softc *sc, unsigned int dev_unit);
 static void umass_detach_dev_sub(struct umass_softc *sc, int dev_unit, int flag);
 
 static struct usb_config umass_bbb_config[UMASS_T_BBB_MAX] = {
-
 	[UMASS_T_BBB_RESET1] = {
 		.type = UE_CONTROL,
 		.endpoint = 0x00,	/* Control pipe */
@@ -629,7 +628,6 @@ static struct usb_config umass_bbb_config[UMASS_T_BBB_MAX] = {
 };
 
 static struct usb_config umass_cbi_config[UMASS_T_CBI_MAX] = {
-
 	[UMASS_T_CBI_RESET1] = {
 		.type = UE_CONTROL,
 		.endpoint = 0x00,	/* Control pipe */
@@ -1018,7 +1016,6 @@ umass_attach(device_t dev)
 	/* allocate all required USB transfers */
 
 	if (sc->sc_proto & UMASS_PROTO_BBB) {
-
 		err = usbd_transfer_setup(uaa->device,
 		    &uaa->info.bIfaceIndex, sc->sc_xfer, umass_bbb_config,
 		    UMASS_T_BBB_MAX, sc, &sc->sc_mtx);
@@ -1027,7 +1024,6 @@ umass_attach(device_t dev)
 		sc->sc_last_xfer_index = UMASS_T_BBB_COMMAND;
 
 	} else if (sc->sc_proto & (UMASS_PROTO_CBI | UMASS_PROTO_CBI_I)) {
-
 		err = usbd_transfer_setup(uaa->device,
 		    &uaa->info.bIfaceIndex, sc->sc_xfer, umass_cbi_config,
 		    UMASS_T_CBI_MAX, sc, &sc->sc_mtx);
@@ -1221,7 +1217,6 @@ umass_tr_error(struct usb_xfer *xfer, usb_error_t error)
 	struct umass_softc *sc = (struct umass_softc *)usbd_xfer_softc(xfer);
 
 	if (error != USB_ERR_CANCELLED) {
-
 		DPRINTF_UMASS(sc, UDMASS_GEN, "transfer error, %s -> "
 		    "reset\n", usbd_errstr(error));
 	}
@@ -1575,7 +1570,6 @@ umass_t_bbb_status_callback(struct usb_xfer *xfer, usb_error_t error)
 		}
 		/* translate weird command-status signatures: */
 		if (sc->sc_quirks & WRONG_CSWSIG) {
-
 			uint32_t temp = UGETDW(sc->csw.dCSWSignature);
 
 			if ((temp == CSWSIGNATURE_OLYMPUS_C1) ||
@@ -1887,7 +1881,6 @@ umass_t_cbi_command_callback(struct usb_xfer *xfer, usb_error_t error)
 	case USB_ST_SETUP:
 
 		if (umass_ccb) {
-
 			/*
 				 * do a CBI transfer with cmd_len bytes from
 				 * cmd_data, possibly a data phase of data_len
@@ -2084,7 +2077,6 @@ umass_t_cbi_status_callback(struct usb_xfer *xfer, usb_error_t error)
 		/* dissect the information in the buffer */
 
 		if (sc->sc_proto & UMASS_PROTO_UFI) {
-
 			/*
 			 * Section 3.4.3.1.3 specifies that the UFI command
 			 * protocol returns an ASC and ASCQ in the interrupt
@@ -2109,14 +2101,12 @@ umass_t_cbi_status_callback(struct usb_xfer *xfer, usb_error_t error)
 			break;
 
 		} else {
-
 			/* Command Interrupt Data Block */
 
 			DPRINTF_UMASS(sc, UDMASS_CBI, "type=0x%02x, value=0x%02x\n",
 			    sc->sbl.common.type, sc->sbl.common.value);
 
 			if (sc->sbl.common.type == IDB_TYPE_CCI) {
-
 				status = (sc->sbl.common.value & IDB_VALUE_STATUS_MASK);
 
 				status = ((status == IDB_VALUE_PASS) ? STATUS_CMD_OK :

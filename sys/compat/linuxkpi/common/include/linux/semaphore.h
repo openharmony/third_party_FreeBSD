@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/semaphore.h 314040 2017-02-21 12:43:02Z hselasky $
+ * $FreeBSD$
  */
-#ifndef _LINUX_SEMAPHORE_H_
-#define _LINUX_SEMAPHORE_H_
+#ifndef _LINUXKPI_LINUX_SEMAPHORE_H_
+#define _LINUXKPI_LINUX_SEMAPHORE_H_
 
 #include "los_sem_pri.h"
 
@@ -84,4 +84,4 @@ extern int _sema_trylock(losMutexDef_t *sem);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SEMAPHORE_H_ */
+#endif /* _LINUXKPI_LINUX_SEMAPHORE_H_ */

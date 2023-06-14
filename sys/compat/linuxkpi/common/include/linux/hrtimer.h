@@ -22,11 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/hrtimer.h 334482 2018-06-01 11:33:14Z hselasky $
+ * $FreeBSD$
  */
 
-#ifndef _LINUX_HRTIMER_H_
-#define	_LINUX_HRTIMER_H_
+#ifndef _LINUXKPI_LINUX_HRTIMER_H_
+#define	_LINUXKPI_LINUX_HRTIMER_H_
 
 #include "sys/types.h"
 #include "los_base.h"
@@ -329,4 +329,4 @@ int linux_hrtimer_is_queued(struct hrtimer *timer);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _HRTIMER_H */
+#endif /* _LINUXKPI_LINUX_HRTIMER_H */

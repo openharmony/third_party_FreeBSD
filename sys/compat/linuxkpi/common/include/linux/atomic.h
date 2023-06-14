@@ -23,12 +23,13 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/atomic.h 348084 2019-05-22 03:54:25Z johalun $
+ * $FreeBSD$
  */
 
-#ifndef _LINUX_ATOMIC_H_
-#define	_LINUX_ATOMIC_H_
+#ifndef _LINUXKPI_LINUX_ATOMIC_H_
+#define	_LINUXKPI_LINUX_ATOMIC_H_
 
 #include "asm/atomic.h"
+#include "asm/barrier.h"
 
-#endif /* _LINUX_ATOMIC_H_ */
+#endif /* _LINUXKPI_LINUX_ATOMIC_H_ */

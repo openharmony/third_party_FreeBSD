@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/controller/ehci.h 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-NetBSD
  *
@@ -78,7 +78,6 @@
 	(USB_PAGE_SIZE < EHCI_FSTN_ALIGN) || (EHCI_FSTN_ALIGN == 0))
 #error	"Invalid USB page size!"
 #endif
-
 
 /*
  * Isochronous Transfer Descriptor.  This descriptor is used for high speed

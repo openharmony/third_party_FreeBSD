@@ -14,7 +14,7 @@
  *
  * Ported to run under 386BSD by Julian Elischer (julian@tfs.com) Sept 1992
  *
- * $FreeBSD: releng/12.2/sys/cam/scsi/scsi_all.h 364184 2020-08-13 00:42:09Z mav $
+ * $FreeBSD$
  */
 
 #ifndef __INCLUDE_SCSI_ALL_H

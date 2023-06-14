@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/sched.h 364390 2020-08-19 13:32:55Z hselasky $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_SCHED_H_
-#define	_LINUX_SCHED_H_
+#ifndef	_LINUXKPI_LINUX_SCHED_H_
+#define	_LINUXKPI_LINUX_SCHED_H_
 
 #include "linux/kernel.h"
 #include "los_sched_pri.h"
@@ -57,4 +57,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_SCHED_H_ */
+#endif /* _LINUXKPI_LINUX_SCHED_H_ */

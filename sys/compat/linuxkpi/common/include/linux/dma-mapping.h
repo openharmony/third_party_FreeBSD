@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/dma-mapping.h 360525 2020-05-01 09:46:27Z hselasky $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_DMA_MAPPING_H_
-#define _LINUX_DMA_MAPPING_H_
+#ifndef	_LINUXKPI_LINUX_DMA_MAPPING_H_
+#define _LINUXKPI_LINUX_DMA_MAPPING_H_
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -51,4 +51,4 @@ enum dma_data_direction {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 #endif
-#endif	/* _LINUX_DMA_MAPPING_H_ */
+#endif	/* _LINUXKPI_LINUX_DMA_MAPPING_H_ */

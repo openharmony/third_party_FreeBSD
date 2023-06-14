@@ -26,25 +26,36 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: releng/12.2/sys/dev/random/hash.c 292782 2015-12-27 17:33:59Z allanjude $");
+__FBSDID("$FreeBSD$");
 
 #ifdef _KERNEL
 #include <sys/param.h>
+#include <sys/malloc.h>
 #include <sys/systm.h>
 #else /* !_KERNEL */
 #include <sys/param.h>
 #include <sys/types.h>
+#include <assert.h>
 #include <inttypes.h>
+#include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "unit_test.h"
+#define KASSERT(x, y)	assert(x)
+#define CTASSERT(x)	_Static_assert(x, "CTASSERT " #x)
 #endif /* _KERNEL */
 
+#define CHACHA_EMBED
+#define KEYSTREAM_ONLY
+#define CHACHA_NONCE0_CTR128
 #include <crypto/rijndael/rijndael-api-fst.h>
 #include <crypto/sha2/sha256.h>
 
 #include <dev/random/hash.h>
+#ifdef _KERNEL
+#include <dev/random/randomdev.h>
+#endif
 
 /* This code presumes that RANDOM_KEYSIZE is twice as large as RANDOM_BLOCKSIZE */
 //CTASSERT(RANDOM_KEYSIZE == 2*RANDOM_BLOCKSIZE);

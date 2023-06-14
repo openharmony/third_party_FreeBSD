@@ -25,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/sys/bus.h 360525 2020-05-01 09:46:27Z hselasky $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_BUS_H_
@@ -234,6 +234,9 @@ extern device_t nexus;
 /*
  * Useful functions for implementing busses.
  */
+
+struct _cpuset;
+
 int     bus_generic_attach(device_t dev);
 
 device_t
@@ -327,6 +330,7 @@ void	device_set_desc(device_t dev, const char* desc);
 void	device_set_desc_copy(device_t dev, const char* desc);
 int	device_set_devclass(device_t dev, const char *classname);
 int	device_set_devclass_fixed(device_t dev, const char *classname);
+bool	device_is_devclass_fixed(device_t dev);
 int	device_set_driver(device_t dev, driver_t *driver);
 void	device_set_flags(device_t dev, u_int32_t flags);
 void	device_set_softc(device_t dev, void *softc);
@@ -527,6 +531,10 @@ static __inline void varp ## _set_ ## var(device_t dev, type t)		\
 
 #define bus_barrier(r, o, l, f) \
 	bus_space_barrier((r)->r_bustag, (r)->r_bushandle, (o), (l), (f))
+#define bus_poke_1(r, o, v) \
+	bus_space_poke_1((r)->r_bustag, (r)->r_bushandle, (o), (v))
+#define bus_peek_1(r, o, vp) \
+	bus_space_peek_1((r)->r_bustag, (r)->r_bushandle, (o), (vp))
 #define bus_read_1(r, o) \
 	bus_space_read_1((r)->r_bustag, (r)->r_bushandle, (o))
 #define bus_read_multi_1(r, o, d, c) \
@@ -559,6 +567,10 @@ static __inline void varp ## _set_ ## var(device_t dev, type t)		\
 	bus_space_write_multi_stream_1((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
 #define bus_write_region_stream_1(r, o, d, c) \
 	bus_space_write_region_stream_1((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
+#define bus_poke_2(r, o, v) \
+	bus_space_poke_2((r)->r_bustag, (r)->r_bushandle, (o), (v))
+#define bus_peek_2(r, o, vp) \
+	bus_space_peek_2((r)->r_bustag, (r)->r_bushandle, (o), (vp))
 #define bus_read_2(r, o) \
 	bus_space_read_2((r)->r_bustag, (r)->r_bushandle, (o))
 #define bus_read_multi_2(r, o, d, c) \
@@ -591,6 +603,10 @@ static __inline void varp ## _set_ ## var(device_t dev, type t)		\
 	bus_space_write_multi_stream_2((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
 #define bus_write_region_stream_2(r, o, d, c) \
 	bus_space_write_region_stream_2((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
+#define bus_poke_4(r, o, v) \
+	bus_space_poke_4((r)->r_bustag, (r)->r_bushandle, (o), (v))
+#define bus_peek_4(r, o, vp) \
+	bus_space_peek_4((r)->r_bustag, (r)->r_bushandle, (o), (vp))
 #define bus_read_4(r, o) \
 	bus_space_read_4((r)->r_bustag, (r)->r_bushandle, (o))
 #define bus_read_multi_4(r, o, d, c) \
@@ -623,6 +639,10 @@ static __inline void varp ## _set_ ## var(device_t dev, type t)		\
 	bus_space_write_multi_stream_4((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
 #define bus_write_region_stream_4(r, o, d, c) \
 	bus_space_write_region_stream_4((r)->r_bustag, (r)->r_bushandle, (o), (d), (c))
+#define bus_poke_8(r, o, v) \
+	bus_space_poke_8((r)->r_bustag, (r)->r_bushandle, (o), (v))
+#define bus_peek_8(r, o, vp) \
+	bus_space_peek_8((r)->r_bustag, (r)->r_bushandle, (o), (vp))
 #define bus_read_8(r, o) \
 	bus_space_read_8((r)->r_bustag, (r)->r_bushandle, (o))
 #define bus_read_multi_8(r, o, d, c) \

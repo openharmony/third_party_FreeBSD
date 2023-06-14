@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/timer.h 364672 2020-08-24 13:14:38Z manu $
+ * $FreeBSD$
  */
-#ifndef _LINUX_TIMER_H_
-#define	_LINUX_TIMER_H_
+#ifndef _LINUXKPI_LINUX_TIMER_H_
+#define	_LINUXKPI_LINUX_TIMER_H_
 
 #include "linux/kernel.h"
 #include "los_spinlock.h"
@@ -89,4 +89,4 @@ extern int linux_mod_timer(timer_list_t *timer, ULONG expires);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUX_TIMER_H__ */
+#endif /* _LINUXKPI_LINUX_TIMER_H_ */

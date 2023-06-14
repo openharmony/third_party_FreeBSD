@@ -1,9 +1,9 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/controller/xhci.h 358018 2020-02-17 09:58:55Z hselasky $ */
+/* $FreeBSD$ */
 
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
- * Copyright (c) 2010 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2010-2022 Hans Petter Selasky
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -544,5 +544,4 @@ usb_error_t xhci_init(struct xhci_softc *, device_t, uint8_t);
 usb_error_t xhci_start_controller(struct xhci_softc *);
 void	xhci_interrupt(unsigned int irq, struct xhci_softc *);
 void	xhci_uninit(struct xhci_softc *);
-
 #endif					/* _XHCI_H_ */

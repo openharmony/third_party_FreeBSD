@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/module.h 334775 2018-06-07 11:34:59Z hselasky $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_MODULE_H_
-#define	_LINUX_MODULE_H_
+#ifndef	_LINUXKPI_LINUX_MODULE_H_
+#define	_LINUXKPI_LINUX_MODULE_H_
 
 #include <sys/cdefs.h>
 #include <sys/kernel.h>
@@ -45,6 +45,8 @@
 #define	MODULE_INFO(tag, info)
 #define	MODULE_FIRMWARE(firmware)
 #define MODULE_VERSION(version)
+#define	MODULE_SUPPORTED_DEVICE(name)
+#define	MODULE_IMPORT_NS(_name)
 
 struct module {
 };
@@ -142,4 +144,4 @@ static inline void mi_startup(enum sysinit_sub_id sub_id)
 	}
 }
 
-#endif	/* _LINUX_MODULE_H_ */
+#endif	/* _LINUXKPI_LINUX_MODULE_H_ */

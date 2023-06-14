@@ -16,7 +16,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * $FreeBSD: releng/12.2/sys/dev/usb/serial/u3g.c 359256 2020-03-23 18:31:13Z hselasky $
+ * $FreeBSD$
  */
 
 /*
@@ -121,7 +121,6 @@ static void u3g_poll(struct ucom_softc *ucom);
 static void u3g_free(struct ucom_softc *ucom);
 
 static const struct usb_config u3g_config[U3G_N_TRANSFER] = {
-
 	[U3G_BULK_WR] = {
 		.type = UE_BULK,
 		.endpoint = UE_ADDR_ANY,
@@ -619,7 +618,6 @@ u3g_sael_m460_init(struct usb_device *udev)
 	}
 
 	for (n = 0; n != (sizeof(setup) / sizeof(setup[0])); n++) {
-
 		(void)memcpy_s(&req, sizeof(req), setup[n], sizeof(req));
 
 		len = UGETW(req.wLength);

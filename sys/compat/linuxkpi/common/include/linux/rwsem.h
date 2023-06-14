@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/rwsem.h 331433 2018-03-23 15:50:01Z emaste $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_RWSEM_H_
-#define	_LINUX_RWSEM_H_
+#ifndef	_LINUXKPI_LINUX_RWSEM_H_
+#define	_LINUXKPI_LINUX_RWSEM_H_
 
 #include "linux/semaphore.h"
 
@@ -53,4 +53,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_RWSEM_H_ */
+#endif /* _LINUXKPI_LINUX_RWSEM_H_ */

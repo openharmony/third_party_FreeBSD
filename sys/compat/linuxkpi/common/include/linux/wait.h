@@ -27,11 +27,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/wait.h 364674 2020-08-24 13:19:16Z manu $
+ * $FreeBSD$
  */
 
-#ifndef _LINUX_WAIT_H_
-#define	_LINUX_WAIT_H_
+#ifndef _LINUXKPI_LINUX_WAIT_H_
+#define	_LINUXKPI_LINUX_WAIT_H_
 
 #include <linux/spinlock.h>
 #include "los_event.h"
@@ -252,4 +252,4 @@ static inline int linux_waitqueue_active(wait_queue_head_t *q)
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_WAIT_H_ */
+#endif /* _LINUXKPI_LINUX_WAIT_H_ */
