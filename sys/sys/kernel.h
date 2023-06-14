@@ -41,7 +41,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)kernel.h	8.3 (Berkeley) 1/21/94
- * $FreeBSD: releng/12.2/sys/sys/kernel.h 358962 2020-03-13 16:52:16Z markj $
+ * $FreeBSD$
  */
 
 #ifndef _SYS_KERNEL_H_
@@ -72,7 +72,6 @@ enum sysinit_sub_id {
 	SI_SUB_LAST		= 0xfffffff	/* final initialization */
 };
 
-
 /*
  * Some enumerated orders; "ANY" sorts last.
  */
@@ -88,7 +87,6 @@ enum sysinit_elem_order {
 	SI_ORDER_MIDDLE		= 0x1000000,	/* somewhere in the middle */
 	SI_ORDER_ANY		= 0xfffffff	/* last*/
 };
-
 
 /*
  * A system initialization call instance

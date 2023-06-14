@@ -1,10 +1,10 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_hub.c 361207 2020-05-18 09:45:59Z hselasky $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-NetBSD
  *
  * Copyright (c) 1998 The NetBSD Foundation, Inc. All rights reserved.
  * Copyright (c) 1998 Lennart Augustsson. All rights reserved.
- * Copyright (c) 2008-2010 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2008-2022 Hans Petter Selasky
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -115,7 +115,6 @@ static void usb_dev_suspend_peer(struct usb_device *udev);
 static uint8_t usb_peer_should_wakeup(struct usb_device *udev);
 
 static const struct usb_config uhub_config[UHUB_N_TRANSFER] = {
-
 	[UHUB_INTR_TRANSFER] = {
 		.type = UE_INTERRUPT,
 		.endpoint = UE_ADDR_ANY,
@@ -159,7 +158,7 @@ static device_method_t uhub_methods[] = {
 	DEVMETHOD_END
 };
 
-static driver_t uhub_driver = {
+driver_t uhub_driver = {
 	.name = "uhub",
 	.methods = uhub_methods,
 	.size = sizeof(struct uhub_softc)
@@ -743,7 +742,6 @@ repeat:
 	/* check if the device is in Host Mode */
 
 	if (!(sc->sc_st.port_status & UPS_PORT_MODE_DEVICE)) {
-
 		DPRINTF("Port %d is in Host Mode\n", portno);
 
 		if (sc->sc_st.port_status & UPS_SUSPEND) {
@@ -784,8 +782,10 @@ repeat:
 		if ((sc->sc_st.port_change & UPS_C_CONNECT_STATUS) ||
 		    (!(sc->sc_st.port_status & UPS_CURRENT_CONNECT_STATUS))) {
 			if (timeout) {
-				DPRINTFN(0, "giving up port reset "
-				    "- device vanished\n");
+				DPRINTFN(0, "giving up port %d reset - "
+				   "device vanished: change %#x status %#x\n",
+				   portno, sc->sc_st.port_change,
+				   sc->sc_st.port_status);
 				goto error;
 			}
 			timeout = 1;
@@ -1123,7 +1123,6 @@ uhub_explore(struct usb_device *udev)
 				DPRINTFN(0, "illegal enable change, "
 				    "port %d\n", portno);
 			} else {
-
 				if (up->restartcnt == USB_RESTART_MAX) {
 					/* XXX could try another speed ? */
 					DPRINTFN(0, "port error, giving up "
@@ -1150,13 +1149,10 @@ uhub_explore(struct usb_device *udev)
 				break;
 			}
 		}
-		err = uhub_explore_sub(sc, up);
-		if (err) {
-			/* no device(s) present */
-			continue;
+		if (uhub_explore_sub(sc, up) == USB_ERR_NORMAL_COMPLETION) {
+			/* explore succeeded - reset restart counter */
+			up->restartcnt = 0;
 		}
-		/* explore succeeded - reset restart counter */
-		up->restartcnt = 0;
 	}
 
 	if (do_unlock)
@@ -1169,7 +1165,7 @@ uhub_explore(struct usb_device *udev)
 	return (USB_ERR_NORMAL_COMPLETION);
 }
 
-static int
+int
 uhub_probe(device_t dev)
 {
 	struct usb_attach_arg *uaa = device_get_ivars(dev);
@@ -1256,7 +1252,7 @@ uhub_query_info(struct usb_device *udev, uint8_t *pnports, uint8_t *ptt)
 extern usbd_bt_tree hub_tree;
 #endif
 
-static int
+int
 uhub_attach(device_t dev)
 {
 	struct uhub_softc *sc = device_get_softc(dev);
@@ -1613,7 +1609,7 @@ error:
  * Called from process context when the hub is gone.
  * Detach all devices on active ports.
  */
-static int
+int
 uhub_detach(device_t dev)
 {
 	struct uhub_softc *sc = device_get_softc(dev);
@@ -1647,7 +1643,6 @@ uhub_detach(device_t dev)
 
 	/* Detach all ports */
 	for (x = 0; x != hub->nports; x++) {
-
 		child = usb_bus_port_get_device(bus, hub->ports + x);
 
 		if (child == NULL) {
@@ -1706,7 +1701,7 @@ struct hub_result {
 	uint8_t	iface_index;
 };
 
-static void
+void
 uhub_find_iface_index(struct usb_hub *hub, device_t child,
     struct hub_result *res)
 {
@@ -1739,7 +1734,7 @@ uhub_find_iface_index(struct usb_hub *hub, device_t child,
 	res->portno = 0;
 }
 
-static int
+int
 uhub_child_location_string(device_t parent, device_t child,
     char *buf, size_t buflen)
 {
@@ -1893,7 +1888,6 @@ usb_intr_find_best_slot(usb_size_t *ptr, uint8_t start,
 	/* find the last slot with lesser used bandwidth */
 
 	for (x = start; x < end; x++) {
-
 		sum = 0;
 
 		/* compute sum of bandwidth */
@@ -2166,7 +2160,6 @@ usbd_fs_isoc_schedule_alloc_slot(struct usb_xfer *isoc_xfer, uint16_t isoc_time)
 	bus = isoc_xfer->xroot->bus;
 
 	TAILQ_FOREACH(xfer, &bus->intr_q.head, wait_entry) {
-
 		/* skip self, if any */
 
 		if (xfer == isoc_xfer)
@@ -2207,7 +2200,6 @@ usbd_fs_isoc_schedule_alloc_slot(struct usb_xfer *isoc_xfer, uint16_t isoc_time)
 		 */
 		TAILQ_FOREACH(pipe_xfer, &xfer->endpoint->endpoint_q[0].head,
 		    wait_entry) {
-
 			/* skip self, if any */
 
 			if (pipe_xfer == isoc_xfer)
@@ -2590,7 +2582,6 @@ usb_bus_powerd(struct usb_bus *bus)
 	 */
 	for (x = USB_ROOT_HUB_ADDR + 1;
 	    x != bus->devices_max; x++) {
-
 		udev = bus->devices[x];
 		if (udev == NULL)
 			continue;
@@ -2628,7 +2619,6 @@ usb_bus_powerd(struct usb_bus *bus)
 
 	for (x = USB_ROOT_HUB_ADDR + 1;
 	    x != bus->devices_max; x++) {
-
 		udev = bus->devices[x];
 		if (udev == NULL)
 			continue;
@@ -2771,18 +2761,15 @@ usb_dev_resume_peer(struct usb_device *udev)
 		/* resume current port (Valid in Host and Device Mode) */
 		err = usbd_req_clear_port_feature(udev->parent_hub,
 		    NULL, udev->port_no, UHF_PORT_SUSPEND);
-		if (err) {
-			DPRINTFN(0, "Resuming port failed\n");
-			return;
-		}
 	} else {
 		/* resume current port (Valid in Host and Device Mode) */
 		err = usbd_req_set_port_link_state(udev->parent_hub,
 		    NULL, udev->port_no, UPS_PORT_LS_U0);
-		if (err) {
-			DPRINTFN(0, "Resuming port failed\n");
-			return;
-		}
+	}
+
+	if (err != 0) {
+		DPRINTFN(0, "Resuming port failed: %s (ignored)\n",
+		    usbd_errstr(err));
 	}
 
 	/* resume settle time */
@@ -2967,7 +2954,6 @@ repeat:
 		temp = usbd_get_dma_delay(udev);
 		if (temp != 0)
 			usb_pause_mtx(NULL, USB_MS_TO_TICKS(temp));
-
 	}
 
 	if (usb_device_20_compatible(udev)) {

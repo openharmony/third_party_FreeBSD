@@ -23,11 +23,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/dev/random/hash.h 285422 2015-07-12 18:14:38Z markm $
+ * $FreeBSD$
  */
 
 #ifndef SYS_DEV_RANDOM_HASH_H_INCLUDED
 #define	SYS_DEV_RANDOM_HASH_H_INCLUDED
+
+#include <dev/random/uint128.h>
+
+#ifndef _KERNEL
+#define	__read_frequently
+#endif
 
 /* Keys are formed from cipher blocks */
 #define	RANDOM_KEYSIZE		32	/* (in bytes) == 256 bits */
@@ -47,6 +53,9 @@ struct randomdev_key {
 	keyInstance key;	/* Key schedule */
 	cipherInstance cipher;	/* Rijndael internal */
 };
+
+
+extern bool random_chachamode;
 
 void randomdev_hash_init(struct randomdev_hash *);
 void randomdev_hash_iterate(struct randomdev_hash *, const void *, size_t);

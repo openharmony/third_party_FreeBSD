@@ -25,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *	$FreeBSD: releng/12.2/sys/sys/kobj.h 326256 2017-11-27 15:01:59Z pfg $
+ *	$FreeBSD$
  */
 
 #ifndef _SYS_KOBJ_H_
@@ -178,7 +178,6 @@ struct kobj_class classvar = {				\
 	#name, methods, size, name ## _baseclasses	\
 }
 
-
 /*
  * Compile the method table in a class.
  */
@@ -255,7 +254,6 @@ extern u_int kobj_lookup_misses;
 kobj_method_t* kobj_lookup_method(kobj_class_t cls,
 				  kobj_method_t **cep,
 				  kobjop_desc_t desc);
-
 
 /*
  * Default method implementation. Returns ENXIO.

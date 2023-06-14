@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/string.h 364652 2020-08-24 10:28:15Z manu $
+ * $FreeBSD$
  */
-#ifndef __LINUX_STRING_H__
-#define __LINUX_STRING_H__
+#ifndef __LINUXKPI_LINUX_STRING_H__
+#define __LINUXKPI_LINUX_STRING_H__
 
 #include_next "string.h"
 
@@ -48,4 +48,4 @@ extern size_t strlcpy(char *dest, const char *src, size_t size);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUX_STRING_H__ */
+#endif /* __LINUXKPI_LINUX_STRING_H__ */

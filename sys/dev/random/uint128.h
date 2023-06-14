@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/dev/random/uint128.h 284959 2015-06-30 17:00:45Z markm $
+ * $FreeBSD$
  */
 
 #ifndef SYS_DEV_RANDOM_UINT128_H_INCLUDED
@@ -63,14 +63,36 @@ uint128_increment(uint128_t *big_uintp)
 #endif
 }
 
+static __inline void
+uint128_add64(uint128_t *big_uintp, uint64_t add)
+{
+#ifdef USE_REAL_UINT128_T
+	(*big_uintp) += add;
+#else
+	uint64_t word0p;
+
+	word0p = big_uintp->u128t_word0 + add;
+	if (word0p < big_uintp->u128t_word0)
+		big_uintp->u128t_word1++;
+	big_uintp->u128t_word0 = word0p;
+#endif
+}
+
+static __inline bool
+uint128_equals(uint128_t a, uint128_t b)
+{
+#ifdef USE_REAL_UINT128_T
+	return (a == b);
+#else
+	return (a.u128t_word0 == b.u128t_word0 &&
+	    a.u128t_word1 == b.u128t_word1);
+#endif
+}
+
 static __inline int
 uint128_is_zero(uint128_t big_uint)
 {
-#ifdef USE_REAL_UINT128_T
-	return (big_uint == UINT128_ZERO);
-#else
-	return (big_uint.u128t_word0 == 0UL && big_uint.u128t_word1 == 0UL);
-#endif
+	return (uint128_equals(big_uint, UINT128_ZERO));
 }
 
 #endif /* SYS_DEV_RANDOM_UINT128_H_INCLUDED */

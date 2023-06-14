@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_generic.h 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -31,5 +31,6 @@
 
 extern struct usb_fifo_methods usb_ugen_methods;
 int	ugen_do_request(struct usb_fifo *f, struct usb_ctl_request *ur);
+int	ugen_fill_deviceinfo(struct usb_fifo *f, struct usb_device_info *di);
 
 #endif					/* _USB_GENERIC_H_ */

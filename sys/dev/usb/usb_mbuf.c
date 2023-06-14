@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_mbuf.c 363664 2020-07-29 14:30:42Z markj $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -48,7 +48,6 @@ usb_alloc_mbufs(struct malloc_type *type, struct usb_ifqueue *ifq,
 	block_size += ((-block_size) & (USB_HOST_ALIGN - 1));
 
 	if (nblocks && block_size) {
-
 		alloc_size = (block_size + sizeof(struct usb_mbuf)) * nblocks;
 
 		free_ptr = zalloc(alloc_size);

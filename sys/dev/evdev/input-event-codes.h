@@ -24,7 +24,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/dev/evdev/input-event-codes.h 362206 2020-06-15 22:32:59Z wulf $
+ * $FreeBSD$
  */
 
 #ifndef	_EVDEV_INPUT_EVENT_CODES_H

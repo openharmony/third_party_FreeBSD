@@ -1,8 +1,8 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_parse.c 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
- * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2008-2020 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -111,8 +111,20 @@ usb_idesc_foreach(struct usb_config_descriptor *cd,
 			break;
 		if ((id->bDescriptorType == UDESC_INTERFACE) &&
 		    (id->bLength >= sizeof(*id))) {
-			if (ps->iface_no_last == id->bInterfaceNumber)
+			if (ps->iface_no_last == id->bInterfaceNumber) {
+				/*
+				 * Don't allow more than 256 alternate
+				 * settings to avoid overflowing the
+				 * alternate index which is a 8-bit
+				 * variable.
+				 */
+				if (ps->iface_index_alt == 255) {
+					DPRINTF("Interface(%u) has more than 256 alternate settings\n",
+					    id->bInterfaceNumber);
+					continue;
+				}
 				new_iface = 0;
+			}
 			ps->iface_no_last = id->bInterfaceNumber;
 			break;
 		}

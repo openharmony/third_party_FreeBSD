@@ -27,10 +27,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/kernel.h 364674 2020-08-24 13:19:16Z manu $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_KERNEL_H_
-#define	_LINUX_KERNEL_H_
+#ifndef	_LINUXKPI_LINUX_KERNEL_H_
+#define	_LINUXKPI_LINUX_KERNEL_H_
 
 #include "errno.h"
 #include "string.h"
@@ -536,4 +536,4 @@ extern int munmap(void *addr, size_t length);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_KERNEL_H_ */
+#endif /* _LINUXKPI_LINUX_KERNEL_H_ */

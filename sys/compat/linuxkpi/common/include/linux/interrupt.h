@@ -26,10 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $FreeBSD: releng/12.2/sys/compat/linuxkpi/common/include/linux/interrupt.h 352472 2019-09-18 07:21:08Z hselasky $
+ * $FreeBSD$
  */
-#ifndef	_LINUX_INTERRUPT_H_
-#define	_LINUX_INTERRUPT_H_
+#ifndef	_LINUXKPI_LINUX_INTERRUPT_H_
+#define	_LINUXKPI_LINUX_INTERRUPT_H_
 
 #include "linux/kernel.h"
 #include "los_base.h"
@@ -104,4 +104,4 @@ extern bool irq_bottom_half(struct workqueue_struct *workQueue, irq_bottom_half_
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUX_INTERRUPT_H_ */
+#endif /* _LINUXKPI_LINUX_INTERRUPT_H_ */

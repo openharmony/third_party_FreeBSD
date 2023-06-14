@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb.h 359316 2020-03-26 05:37:08Z hselasky $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-NetBSD
  *
@@ -521,6 +521,7 @@ typedef struct usb_interface_assoc_descriptor usb_interface_assoc_descriptor_t;
 
 #define	UICLASS_VENDOR		0xff
 #define	UISUBCLASS_XBOX360_CONTROLLER	0x5d
+#define	UISUBCLASS_VENDOR	0xff
 #define	UIPROTO_XBOX360_GAMEPAD	0x01
 
 struct usb_endpoint_descriptor {

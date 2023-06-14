@@ -1,4 +1,4 @@
-/*	$FreeBSD: releng/12.2/sys/dev/usb/net/if_urndisreg.h 304654 2016-08-23 02:54:06Z sephe $ */
+/*	$FreeBSD$ */
 /*	$OpenBSD: if_urndisreg.h,v 1.19 2013/11/21 14:08:05 mpi Exp $ */
 
 /*
@@ -49,7 +49,6 @@ enum {
 };
 
 struct urndis_softc {
-
 	struct usb_ether sc_ue;
 	struct mtx sc_mtx;
 

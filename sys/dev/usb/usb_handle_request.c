@@ -1,4 +1,4 @@
-/* $FreeBSD: releng/12.2/sys/dev/usb/usb_handle_request.c 326255 2017-11-27 14:52:40Z pfg $ */
+/* $FreeBSD$ */
 /*-
  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
  *
@@ -61,7 +61,6 @@ usb_handle_request_callback(struct usb_xfer *xfer, usb_error_t error)
 		err = usb_handle_request(xfer);
 
 		if (err) {
-
 			if (err == USB_ERR_BAD_CONTEXT) {
 				/* we need to re-setup the control transfer */
 				usb_needs_explore(xfer->xroot->bus, 0);
