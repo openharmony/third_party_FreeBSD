@@ -1,5 +1,5 @@
 {
-    "name": "@ohos/freebsd",
+    "name": "@ohos/FreeBSD",
     "description": "FreeBSD is an operating system used to power modern servers, desktops, and embedded platforms.",
     "version": "3.1",
     "license": "BSD 2-Clause",
@@ -14,7 +14,7 @@
         "en": "README"
     },
     "component": {
-        "name": "freebsd",
+        "name": "FreeBSD",
         "subsystem": "thirdparty",
         "syscap": [],
         "features": [],
