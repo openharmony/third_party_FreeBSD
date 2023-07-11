@@ -60,7 +60,7 @@ ohos_executable("fsck_msdos") {
 
   deps = []
   install_enable = true
-  subsystem_name = "filemanagement"
-  part_name = "storage_service"
+  subsystem_name = "thirdparty"
+  part_name = "FreeBSD"
   install_images = [ "system" ]
 }
