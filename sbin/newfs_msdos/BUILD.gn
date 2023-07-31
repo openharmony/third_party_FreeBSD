@@ -51,7 +51,7 @@ ohos_executable("newfs_msdos") {
   include_dirs = []
   install_enable = true
   deps = []
-  subsystem_name = "filemanagement"
-  part_name = "storage_service"
+  subsystem_name = "thirdparty"
+  part_name = "FreeBSD"
   install_images = [ "system" ]
 }
