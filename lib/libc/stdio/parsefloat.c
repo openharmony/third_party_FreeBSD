@@ -40,6 +40,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "shgetc.h"
 #include "stdio_impl.h"
 
 int parsefloat(FILE *f, char *buf, char *end)
@@ -65,6 +66,12 @@ int parsefloat(FILE *f, char *buf, char *end)
 	 */
 	commit = buf - 1;
 	for (p = buf; p < end; ) {
+		// When file buffer has no content to read, it need to refill buf again.
+		if (shgetc(f) < 0) {
+			break;
+		} else {
+			shunget(f);
+		}
 		c = *f->rpos;
 reswitch:
 		switch (state) {
@@ -199,15 +206,18 @@ reswitch:
 			abort();
 		}
 		*p++ = c;
-		if (f->rpos != f->shend)
-			f->rpos++;
-		else
+		// When file buffer has no content to read, it need to refill buf again.
+		if (shgetc(f) < 0) {
 			break;
+		} else {
+			shunget(f);
+		}
+		f->rpos++;
 	}
 
 parsedone:
 	while (commit < --p)
-                --f->rpos;
+                shunget(f);
 	*++commit = '\0';
 	return (commit - buf);
 }
