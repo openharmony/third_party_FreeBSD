@@ -34,6 +34,7 @@ please copy it to your project root dir and modify it refer to OpenHarmony/tools
                 <policyitem type="compatibility" name="InvalidLicense" path="sys/sys/sx.h" desc="BSD-2-CLAUSE LICENSE"/>
                 <policyitem type="compatibility" name="InvalidLicense" path="sys/dev/usb/net/if_urndis.c" desc="ISC LICENSE"/>
                 <policyitem type="compatibility" name="InvalidLicense" path="sys/dev/usb/net/if_urndisreg.h" desc="ISC LICENSE"/>
+                <policyitem type="compatibility" name="SunPro" path="lib/msun/.*" desc="SunPro License" />
             </policy>
         </policylist>
         <filefilterlist>
@@ -103,6 +104,33 @@ please copy it to your project root dir and modify it refer to OpenHarmony/tools
             </licensematcher>
             <licensematcher name="MIT" desc="">
                 <licensetext name="The author of this software is David M. Gay." desc=""/>
+            </licensematcher>
+            <licensematcher name="SunPro" desc="" >
+                <licensetext name="
+                    * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+                    * Copyright (c) 2008 Steven G. Kargl, David Schultz, Bruce D. Evans.
+                    *
+                    * Developed at SunSoft, a Sun Microsystems, Inc. business.
+                    * Permission to use, copy, modify, and distribute this
+                    * software is freely granted, provided that this notice 
+                    * is preserved.
+				 " desc=""/>
+                <licensetext name="
+                    * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+                    *
+                    * Developed at SunSoft, a Sun Microsystems, Inc. business.
+                    * Permission to use, copy, modify, and distribute this
+                    * software is freely granted, provided that this notice
+                    * is preserved.
+				 " desc=""/>
+                <licensetext name="
+                    * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+                    *
+                    * Developed at SunPro, a Sun Microsystems, Inc. business.
+                    * Permission to use, copy, modify, and distribute this
+                    * software is freely granted, provided that this notice
+                    * is preserved.
+				 " desc=""/>
             </licensematcher>
         </licensematcherlist>
     </oatconfig>
