@@ -33,12 +33,45 @@
 #define _FPMATH_H_
 
 #include <endian.h>
+#ifndef LD128_ENABLE
 #include "_fpmath.h"
+#endif
 
 #ifndef _IEEE_WORD_ORDER
 #define	_IEEE_WORD_ORDER	__BYTE_ORDER
 #endif
 
+#ifdef LD128_ENABLE
+union IEEEl2bits {
+	long double	e;
+	struct {
+		unsigned long	manl	:64;
+		unsigned long	manh	:48;
+		unsigned int	exp	:15;
+		unsigned int	sign	:1;
+	} bits;
+	/* TODO andrew: Check the packing here */
+	struct {
+		unsigned long	manl	:64;
+		unsigned long	manh	:48;
+		unsigned int	expsign	:16;
+	} xbits;
+};
+
+#define	LDBL_NBIT	0
+#define	LDBL_IMPLICIT_NBIT
+#define	mask_nbit_l(u)	((void)0)
+
+#define	LDBL_MANH_SIZE	48
+#define	LDBL_MANL_SIZE	64
+
+#define	LDBL_TO_ARRAY32(u, a) do {			\
+	(a)[0] = (uint32_t)(u).bits.manl;		\
+	(a)[1] = (uint32_t)((u).bits.manl >> 32);	\
+	(a)[2] = (uint32_t)(u).bits.manh;		\
+	(a)[3] = (uint32_t)((u).bits.manh >> 32);	\
+} while(0)
+#else
 union IEEEf2bits {
 	float	f;
 	struct {
@@ -78,5 +111,5 @@ union IEEEd2bits {
 #endif
 	} bits;
 };
-
+#endif
 #endif /* !_FPMATH_H */
