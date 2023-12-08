@@ -44,17 +44,18 @@ enum {
 	UQ_AU_INP_ASYNC,	/* input is async despite claim of adaptive */
 	UQ_AU_NO_FRAC,		/* don't adjust for fractional samples */
 	UQ_AU_NO_XU,		/* audio device has broken extension unit */
-	UQ_BAD_ADC,			/* bad audio spec version number */
+	UQ_BAD_ADC,		/* bad audio spec version number */
 	UQ_BAD_AUDIO,		/* device claims audio class, but isn't */
 	UQ_BROKEN_BIDIR,	/* printer has broken bidir mode */
 	UQ_BUS_POWERED,		/* device is bus powered, despite claim */
 	UQ_HID_IGNORE,		/* device should be ignored by hid class */
 	UQ_KBD_IGNORE,		/* device should be ignored by kbd class */
 	UQ_KBD_BOOTPROTO,	/* device should set the boot protocol */
-	UQ_UMS_IGNORE,		/* device should be ignored by ums class */
+	UQ_UMS_IGNORE,          /* device should be ignored by ums class */
 	UQ_MS_BAD_CLASS,	/* doesn't identify properly */
 	UQ_MS_LEADING_BYTE,	/* mouse sends an unknown leading byte */
-	UQ_MS_REVZ,			/* mouse has Z-axis reversed */
+	UQ_MS_REVZ,		/* mouse has Z-axis reversed */
+	UQ_MS_VENDOR_BTN,	/* mouse has buttons in vendor usage page */
 	UQ_NO_STRINGS,		/* string descriptors are broken */
 	UQ_POWER_CLAIM,		/* hub lies about power status */
 	UQ_SPUR_BUT_UP,		/* spurious mouse button up events */
@@ -65,6 +66,7 @@ enum {
 	UQ_CFG_INDEX_4,		/* select configuration index 4 by default */
 	UQ_CFG_INDEX_0,		/* select configuration index 0 by default */
 	UQ_ASSUME_CM_OVER_DATA,	/* assume cm over data feature */
+	UQ_IGNORE_CDC_CM,	/* ignore cm descriptor */
 
 	/*
 	 * USB Mass Storage Quirks. See "storage/umass.c" for a
@@ -74,12 +76,12 @@ enum {
 	UQ_MSC_NO_RS_CLEAR_UA,		/* does not reset Unit Att. */
 	UQ_MSC_NO_START_STOP,		/* does not support start/stop */
 	UQ_MSC_NO_GETMAXLUN,		/* does not support get max LUN */
-	UQ_MSC_NO_INQUIRY,			/* fake generic inq response */
+	UQ_MSC_NO_INQUIRY,		/* fake generic inq response */
 	UQ_MSC_NO_INQUIRY_EVPD,		/* does not support inq EVPD */
-	UQ_MSC_NO_PREVENT_ALLOW,	/* does not support medium removal */
-	UQ_MSC_NO_SYNC_CACHE,		/* does not support sync cache */
+	UQ_MSC_NO_PREVENT_ALLOW,	/* does not support medium removal */ 
+	UQ_MSC_NO_SYNC_CACHE,		/* does not support sync cache */ 
 	UQ_MSC_SHUTTLE_INIT,		/* requires Shuttle init sequence */
-	UQ_MSC_ALT_IFACE_1,			/* switch to alternate interface 1 */
+	UQ_MSC_ALT_IFACE_1,		/* switch to alternate interface 1 */
 	UQ_MSC_FLOPPY_SPEED,		/* does floppy speeds (20kb/s) */
 	UQ_MSC_IGNORE_RESIDUE,		/* gets residue wrong */
 	UQ_MSC_WRONG_CSWSIG,		/* uses wrong CSW signature */
@@ -93,6 +95,7 @@ enum {
 	UQ_MSC_FORCE_PROTO_ATAPI,	/* force ATAPI command protocol */
 	UQ_MSC_FORCE_PROTO_UFI,		/* force UFI command protocol */
 	UQ_MSC_FORCE_PROTO_RBC,		/* force RBC command protocol */
+	UQ_MSC_IGNORE,			/* device should be ignored by umass */
 
 	/* Ejection of mass storage (driver disk) */
 	UQ_MSC_EJECT_HUAWEI,		/* ejects after Huawei USB command */
@@ -101,19 +104,20 @@ enum {
 	UQ_MSC_EJECT_REZERO,		/* ejects after SCSI rezero command */
 	UQ_MSC_EJECT_ZTESTOR,		/* ejects after ZTE SCSI command */
 	UQ_MSC_EJECT_CMOTECH,		/* ejects after C-motech SCSI cmd */
-	UQ_MSC_EJECT_WAIT,			/* wait for the device to eject */
-	UQ_MSC_EJECT_SAEL_M460,		/* ejects after Sael USB commands */
+	UQ_MSC_EJECT_WAIT,		/* wait for the device to eject */
+	UQ_MSC_EJECT_SAEL_M460,		/* ejects after Sael USB commands */ 
 	UQ_MSC_EJECT_HUAWEISCSI,	/* ejects after Huawei SCSI command */
-	UQ_MSC_EJECT_HUAWEISCSI2,
-	UQ_MSC_EJECT_HUAWEISCSI3,
-	UQ_MSC_EJECT_TCT,			/* ejects after TCT SCSI command */
+	UQ_MSC_EJECT_HUAWEISCSI2,	/* ejects after Huawei SCSI 2 command */
+	UQ_MSC_EJECT_HUAWEISCSI3,	/* ejects after Huawei SCSI 3 command */
+	UQ_MSC_EJECT_HUAWEISCSI4,	/* ejects after Huawei SCSI 4 command */
+	UQ_MSC_EJECT_TCT,		/* ejects after TCT SCSI command */
 
-	UQ_BAD_MIDI,			/* device claims MIDI class, but isn't */
-	UQ_AU_VENDOR_CLASS,		/* audio device uses vendor and not audio class */
-	UQ_SINGLE_CMD_MIDI,		/* at most one command per USB packet */
-	UQ_MSC_DYMO_EJECT,		/* ejects Dymo MSC device */
+	UQ_BAD_MIDI,		/* device claims MIDI class, but isn't */
+	UQ_AU_VENDOR_CLASS,	/* audio device uses vendor and not audio class */
+	UQ_SINGLE_CMD_MIDI,	/* at most one command per USB packet */
+	UQ_MSC_DYMO_EJECT,	/* ejects Dymo MSC device */
 	UQ_AU_SET_SPDIF_CM6206,	/* enable S/PDIF audio output */
-	UQ_WMT_IGNORE,			/* device should be ignored by wmt driver */
+	UQ_WMT_IGNORE,          /* device should be ignored by wmt driver */
 
 	USB_QUIRK_MAX
 };
