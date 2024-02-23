@@ -30,19 +30,7 @@
         },
         "build": {
             "sub_component": [],
-            "inner_kits": [
-                {
-                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos",
-                    "header": {
-                      "header_files": [
-                        "dosfs.h",
-                        "ext.h",
-                        "fsutil.h"
-                      ],
-                      "header_base": "//arkcompiler/third_party/FreeBSD/sbin/fsck_msdosfs"
-                    }
-                }
-            ],
+            "inner_kits": [],
             "test": []
         }
     }
