@@ -30,30 +30,7 @@
         },
         "build": {
             "sub_component": [],
-            "inner_kits": [
-                {
-                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos",
-                    "header": {
-                      "header_files": [
-                        "dosfs.h",
-                        "ext.h",
-                        "fsutil.h"
-                      ],
-                      "header_base": "//arkcompiler/third_party/FreeBSD/sbin/fsck_msdosfs"
-                    }
-                },
-                {
-                    "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos",
-                    "header": {
-                      "header_files": [
-                        "mkfs_define.h",
-                        "mkfs_msdos.h",
-                        "OpenSLES.h"
-                      ],
-                      "header_base": "//arkcompiler/third_party/FreeBSD/sbin/newfs_msdos"
-                    }
-                }
-            ],
+            "inner_kits": [],
             "test": []
         }
     }
