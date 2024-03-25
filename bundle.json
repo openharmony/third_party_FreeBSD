@@ -29,8 +29,18 @@
             "third_party": []
         },
         "build": {
-            "sub_component": [],
-            "inner_kits": [],
+            "sub_component": [
+                "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos",
+                "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
+            ],
+            "inner_kits": [
+                {
+                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos"
+                },
+                {
+                    "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
+                }
+            ],
             "test": []
         }
     }
