@@ -29,7 +29,7 @@
             "third_party": []
         },
         "build": {
-            "sub_component": ["//third_party/FreeBSD:libfreebsd_static"],
+            "sub_component": [],
             "inner_kits": [{
                 "name": "//third_party/FreeBSD:libfreebsd_static"
             }],
