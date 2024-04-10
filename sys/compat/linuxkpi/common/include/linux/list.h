@@ -25,8 +25,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 #ifndef _LINUXKPI_LINUX_LIST_H_
 #define _LINUXKPI_LINUX_LIST_H_
@@ -47,7 +45,7 @@ extern "C" {
 #define LINUX_LIST_HEAD_INIT(name) { &(name), &(name) }
 
 #define LINUX_LIST_HEAD(name) \
-		struct list_head name = LINUX_LIST_HEAD_INIT(name)
+	struct list_head name = LINUX_LIST_HEAD_INIT(name)
 
 #ifndef LIST_HEAD_DEF
 #define	LIST_HEAD_DEF
@@ -120,7 +118,7 @@ list_replace_init(struct list_head *old, struct list_head *new)
 
 static inline void
 linux_list_add(struct list_head *new, struct list_head *prev,
-	struct list_head *next)
+    struct list_head *next)
 {
 
 	next->prev = new;
@@ -165,44 +163,44 @@ list_del_init(struct list_head *entry)
 
 #define list_for_each_entry(p, h, field)				\
 	for (p = list_entry((h)->next, typeof(*p), field); &(p)->field != (h); \
-		p = list_entry((p)->field.next, typeof(*p), field))
+	    p = list_entry((p)->field.next, typeof(*p), field))
 
 #define list_for_each_entry_safe(p, n, h, field)			\
 	for (p = list_entry((h)->next, typeof(*p), field),		\
-		n = list_entry((p)->field.next, typeof(*p), field); &(p)->field != (h);\
-		p = n, n = list_entry(n->field.next, typeof(*n), field))
+	    n = list_entry((p)->field.next, typeof(*p), field); &(p)->field != (h);\
+	    p = n, n = list_entry(n->field.next, typeof(*n), field))
 
 #define	list_for_each_entry_from(p, h, field) \
 	for ( ; &(p)->field != (h); \
-		p = list_entry((p)->field.next, typeof(*p), field))
+	    p = list_entry((p)->field.next, typeof(*p), field))
 
 #define	list_for_each_entry_continue(p, h, field)			\
 	for (p = list_next_entry((p), field); &(p)->field != (h);	\
-		p = list_next_entry((p), field))
+	    p = list_next_entry((p), field))
 
 #define	list_for_each_entry_safe_from(pos, n, head, member)			\
 	for (n = list_entry((pos)->member.next, typeof(*pos), member);		\
-		 &(pos)->member != (head);						\
-		 pos = n, n = list_entry(n->member.next, typeof(*n), member))
+	     &(pos)->member != (head);						\
+	     pos = n, n = list_entry(n->member.next, typeof(*n), member))
 
 #define	list_for_each_entry_reverse(p, h, field)			\
 	for (p = list_entry((h)->prev, typeof(*p), field); &(p)->field != (h); \
-		p = list_entry((p)->field.prev, typeof(*p), field))
+	    p = list_entry((p)->field.prev, typeof(*p), field))
 
 #define	list_for_each_entry_safe_reverse(p, n, h, field)		\
 	for (p = list_entry((h)->prev, typeof(*p), field),		\
-		n = list_entry((p)->field.prev, typeof(*p), field); &(p)->field != (h); \
-		p = n, n = list_entry(n->field.prev, typeof(*n), field))
+	    n = list_entry((p)->field.prev, typeof(*p), field); &(p)->field != (h); \
+	    p = n, n = list_entry(n->field.prev, typeof(*n), field))
 
 #define	list_for_each_entry_continue_reverse(p, h, field) \
 	for (p = list_entry((p)->field.prev, typeof(*p), field); &(p)->field != (h); \
-		p = list_entry((p)->field.prev, typeof(*p), field))
+	    p = list_entry((p)->field.prev, typeof(*p), field))
 
 #define	list_for_each_prev(p, h) for (p = (h)->prev; p != (h); p = (p)->prev)
 
 #define	list_for_each_entry_from_reverse(p, h, field)	\
 	for (; &p->field != (h);			\
-		 p = list_prev_entry(p, field))
+	     p = list_prev_entry(p, field))
 
 static inline void
 list_add(struct list_head *new, struct list_head *head)
@@ -243,7 +241,7 @@ list_rotate_to_front(struct list_head *entry, struct list_head *head)
 
 static inline void
 list_bulk_move_tail(struct list_head *head, struct list_head *first,
-	struct list_head *last)
+    struct list_head *last)
 {
 	first->prev->next = last->next;
 	last->next->prev = first->prev;
@@ -255,7 +253,7 @@ list_bulk_move_tail(struct list_head *head, struct list_head *first,
 
 static inline void
 linux_list_splice(const struct list_head *list, struct list_head *prev,
-	struct list_head *next)
+    struct list_head *next)
 {
 	struct list_head *first = NULL;
 	struct list_head *last = NULL;
@@ -307,7 +305,6 @@ struct hlist_head {
 struct hlist_node {
 	struct hlist_node *next, **pprev;
 };
-
 #define	HLIST_HEAD_INIT { }
 #define	HLIST_HEAD(name) struct hlist_head name = HLIST_HEAD_INIT
 #define	INIT_HLIST_HEAD(head) (head)->first = NULL
@@ -437,6 +434,20 @@ static inline int list_is_last(const struct list_head *list,
 	return list->next == head;
 }
 
+static inline size_t
+list_count_nodes(const struct list_head *list)
+{
+	const struct list_head *lh;
+	size_t count;
+
+	count = 0;
+	list_for_each(lh, list) {
+		count++;
+	}
+
+	return (count);
+}
+
 #define	hlist_entry(ptr, type, field)	container_of(ptr, type, field)
 
 #define	hlist_for_each(p, head)						\
@@ -450,26 +461,30 @@ static inline int list_is_last(const struct list_head *list,
 
 #define	hlist_for_each_entry(pos, head, member)				\
 	for (pos = hlist_entry_safe((head)->first, typeof(*(pos)), member);\
-		 pos;							\
-		 pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
+	     pos;							\
+	     pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
 
 #define	hlist_for_each_entry_continue(pos, member)			\
 	for (pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member); \
-		 (pos); 						\
-		 pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
+	     (pos);							\
+	     pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
 
 #define	hlist_for_each_entry_from(pos, member)				\
 	for (; (pos);								\
-		 pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
+	     pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
 
 #define	hlist_for_each_entry_safe(pos, n, head, member)			\
 	for (pos = hlist_entry_safe((head)->first, typeof(*(pos)), member); \
-		 (pos) && ({ n = (pos)->member.next; 1; }); 		\
-		 pos = hlist_entry_safe(n, typeof(*(pos)), member))
+	     (pos) && ({ n = (pos)->member.next; 1; });			\
+	     pos = hlist_entry_safe(n, typeof(*(pos)), member))
 
+#if defined(LINUXKPI_VERSION) && LINUXKPI_VERSION >= 51300
 extern void list_sort(void *priv, struct list_head *head, int (*cmp)(void *priv,
-	struct list_head *a, struct list_head *b));
-
+    const struct list_head *a, const struct list_head *b));
+#else
+extern void list_sort(void *priv, struct list_head *head, int (*cmp)(void *priv,
+    struct list_head *a, struct list_head *b));
+#endif
 
 #ifdef __cplusplus
 #if __cplusplus

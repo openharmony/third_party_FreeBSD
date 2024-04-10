@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-NetBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2001 The NetBSD Foundation, Inc.
  * All rights reserved.
@@ -320,8 +319,8 @@ union ehci_hub_desc {
 typedef struct ehci_softc {
 	struct ehci_hw_softc sc_hw;
 	struct usb_bus sc_bus;		/* base device */
-	struct callout sc_tmo_pcd;
-	struct callout sc_tmo_poll;
+	struct usb_callout sc_tmo_pcd;
+	struct usb_callout sc_tmo_poll;
 	union ehci_hub_desc sc_hub_desc;
 
 	struct usb_device *sc_devices[EHCI_MAX_DEVICES];
@@ -337,7 +336,7 @@ typedef struct ehci_softc {
 	bus_space_handle_t sc_io_hdl;
 
 	uint32_t sc_terminate_self;	/* TD short packet termination pointer */
-	uint32_t sc_eintrs; /* Interrupt mask */
+	uint32_t sc_eintrs;
 
 	uint16_t sc_intr_stat[EHCI_VIRTUAL_FRAMELIST_COUNT];
 	uint16_t sc_id_vendor;		/* vendor ID for root hub */
@@ -361,7 +360,9 @@ typedef struct ehci_softc {
 	char	sc_vendor[16];		/* vendor string for root hub */
 
 	void	(*sc_vendor_post_reset)(struct ehci_softc *sc);
-	uint16_t (*sc_vendor_get_port_speed)(struct ehci_softc *sc, uint16_t index);
+	uint16_t (*sc_vendor_get_port_speed)(struct ehci_softc *sc,
+	    uint16_t index);
+
 } ehci_softc_t;
 
 #define	EREAD1(sc, a)	bus_space_read_1((sc)->sc_io_tag, (sc)->sc_io_hdl, (a))

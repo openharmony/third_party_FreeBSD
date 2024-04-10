@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2009 Andrew Thompson (thompsa@FreeBSD.org)
  *
@@ -27,7 +26,6 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
 
 #include <lwip/netifapi.h>
 
@@ -289,7 +287,7 @@ ue_attach_post_task(struct usb_proc_msg *_task)
 
 	UE_UNLOCK(ue);
 
-	callout_init_mtx(&ue->ue_watchdog, ue->ue_mtx, 0);
+	usb_callout_init_mtx(&ue->ue_watchdog, ue->ue_mtx, 0);
 
 	error = 0;
 	sc = if_alloc();
@@ -360,7 +358,7 @@ uether_ifdetach(struct usb_ether *ue)
 		UE_UNLOCK(ue);
 
 		/* drain any callouts */
-		callout_drain(&ue->ue_watchdog);
+		usb_callout_drain(&ue->ue_watchdog);
 
 		/* detach ethernet */
 		for (;;) {
@@ -431,7 +429,7 @@ ue_start_task(struct usb_proc_msg *_task)
 		return;
 
 	if (ue->ue_methods->ue_tick != NULL)
-		callout_reset(&ue->ue_watchdog, hz, ue_watchdog, ue);
+		usb_callout_reset(&ue->ue_watchdog, hz, ue_watchdog, ue);
 }
 
 static void
@@ -443,7 +441,7 @@ ue_stop_task(struct usb_proc_msg *_task)
 
 	UE_LOCK_ASSERT(ue, MA_OWNED);
 
-	callout_stop(&ue->ue_watchdog);
+	usb_callout_stop(&ue->ue_watchdog);
 
 	ue->ue_methods->ue_stop(ue);
 }
@@ -503,7 +501,7 @@ ue_watchdog(void *arg)
 	    &ue->ue_tick_task[0].hdr,
 	    &ue->ue_tick_task[1].hdr);
 
-	callout_reset(&ue->ue_watchdog, hz, ue_watchdog, ue);
+	usb_callout_reset(&ue->ue_watchdog, hz, ue_watchdog, ue);
 }
 
 static void

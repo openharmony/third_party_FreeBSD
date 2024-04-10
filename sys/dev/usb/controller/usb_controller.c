@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
@@ -160,7 +159,7 @@ usb_detach(device_t dev)
 		return (0);
 	}
 	/* Stop power watchdog */
-	callout_drain(&bus->power_wdog);
+	usb_callout_drain(&bus->power_wdog);
 
 #if USB_HAVE_ROOT_MOUNT_HOLD
 	/* Let the USB explore process detach all devices. */
@@ -852,7 +851,7 @@ usb_bus_mem_alloc_all(struct usb_bus *bus, bus_dma_tag_t dmat,
 	mtx_init(&bus->bus_spin_lock, device_get_nameunit(bus->parent),
 	    "usb_spin_mtx", MTX_SPIN | MTX_RECURSE);
 
-	callout_init_mtx(&bus->power_wdog,
+	usb_callout_init_mtx(&bus->power_wdog,
 	    &bus->bus_mtx, 0);
 
 	TAILQ_INIT(&bus->intr_q.head);

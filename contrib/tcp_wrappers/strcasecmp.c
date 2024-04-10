@@ -18,8 +18,7 @@
 #if defined(LIBC_SCCS) && !defined(lint)
 static char sccsid[] = "@(#)strcasecmp.c	5.6 (Berkeley) 6/27/88";
 #endif /* LIBC_SCCS and not lint */
-// #include <strings.h>
-// #include <ctype.h>
+
 /* Some environments don't define u_char -- WZV */
 #if 0
 #include <sys/types.h>
@@ -67,8 +66,7 @@ static u_char charmap[] = {
 	'\370', '\371', '\372', '\373', '\374', '\375', '\376', '\377',
 };
 
-int strcasecmp(s1, s2)
-	char *s1, *s2;
+int strcasecmp(char *s1, char *s2)
 {
 	register u_char	*cm = charmap,
 			*us1 = (u_char *)s1,
@@ -80,9 +78,7 @@ int strcasecmp(s1, s2)
 	return(cm[*us1] - cm[*--us2]);
 }
 
-int strncasecmp(s1, s2, n)
-	char *s1, *s2;
-	register int n;
+int strncasecmp(char *s1, char *s2, register int n)
 {
 	register u_char	*cm = charmap,
 			*us1 = (u_char *)s1,
