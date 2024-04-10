@@ -1,4 +1,5 @@
-/*    $NetBSD: in_cksum_arm.S,v 1.2 2003/09/23 10:01:36 scw Exp $    */
+/*	$NetBSD: in_cksum_arm.S,v 1.2 2003/09/23 10:01:36 scw Exp $	*/
+
 /*-
  * Copyright 2003 Wasabi Systems, Inc.
  * All rights reserved.

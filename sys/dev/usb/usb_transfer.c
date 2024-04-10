@@ -1,8 +1,7 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
+ * Copyright (c) 2008-2021 Hans Petter Selasky. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -298,7 +297,10 @@ usbd_transfer_setup_sub_malloc(struct usb_setup_params *parm,
 			pc->page_start = pg;
 
 			USB_MTX_LOCK(pc->tag_parent->mtx);
-			(void)usb_pc_load_mem(pc, size, 1 /* synchronous */ );
+			if (usb_pc_load_mem(pc, size, 1 /* synchronous */ )) {
+				USB_MTX_UNLOCK(pc->tag_parent->mtx);
+				return (1);	/* failure */
+			}
 			USB_MTX_UNLOCK(pc->tag_parent->mtx);
 		}
 	}
@@ -1039,7 +1041,7 @@ usbd_transfer_setup(struct usb_device *udev,
 				xfer->priv_sc = priv_sc;
 				xfer->xroot = info;
 
-				callout_init_mtx(&xfer->timeout_handle,
+				usb_callout_init_mtx(&xfer->timeout_handle,
 				    &udev->bus->bus_mtx, 0);
 			} else {
 				/*
@@ -1349,7 +1351,7 @@ usbd_transfer_unsetup(struct usb_xfer **pxfer, uint16_t n_setup)
 		xfer->endpoint->refcount_alloc--;
 		USB_BUS_UNLOCK(info->bus);
 
-		callout_drain(&xfer->timeout_handle);
+		usb_callout_drain(&xfer->timeout_handle);
 
 		USB_BUS_LOCK(info->bus);
 
@@ -2484,7 +2486,7 @@ usbd_transfer_done(struct usb_xfer *xfer, usb_error_t error)
 		xfer->error = error;
 
 	/* stop any callouts */
-	callout_stop(&xfer->timeout_handle);
+	usb_callout_stop(&xfer->timeout_handle);
 
 	/*
 	 * If we are waiting on a queue, just remove the USB transfer
@@ -2744,7 +2746,7 @@ usbd_transfer_timeout_ms(struct usb_xfer *xfer,
 	USB_BUS_LOCK_ASSERT(xfer->xroot->bus, MA_OWNED);
 
 	/* defer delay */
-	callout_reset(&xfer->timeout_handle,
+	usb_callout_reset(&xfer->timeout_handle,
 	    USB_MS_TO_TICKS(ms) + USB_CALLOUT_ZERO_TICKS, cb, xfer);
 }
 

@@ -1,5 +1,5 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2009 Andrew Thompson
  *
@@ -22,8 +22,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 #ifndef _USB_USBDI_H_
 #define _USB_USBDI_H_
@@ -433,7 +431,25 @@ struct usb_attach_arg {
  * The following is a wrapper for the callout structure to ease
  * porting the code to other platforms.
  */
-
+struct usb_callout {
+	struct callout co;
+};
+#define	usb_callout_init_mtx(c,m,f) callout_init_mtx(&(c)->co,m,f)
+#define	usb_callout_reset(c,...) do {			\
+	if (!USB_IN_POLLING_MODE_FUNC())		\
+		callout_reset(&(c)->co, __VA_ARGS__);	\
+} while (0)
+#define	usb_callout_reset_sbt(c,...) do {			\
+	if (!USB_IN_POLLING_MODE_FUNC())			\
+		callout_reset_sbt(&(c)->co, __VA_ARGS__);	\
+} while (0)
+#define	usb_callout_stop(c) do {			\
+	if (!USB_IN_POLLING_MODE_FUNC()) {		\
+		callout_stop(&(c)->co);			\
+	}				\
+} while (0)
+#define	usb_callout_drain(c) callout_drain(&(c)->co)
+#define	usb_callout_pending(c) callout_pending(&(c)->co)
 
 /* USB transfer states */
 
