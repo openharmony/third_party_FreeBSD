@@ -49,8 +49,6 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include <sys/bus.h>
 #include "linux/module.h"
 #include "los_config.h"

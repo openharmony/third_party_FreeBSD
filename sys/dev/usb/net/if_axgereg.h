@@ -1,5 +1,5 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2013-2014 Kevin Lo
  * All rights reserved.
@@ -24,8 +24,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 #define	AXE_FLAG_178A	0x10000 /* AX88178A */
@@ -36,9 +34,13 @@
 #define	AXGE_ACCESS_EEPROM		0x04
 #define	AXGE_ACCESS_EFUSE		0x05
 #define	AXGE_RELOAD_EEPROM_EFUSE	0x06
+#define	AXGE_FW_MODE			0x08
 #define	AXGE_WRITE_EFUSE_EN		0x09
 #define	AXGE_WRITE_EFUSE_DIS	0x0A
 #define	AXGE_ACCESS_MFAB		0x10
+
+#define	AXGE_FW_MODE_178A179		0x0000
+#define	AXGE_FW_MODE_179A		0x0001
 
 /* Physical link status register */
 #define	AXGE_PLSR			0x02

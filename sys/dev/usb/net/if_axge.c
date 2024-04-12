@@ -1,5 +1,5 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2013-2014 Kevin Lo
  * All rights reserved.
@@ -27,10 +27,9 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 /*
- * ASIX Electronics AX88178A/AX88179 USB 2.0/3.0 gigabit ethernet driver.
+ * ASIX Electronics AX88178A/AX88179/AX88179A USB 2.0/3.0 gigabit ethernet
+ * driver.
  */
 
 #include <lwip/netif.h>

@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
@@ -24,8 +23,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 #ifndef _USB_ETHERNET_H_
@@ -118,7 +115,7 @@ struct usb_ether {
 	struct usb_process	ue_tq;
 	struct ifqueue		ue_rxq;
 	struct ifqueue		ue_txq;
-	struct callout		ue_watchdog;
+	struct usb_callout	ue_watchdog;
 	struct usb_ether_cfg_task	ue_sync_task[2];
 	struct usb_ether_cfg_task	ue_media_task[2];
 	struct usb_ether_cfg_task	ue_multi_task[2];

@@ -1,11 +1,7 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2000 Nick Hibma <n_hibma@FreeBSD.org>
- * All rights reserved.
- *
- * Copyright (c) 2005 Ed Schouten <ed@FreeBSD.org>
- * All rights reserved.
+ * Copyright (c) 2020 Vladimir Kondratyev <wulf@FreeBSD.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -28,9 +24,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD$
- *
- * This file contains replacements for broken HID report descriptors.
+ * This a proxy file for replacements for broken HID report descriptors.
  */
 
 #define	UHID_GRAPHIRE_REPORT_DESCR(...) \

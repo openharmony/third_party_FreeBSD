@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2008 Hans Petter Selasky. All rights reserved.
  *
@@ -68,7 +67,7 @@ usb_process_thread(UINTPTR para)
 	sched_prio(td, up->up_prio);
 	thread_unlock(td);
 
-	mtx_lock(up->up_mtx);
+	USB_MTX_LOCK(up->up_mtx);
 
 	up->up_curtd = td;
 	while (1) {
@@ -151,7 +150,7 @@ usb_process_thread(UINTPTR para)
 
 	up->up_ptr = NULL;
 	(void)cv_signal(&up->up_cv);
-	mtx_unlock(up->up_mtx);
+	USB_MTX_UNLOCK(up->up_mtx);
 	USB_THREAD_EXIT(0);
 	return NULL;
 }
@@ -433,7 +432,7 @@ usb_proc_drain(struct usb_process *up)
 		mtx_assert(up->up_mtx, MA_NOTOWNED);
 	}
 
-	mtx_lock(up->up_mtx);
+	USB_MTX_LOCK(up->up_mtx);
 
 	/* Set the gone flag */
 
@@ -458,7 +457,7 @@ usb_proc_drain(struct usb_process *up)
 		DPRINTF("WARNING: Someone is waiting "
 		    "for USB process drain!\n");
 	}
-	mtx_unlock(up->up_mtx);
+	USB_MTX_UNLOCK(up->up_mtx);
 }
 
 /*------------------------------------------------------------------------*

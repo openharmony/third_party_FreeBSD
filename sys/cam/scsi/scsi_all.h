@@ -13,8 +13,10 @@
  * functioning of this software in any circumstances.
  *
  * Ported to run under 386BSD by Julian Elischer (julian@tfs.com) Sept 1992
- *
- * $FreeBSD$
+ */
+
+/*
+ * SCSI general  interface description
  */
 
 #ifndef __INCLUDE_SCSI_ALL_H

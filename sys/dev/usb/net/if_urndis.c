@@ -21,7 +21,6 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
 
 #include <lwip/netif.h>
 #include <lwip/dhcp.h>
