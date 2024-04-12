@@ -30,9 +30,17 @@
         },
         "build": {
             "sub_component": [],
-            "inner_kits": [{
-                "name": "//third_party/FreeBSD:libfreebsd_static"
-            }],
+            "inner_kits": [
+                {
+                    "name": "//third_party/FreeBSD:libfreebsd_static"
+                },
+                {
+                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos"
+                },
+                {
+                    "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
+                }
+            ],
             "test": []
         }
     }
