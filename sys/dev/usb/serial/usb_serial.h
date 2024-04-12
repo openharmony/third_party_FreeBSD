@@ -1,8 +1,7 @@
 /*	$NetBSD: ucomvar.h,v 1.9 2001/01/23 21:56:17 augustss Exp $	*/
-/*	$FreeBSD$	*/
 
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD AND BSD-2-Clause-NetBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2001-2002, Shunsuke Akiyama <akiyama@jp.FreeBSD.org>.
  * All rights reserved.
@@ -96,23 +95,23 @@ struct tty{
  * while it is open!
  */
 struct ucom_callback {
-	void	(*ucom_cfg_get_status) (struct ucom_softc *, uint8_t *plsr, uint8_t *pmsr);
-	void	(*ucom_cfg_set_dtr) (struct ucom_softc *, uint8_t);
-	void	(*ucom_cfg_set_rts) (struct ucom_softc *, uint8_t);
-	void	(*ucom_cfg_set_break) (struct ucom_softc *, uint8_t);
-	void	(*ucom_cfg_set_ring) (struct ucom_softc *, uint8_t);
-	void	(*ucom_cfg_param) (struct ucom_softc *, struct termios *);
-	void	(*ucom_cfg_open) (struct ucom_softc *);
-	void	(*ucom_cfg_close) (struct ucom_softc *);
-	int	(*ucom_pre_open) (struct ucom_softc *);
-	int	(*ucom_pre_param) (struct ucom_softc *, struct termios *);
-	int	(*ucom_ioctl) (struct ucom_softc *, uint32_t, caddr_t, int, struct thread *);
-	void	(*ucom_start_read) (struct ucom_softc *);
-	void	(*ucom_stop_read) (struct ucom_softc *);
-	void	(*ucom_start_write) (struct ucom_softc *);
-	void	(*ucom_stop_write) (struct ucom_softc *);
-	void	(*ucom_tty_name) (struct ucom_softc *, char *pbuf, uint16_t buflen, uint16_t unit, uint16_t subunit);
-	void	(*ucom_poll) (struct ucom_softc *);
+	void    (*ucom_cfg_get_status) (struct ucom_softc *, uint8_t *plsr, uint8_t *pmsr);
+	void    (*ucom_cfg_set_dtr) (struct ucom_softc *, uint8_t);
+	void    (*ucom_cfg_set_rts) (struct ucom_softc *, uint8_t);
+	void    (*ucom_cfg_set_break) (struct ucom_softc *, uint8_t);
+	void    (*ucom_cfg_set_ring) (struct ucom_softc *, uint8_t);
+	void    (*ucom_cfg_param) (struct ucom_softc *, struct termios *);
+	void    (*ucom_cfg_open) (struct ucom_softc *);
+	void    (*ucom_cfg_close) (struct ucom_softc *);
+	int     (*ucom_pre_open) (struct ucom_softc *);
+	int     (*ucom_pre_param) (struct ucom_softc *, struct termios *);
+	int     (*ucom_ioctl) (struct ucom_softc *, uint32_t, caddr_t, int, struct thread *);
+	void    (*ucom_start_read) (struct ucom_softc *);
+	void    (*ucom_stop_read) (struct ucom_softc *);
+	void    (*ucom_start_write) (struct ucom_softc *);
+	void    (*ucom_stop_write) (struct ucom_softc *);
+	void    (*ucom_tty_name) (struct ucom_softc *, char *pbuf, uint16_t buflen, uint16_t unit, uint16_t subunit);
+	void    (*ucom_poll) (struct ucom_softc *);
 	void	(*ucom_free) (struct ucom_softc *);
 };
 
@@ -207,9 +206,9 @@ struct ucom_softc {
 	uint8_t sc_jitterbuf[UCOM_JITTERBUF_SIZE];
 };
 
-#define	UCOM_MTX_ASSERT(sc, what) mtx_assert((sc)->sc_mtx, what)
-#define	UCOM_MTX_LOCK(sc) mtx_lock((sc)->sc_mtx)
-#define	UCOM_MTX_UNLOCK(sc) mtx_unlock((sc)->sc_mtx)
+#define	UCOM_MTX_ASSERT(sc, what) USB_MTX_ASSERT((sc)->sc_mtx, what)
+#define	UCOM_MTX_LOCK(sc) USB_MTX_LOCK((sc)->sc_mtx)
+#define	UCOM_MTX_UNLOCK(sc) USB_MTX_UNLOCK((sc)->sc_mtx)
 #define	UCOM_UNLOAD_DRAIN(x)
 
 #define	ucom_cfg_do_request(udev,com,req,ptr,flags,timo) \

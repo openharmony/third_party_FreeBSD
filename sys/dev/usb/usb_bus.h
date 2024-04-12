@@ -1,6 +1,5 @@
-/* $FreeBSD$ */
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2008-2019 Hans Petter Selasky. All rights reserved.
  *
@@ -89,7 +88,7 @@ struct usb_bus {
 	struct mtx bus_mtx;
 	struct mtx bus_spin_lock;
 	struct usb_xfer_queue intr_q;
-	struct callout power_wdog;	/* power management */
+	struct usb_callout power_wdog;	/* power management */
 
 	device_t parent;
 	device_t bdev;			/* filled by HC driver */

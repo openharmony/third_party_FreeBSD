@@ -1,7 +1,6 @@
-/* $FreeBSD$ */
 
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2010-2022 Hans Petter Selasky
  *
@@ -466,7 +465,7 @@ struct xhci_softc {
 	/* configure message */
 	struct usb_bus_msg	sc_config_msg[2];
 
-	struct callout	sc_callout;
+	struct usb_callout	sc_callout;
 
 	xhci_port_route_t	*sc_port_route;
 

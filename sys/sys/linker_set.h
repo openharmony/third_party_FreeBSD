@@ -1,5 +1,5 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 1999 John D. Polstra
  * Copyright (c) 1999,2001 Peter Wemm <peter@FreeBSD.org>
@@ -25,8 +25,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 #ifndef _SYS_LINKER_SET_H_
@@ -51,8 +49,6 @@
 #define	__MAKE_SET_CONST const
 #endif
 
-#define __GLOBL1(sym)   __asm__(".globl " #sym)
-#define __GLOBL(sym)    __GLOBL1(sym)
 /*
  * Function or variable should not be sanitized, i.e. by AddressSanitizer.
  * GCC has the nosanitize attribute, but as a function attribute only, and

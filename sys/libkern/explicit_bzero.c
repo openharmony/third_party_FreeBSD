@@ -5,8 +5,6 @@
  */
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include <string.h>
 
 __attribute__((weak)) void __explicit_bzero_hook(void *, size_t);

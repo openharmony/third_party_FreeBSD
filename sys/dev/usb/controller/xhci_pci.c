@@ -1,5 +1,5 @@
 /*-
- * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2010-2022 Hans Petter Selasky
  *
@@ -26,7 +26,6 @@
  */
 
 #include "implementation/global_implementation.h"
-__FBSDID("$FreeBSD$");
 #include "controller/xhci.h"
 #include "controller/xhcireg.h"
 
@@ -125,7 +124,7 @@ xhci_pci_attach(device_t self)
 		device_printf(self, "Could not initialize softc\n");
 		goto error;
 	}
-	callout_init_mtx(&sc->sc_callout, &sc->sc_bus.bus_mtx, 0);
+	usb_callout_init_mtx(&sc->sc_callout, &sc->sc_bus.bus_mtx, 0);
 
 	usb_debug("add child to usbus\n");
 	sc->sc_bus.bdev = device_add_child(self, "usbus", -1);
@@ -171,7 +170,7 @@ xhci_pci_detach(device_t self)
 	/* during module unload there are lots of children leftover */
 	(void)device_delete_children(self);
 
-	callout_drain(&sc->sc_callout);
+	usb_callout_drain(&sc->sc_callout);
 	(void)xhci_halt_controller(sc);
 	(void)xhci_reset_controller(sc);
 
