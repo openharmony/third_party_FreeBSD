@@ -39,6 +39,12 @@
                 },
                 {
                     "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
+                },
+                {
+                    "name": "//third_party/FreeBSD:ld128_static"
+                },
+                {
+                    "name": "//third_party/FreeBSD:libc_static"
                 }
             ],
             "test": []
