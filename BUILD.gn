@@ -14,7 +14,7 @@
 #
 
 import("//build/ohos.gni")
-import("freebsd.gni")
+import("FreeBSD.gni")
 
 config("free_bsd_config") {
   include_dirs = [ "//third_party/FreeBSD" ]
