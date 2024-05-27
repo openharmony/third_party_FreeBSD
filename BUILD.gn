@@ -41,6 +41,16 @@ ohos_static_library("libfreebsd_static") {
   public_configs = [ ":free_bsd_config" ]
 }
 
+config("free_bsd_input_config") {
+  include_dirs = [ "//third_party/FreeBSD/sys/dev/evdev" ]
+}
+
+ohos_shared_library("libfreebsd") {
+  public_configs = [ ":free_bsd_input_config" ]
+  part_name = "FreeBSD"
+  subsystem_name = "thirdparty"
+}
+
 static_library("ld128_static") {
   sources = [
     "lib/msun/ld128/e_lgammal_r.c",
