@@ -45,6 +45,15 @@
                 },
                 {
                     "name": "//third_party/FreeBSD:libc_static"
+                },
+                {
+                    "header": {
+                        "header_base": "//third_party/FreeBSD/sys/dev/evdev",
+                        "header_files": [
+                            "input-event-codes.h"
+                        ]
+                    },
+                    "name":"//third_party/FreeBSD:libfreebsd"
                 }
             ],
             "test": []
