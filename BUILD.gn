@@ -134,7 +134,7 @@ if (is_standard_system) {
       "-fPIC",
       "-fstack-protector-strong",
     ]
-  
+
     if (!(use_libfuzzer || is_mac || is_asan || use_clang_coverage)) {
       cflags += [ "-flto" ]
     }
@@ -149,7 +149,7 @@ if (is_standard_system) {
     include_dirs += [ "//third_party/FreeBSD/lib/libc/include" ]
     include_dirs += [ "//third_party/FreeBSD/contrib/libexecinfo" ]
     include_dirs += [ "//third_party/FreeBSD/crypto/openssh/openbsd-compat" ]
-  
+
     configs -= build_inherited_configs
     configs += [ "//build/config/components/musl:soft_musl_config" ]
   }
