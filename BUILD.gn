@@ -41,116 +41,104 @@ ohos_static_library("libfreebsd_static") {
   public_configs = [ ":free_bsd_config" ]
 }
 
-config("free_bsd_input_config") {
-  include_dirs = [ "//third_party/FreeBSD/sys/dev/evdev" ]
-}
-
-ohos_shared_library("libfreebsd_input") {
-  public_configs = [ ":free_bsd_input_config" ]
-  part_name = "FreeBSD"
-  subsystem_name = "thirdparty"
-}
-
-if (is_standard_system) {
-  static_library("ld128_static") {
-    sources = [
-      "lib/msun/ld128/e_lgammal_r.c",
-      "lib/msun/ld128/e_powl.c",
-      "lib/msun/ld128/k_cosl.c",
-      "lib/msun/ld128/k_sinl.c",
-      "lib/msun/ld128/s_erfl.c",
-      "lib/msun/ld128/s_expl.c",
-      "lib/msun/ld128/s_logl.c",
-      "lib/msun/src/e_acoshl.c",
-      "lib/msun/src/e_coshl.c",
-      "lib/msun/src/e_lgammal.c",
-      "lib/msun/src/e_sinhl.c",
-      "lib/msun/src/s_asinhl.c",
-      "lib/msun/src/s_tanhl.c",
-    ]
-
-    defines = [ "LD128_ENABLE" ]
-    include_dirs = [
-      "//third_party/FreeBSD/lib/msun/ld128",
-      "//third_party/FreeBSD/lib/msun/src",
-      "//third_party/FreeBSD/lib/libc/include",
-      "//third_party/FreeBSD/sys",
-    ]
-
-    configs -= build_inherited_configs
-    configs += [ "//build/config/components/musl:soft_musl_config" ]
-    cflags = [
-      "-mllvm",
-      "-instcombine-max-iterations=0",
-      "-ffp-contract=fast",
-      "-O3",
-      "-fPIC",
-      "-fstack-protector-strong",
-    ]
-  }
-
-  freebsd_files = [
-    "contrib/gdtoa/strtod.c",
-    "contrib/gdtoa/gethex.c",
-    "contrib/gdtoa/smisc.c",
-    "contrib/gdtoa/misc.c",
-    "contrib/gdtoa/strtord.c",
-    "contrib/gdtoa/hexnan.c",
-    "contrib/gdtoa/gmisc.c",
-    "contrib/gdtoa/hd_init.c",
-    "contrib/gdtoa/strtodg.c",
-    "contrib/gdtoa/ulp.c",
-    "contrib/gdtoa/strtof.c",
-    "contrib/gdtoa/sum.c",
-    "lib/libc/gdtoa/glue.c",
-    "lib/libc/stdio/parsefloat.c",
+static_library("ld128_static") {
+  sources = [
+    "lib/msun/ld128/e_lgammal_r.c",
+    "lib/msun/ld128/e_powl.c",
+    "lib/msun/ld128/k_cosl.c",
+    "lib/msun/ld128/k_sinl.c",
+    "lib/msun/ld128/s_erfl.c",
+    "lib/msun/ld128/s_expl.c",
+    "lib/msun/ld128/s_logl.c",
+    "lib/msun/src/e_acoshl.c",
+    "lib/msun/src/e_coshl.c",
+    "lib/msun/src/e_lgammal.c",
+    "lib/msun/src/e_sinhl.c",
+    "lib/msun/src/s_asinhl.c",
+    "lib/msun/src/s_tanhl.c",
   ]
 
-  static_library("libc_static") {
-    sources = [
-      "contrib/tcp_wrappers/strcasecmp.c",
-      "lib/libc/gen/arc4random.c",
-      "lib/libc/gen/arc4random_uniform.c",
-      "lib/libc/stdlib/qsort.c",
-      "lib/libc/stdlib/strtoimax.c",
-      "lib/libc/stdlib/strtoul.c",
-      "lib/libc/stdlib/strtoumax.c",
-    ]
-    if (!is_llvm_build) {
-      sources += [ "contrib/libexecinfo/unwind.c" ]
-    }
-    if (musl_arch == "arm") {
-      sources += freebsd_files
-    } else if (musl_arch == "aarch64") {
-      sources += [ "lib/msun/src/s_frexpl.c" ]
-      if (!defined(ARM_FEATURE_SVE) && !defined(ARM_FEATURE_MTE)) {
-        sources += freebsd_files
-      }
-    } else {
-      not_needed([ "freebsd_files" ])
-    }
-    cflags = [
-      "-O3",
-      "-fPIC",
-      "-fstack-protector-strong",
-    ]
+  defines = [ "LD128_ENABLE" ]
+  include_dirs = [
+    "//third_party/FreeBSD/lib/msun/ld128",
+    "//third_party/FreeBSD/lib/msun/src",
+    "//third_party/FreeBSD/lib/libc/include",
+    "//third_party/FreeBSD/sys",
+  ]
 
-    if (!(use_libfuzzer || is_mac || is_asan || use_clang_coverage)) {
-      cflags += [ "-flto" ]
-    }
-    if (!defined(include_dirs)) {
-      include_dirs = []
-    }
-    if (musl_arch == "aarch64") {
-      include_dirs += [ "//third_party/FreeBSD/lib/libc/aarch64" ]
-    } else if (musl_arch == "arm") {
-      include_dirs += [ "//third_party/FreeBSD/lib/libc/arm" ]
-    }
-    include_dirs += [ "//third_party/FreeBSD/lib/libc/include" ]
-    include_dirs += [ "//third_party/FreeBSD/contrib/libexecinfo" ]
-    include_dirs += [ "//third_party/FreeBSD/crypto/openssh/openbsd-compat" ]
+  configs -= build_inherited_configs
+  configs += [ "//build/config/components/musl:soft_musl_config" ]
+  cflags = [
+    "-mllvm",
+    "-instcombine-max-iterations=0",
+    "-ffp-contract=fast",
+    "-O3",
+    "-fPIC",
+    "-fstack-protector-strong",
+  ]
+}
 
-    configs -= build_inherited_configs
-    configs += [ "//build/config/components/musl:soft_musl_config" ]
+freebsd_files = [
+  "contrib/gdtoa/strtod.c",
+  "contrib/gdtoa/gethex.c",
+  "contrib/gdtoa/smisc.c",
+  "contrib/gdtoa/misc.c",
+  "contrib/gdtoa/strtord.c",
+  "contrib/gdtoa/hexnan.c",
+  "contrib/gdtoa/gmisc.c",
+  "contrib/gdtoa/hd_init.c",
+  "contrib/gdtoa/strtodg.c",
+  "contrib/gdtoa/ulp.c",
+  "contrib/gdtoa/strtof.c",
+  "contrib/gdtoa/sum.c",
+  "lib/libc/gdtoa/glue.c",
+  "lib/libc/stdio/parsefloat.c",
+]
+
+static_library("libc_static") {
+  sources = [
+    "contrib/tcp_wrappers/strcasecmp.c",
+    "lib/libc/gen/arc4random.c",
+    "lib/libc/gen/arc4random_uniform.c",
+    "lib/libc/stdlib/qsort.c",
+    "lib/libc/stdlib/strtoimax.c",
+    "lib/libc/stdlib/strtoul.c",
+    "lib/libc/stdlib/strtoumax.c",
+  ]
+  if (!is_llvm_build) {
+    sources += [ "contrib/libexecinfo/unwind.c" ]
   }
+  if (musl_arch == "arm") {
+    sources += freebsd_files
+  } else if (musl_arch == "aarch64") {
+    sources += [ "lib/msun/src/s_frexpl.c" ]
+    if (!defined(ARM_FEATURE_SVE) && !defined(ARM_FEATURE_MTE)) {
+      sources += freebsd_files
+    }
+  } else {
+    not_needed([ "freebsd_files" ])
+  }
+  cflags = [
+    "-O3",
+    "-fPIC",
+    "-fstack-protector-strong",
+  ]
+
+  if (!(use_libfuzzer || is_mac || is_asan || use_clang_coverage)) {
+    cflags += [ "-flto" ]
+  }
+  if (!defined(include_dirs)) {
+    include_dirs = []
+  }
+  if (musl_arch == "aarch64") {
+    include_dirs += [ "//third_party/FreeBSD/lib/libc/aarch64" ]
+  } else if (musl_arch == "arm") {
+    include_dirs += [ "//third_party/FreeBSD/lib/libc/arm" ]
+  }
+  include_dirs += [ "//third_party/FreeBSD/lib/libc/include" ]
+  include_dirs += [ "//third_party/FreeBSD/contrib/libexecinfo" ]
+  include_dirs += [ "//third_party/FreeBSD/crypto/openssh/openbsd-compat" ]
+
+  configs -= build_inherited_configs
+  configs += [ "//build/config/components/musl:soft_musl_config" ]
 }
