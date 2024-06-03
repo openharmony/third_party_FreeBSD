@@ -17,10 +17,7 @@ import("//build/ohos.gni")
 import("FreeBSD.gni")
 
 config("free_bsd_config") {
-  include_dirs = [
-    "//third_party/FreeBSD",
-    "//third_party/FreeBSD/sys/dev/evdev",
-  ]
+  include_dirs = [ "//third_party/FreeBSD" ]
 }
 
 ohos_static_library("libfreebsd_static") {
