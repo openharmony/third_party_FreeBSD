@@ -38,7 +38,7 @@ ohos_static_library("libfreebsd_static") {
       "-w",
     ]
   }
-  if (host_cpu == "arm64") {
+  if (host_cpu == "arm64" && host_os == "linux") {
     cflags += [
       "-DWITH_FREEBSD"
     ]
