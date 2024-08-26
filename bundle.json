@@ -35,16 +35,16 @@
                     "name": "//third_party/FreeBSD:libfreebsd_static"
                 },
                 {
-                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos"
-                },
-                {
-                    "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
-                },
-                {
                     "name": "//third_party/FreeBSD:ld128_static"
                 },
                 {
                     "name": "//third_party/FreeBSD:libc_static"
+                },
+                {
+                    "name": "//third_party/FreeBSD/sbin/fsck_msdosfs:fsck_msdos"
+                },
+                {
+                    "name": "//third_party/FreeBSD/sbin/newfs_msdos:newfs_msdos"
                 }
             ],
             "test": []
