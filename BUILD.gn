@@ -21,6 +21,7 @@ config("free_bsd_config") {
 }
 
 ohos_static_library("libfreebsd_static") {
+  branch_protector_ret = "pac_ret"
   output_name = "libfreebsd_static"
   sources = [ "lib/libc/gen/fts.c" ]
   if (use_libfuzzer && !is_mac) {
