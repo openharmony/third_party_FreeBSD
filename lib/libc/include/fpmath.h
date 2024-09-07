@@ -43,16 +43,15 @@
 union IEEEl2bits {
 	long double	e;
 	struct {
-		unsigned long	manl	:64;
-		unsigned long	manh	:48;
-		unsigned int	exp	:15;
-		unsigned int	sign	:1;
+		unsigned long	manl	: 64;
+		unsigned long	manh	: 48;
+		unsigned int	exp	: 15;
+		unsigned int	sign	: 1;
 	} bits;
-	/* TODO andrew: Check the packing here */
 	struct {
-		unsigned long	manl	:64;
-		unsigned long	manh	:48;
-		unsigned int	expsign	:16;
+		unsigned long	manl	: 64;
+		unsigned long	manh	: 48;
+		unsigned int	expsign	: 16;
 	} xbits;
 };
 
@@ -68,19 +67,19 @@ union IEEEl2bits {
 	(a)[1] = (uint32_t)((u).bits.manl >> 32);	\
 	(a)[2] = (uint32_t)(u).bits.manh;		\
 	(a)[3] = (uint32_t)((u).bits.manh >> 32);	\
-} while(0)
+} while (0)
 #else
 union IEEEf2bits {
 	float	f;
 	struct {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
-		unsigned int	man	:23;
-		unsigned int	exp	:8;
-		unsigned int	sign	:1;
+		unsigned int	man	: 23;
+		unsigned int	exp	: 8;
+		unsigned int	sign	: 1;
 #else /* __BIG_ENDIAN */
-		unsigned int	sign	:1;
-		unsigned int	exp	:8;
-		unsigned int	man	:23;
+		unsigned int	sign	: 1;
+		unsigned int	exp	: 8;
+		unsigned int	man	: 23;
 #endif
 	} bits;
 };
@@ -93,19 +92,19 @@ union IEEEd2bits {
 	struct {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 #if _IEEE_WORD_ORDER == __LITTLE_ENDIAN
-		unsigned int	manl	:32;
+		unsigned int	manl	: 32;
 #endif
-		unsigned int	manh	:20;
-		unsigned int	exp	:11;
-		unsigned int	sign	:1;
+		unsigned int	manh	: 20;
+		unsigned int	exp	: 11;
+		unsigned int	sign	: 1;
 #if _IEEE_WORD_ORDER == __BIG_ENDIAN
-		unsigned int	manl	:32;
+		unsigned int	manl	: 32;
 #endif
 #else /* __BIG_ENDIAN */
-		unsigned int	sign	:1;
-		unsigned int	exp	:11;
-		unsigned int	manh	:20;
-		unsigned int	manl	:32;
+		unsigned int	sign	: 1;
+		unsigned int	exp	: 11;
+		unsigned int	manh	: 20;
+		unsigned int	manl	: 32;
 #endif
 	} bits;
 };
