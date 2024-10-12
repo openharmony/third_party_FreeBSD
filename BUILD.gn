@@ -99,50 +99,64 @@ freebsd_files = [
   "lib/libc/stdio/parsefloat.c",
 ]
 
-static_library("libc_static") {
-  sources = [
-    "contrib/tcp_wrappers/strcasecmp.c",
-    "lib/libc/gen/arc4random.c",
-    "lib/libc/gen/arc4random_uniform.c",
-    "lib/libc/stdlib/qsort.c",
-    "lib/libc/stdlib/strtoimax.c",
-    "lib/libc/stdlib/strtoul.c",
-    "lib/libc/stdlib/strtoumax.c",
-  ]
-  if (!is_llvm_build) {
-    sources += [ "contrib/libexecinfo/unwind.c" ]
-  }
-  if (musl_arch == "arm") {
-    sources += freebsd_files
-  } else if (musl_arch == "aarch64") {
-    sources += [ "lib/msun/src/s_frexpl.c" ]
-    if (!defined(ARM_FEATURE_SVE) && !defined(ARM_FEATURE_MTE)) {
-      sources += freebsd_files
+template("freebsd_libc_template") {
+  __use_flto = invoker.freebsd_use_flto
+  static_library(target_name) {
+    sources = [
+      "contrib/tcp_wrappers/strcasecmp.c",
+      "lib/libc/gen/arc4random.c",
+      "lib/libc/gen/arc4random_uniform.c",
+      "lib/libc/stdlib/qsort.c",
+      "lib/libc/stdlib/strtoimax.c",
+      "lib/libc/stdlib/strtoul.c",
+      "lib/libc/stdlib/strtoumax.c",
+    ]
+    if (!is_llvm_build) {
+      sources += [ "contrib/libexecinfo/unwind.c" ]
     }
-  } else {
-    not_needed([ "freebsd_files" ])
-  }
-  cflags = [
-    "-O3",
-    "-fPIC",
-    "-fstack-protector-strong",
-  ]
+    if (musl_arch == "arm") {
+      sources += freebsd_files
+    } else if (musl_arch == "aarch64") {
+      sources += [ "lib/msun/src/s_frexpl.c" ]
+      if (!defined(ARM_FEATURE_SVE) && !defined(ARM_FEATURE_MTE)) {
+        sources += freebsd_files
+      }
+    } else {
+      not_needed([ "freebsd_files" ])
+    }
+    cflags = [
+      "-O3",
+      "-fPIC",
+      "-fstack-protector-strong",
+    ]
 
-  if (!(use_libfuzzer || is_mac || is_asan || use_clang_coverage)) {
-    cflags += [ "-flto" ]
-  }
-  if (!defined(include_dirs)) {
-    include_dirs = []
-  }
-  if (musl_arch == "aarch64") {
-    include_dirs += [ "//third_party/FreeBSD/lib/libc/aarch64" ]
-  } else if (musl_arch == "arm") {
-    include_dirs += [ "//third_party/FreeBSD/lib/libc/arm" ]
-  }
-  include_dirs += [ "//third_party/FreeBSD/lib/libc/include" ]
-  include_dirs += [ "//third_party/FreeBSD/contrib/libexecinfo" ]
-  include_dirs += [ "//third_party/FreeBSD/crypto/openssh/openbsd-compat" ]
+    if (!(use_libfuzzer || is_mac || is_asan || use_clang_coverage) &&
+        __use_flto) {
+      cflags += [ "-flto" ]
+    } else {
+      not_needed([ "__use_flto" ])
+    }
+    if (!defined(include_dirs)) {
+      include_dirs = []
+    }
+    if (musl_arch == "aarch64") {
+      include_dirs += [ "//third_party/FreeBSD/lib/libc/aarch64" ]
+    } else if (musl_arch == "arm") {
+      include_dirs += [ "//third_party/FreeBSD/lib/libc/arm" ]
+    }
+    include_dirs += [ "//third_party/FreeBSD/lib/libc/include" ]
+    include_dirs += [ "//third_party/FreeBSD/contrib/libexecinfo" ]
+    include_dirs += [ "//third_party/FreeBSD/crypto/openssh/openbsd-compat" ]
 
-  configs -= build_inherited_configs
-  configs += [ "//build/config/components/musl:soft_musl_config" ]
+    configs -= build_inherited_configs
+    configs += [ "//build/config/components/musl:soft_musl_config" ]
+  }
+}
+
+freebsd_libc_template("libc_static") {
+  freebsd_use_flto = true
+}
+
+freebsd_libc_template("libc_static_noflto") {
+  freebsd_use_flto = false
 }
