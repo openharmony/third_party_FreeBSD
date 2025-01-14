@@ -2,7 +2,7 @@
     "name": "@ohos/FreeBSD",
     "description": "FreeBSD is an operating system used to power modern servers, desktops, and embedded platforms.",
     "version": "3.1",
-    "license": "BSD 2-Clause",
+    "license": "BSD-2-Clause",
     "publishAs": "code-segment",
     "segment": {
         "destPath": "third_party/FreeBSD"
