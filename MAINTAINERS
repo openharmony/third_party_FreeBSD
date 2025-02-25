@@ -34,11 +34,12 @@ makes a commit to the specified subtree.
 
 subsystem	login	notes
 -----------------------------
+aio(4)		asomers	Pre-commit review requested.
 ath(4)		adrian	Pre-commit review requested, send to freebsd-wireless@freebsd.org
 contrib/atf		ngie,#test		Pre-commit review requested.
 contrib/capsicum-test	ngie,#capsicum,#test	Pre-commit review requested.
 contrib/googletest	ngie,#test		Pre-commit review requested.
-contrib/ipfilter	cy			Pre-commit review requested.
+sbin/ipf	cy			Pre-commit review requested.
 contrib/libcxxrt	dim,emaste		Pre-commit review preferred.
 contrib/llvm-project/compiler-rt	dim	Pre-commit review preferred.
 contrib/llvm-project/libcxx	dim		Pre-commit review preferred.
@@ -75,7 +76,7 @@ nvme(4)		jimharris	Pre-commit review requested.
 nvmecontrol(8)	jimharris	Pre-commit review requested.
 opencrypto	jmg	Pre-commit review requested.  Documentation Required.
 openssh		des	Pre-commit review requested, email only.
-openssl		benl,jkim	Pre-commit review requested.
+openssl		benl	Pre-commit review requested.
 otus(4)		adrian	Pre-commit review requested, send to freebsd-wireless@freebsd.org
 pci bus		imp,jhb	Pre-commit review requested.
 pmcstudy(8)	rrs		Pre-commit review requested.
@@ -95,13 +96,14 @@ share/mk/*.test.mk	imp,bapt,bdrewery,	Pre-commit review requested.
 			emaste,ngie,sjg,#test
 stand/forth		dteske	Pre-commit review requested.
 stand/lua		kevans	Pre-commit review requested
+stand			imp	Pre-commit review strongly requested.
 sys/compat/linuxkpi	hselasky		If in doubt, ask.
 			zeising, johalun	pre-commit review requested via
 						#x11 phabricator group.
 						(to avoid drm graphics drivers
 						impact)
 sys/contrib/dev/ice	erj	Pre-commit phabricator review requested.
-sys/contrib/ipfilter	cy	Pre-commit review requested.
+sys/netpfil/ipfilter	cy	Pre-commit review requested.
 sys/dev/e1000	erj	Pre-commit phabricator review requested.
 sys/dev/ixgbe	erj	Pre-commit phabricator review requested.
 sys/dev/ixl	erj	Pre-commit phabricator review requested.
@@ -120,12 +122,12 @@ usr.sbin/bsdconfig	dteske	Pre-commit phabricator review requested.
 usr.sbin/dpv	dteske	Pre-commit review requested. Keep in sync with libdpv.
 usr.sbin/pkg	pkg@	Please coordinate behavior or flag changes with pkg team.
 usr.sbin/sysrc	dteske	Pre-commit phabricator review requested. Keep in sync with bsdconfig(8) sysrc.subr.
-vmm(4)		jhb, grehan	Pre-commit review requested via #bhyve
-				phabricator group.
-libvmmapi	jhb, grehan	Pre-commit review requested via #bhyve
-				phabricator group.
-usr.sbin/bhyve*	jhb, grehan	Pre-commit review requested via #bhyve
-				phabricator group.
+vmm(4)		jhb	Pre-commit review requested via #bhyve
+			phabricator group.
+libvmmapi	jhb	Pre-commit review requested via #bhyve
+			phabricator group.
+usr.sbin/bhyve*	jhb	Pre-commit review requested via #bhyve
+			phabricator group.
 autofs(5)	trasz	Pre-commit review recommended.
 iscsi(4)	trasz	Pre-commit review recommended.
 rctl(8)		trasz	Pre-commit review recommended.
