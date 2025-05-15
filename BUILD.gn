@@ -73,8 +73,8 @@ static_library("ld128_static") {
   configs -= build_inherited_configs
   configs += [ "//build/config/components/musl:soft_musl_config" ]
   cflags = [
-    #"-mllvm",
-    #"-instcombine-max-iterations=0",
+    "-mllvm",
+    "-instcombine-max-iterations=0",
     "-ffp-contract=fast",
     "-O3",
     "-fPIC",
