@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Isilon Systems, Inc.
  * Copyright (c) 2010 iX Systems, Inc.
  * Copyright (c) 2010 Panasas, Inc.
- * Copyright (c) 2013-2015 Mellanox Technologies, Ltd.
+ * Copyright (c) 2013-2021 Mellanox Technologies, Ltd.
  * Copyright (c) 2014 François Tigeot
  * All rights reserved.
  *
@@ -75,4 +75,4 @@ usleep_range(unsigned long min, unsigned long max)
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_DELAY_H_ */
+#endif	/* _LINUXKPI_LINUX_DELAY_H_ */

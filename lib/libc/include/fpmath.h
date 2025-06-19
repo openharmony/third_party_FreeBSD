@@ -73,13 +73,13 @@ union IEEEf2bits {
 	float	f;
 	struct {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
-		unsigned int	man	: 23;
-		unsigned int	exp	: 8;
-		unsigned int	sign	: 1;
+		unsigned int	man	:23;
+		unsigned int	exp	:8;
+		unsigned int	sign	:1;
 #else /* __BIG_ENDIAN */
-		unsigned int	sign	: 1;
-		unsigned int	exp	: 8;
-		unsigned int	man	: 23;
+		unsigned int	sign	:1;
+		unsigned int	exp	:8;
+		unsigned int	man	:23;
 #endif
 	} bits;
 };
@@ -92,19 +92,19 @@ union IEEEd2bits {
 	struct {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 #if _IEEE_WORD_ORDER == __LITTLE_ENDIAN
-		unsigned int	manl	: 32;
+		unsigned int	manl	:32;
 #endif
-		unsigned int	manh	: 20;
-		unsigned int	exp	: 11;
-		unsigned int	sign	: 1;
+		unsigned int	manh	:20;
+		unsigned int	exp	:11;
+		unsigned int	sign	:1;
 #if _IEEE_WORD_ORDER == __BIG_ENDIAN
-		unsigned int	manl	: 32;
+		unsigned int	manl	:32;
 #endif
 #else /* __BIG_ENDIAN */
-		unsigned int	sign	: 1;
-		unsigned int	exp	: 11;
-		unsigned int	manh	: 20;
-		unsigned int	manl	: 32;
+		unsigned int	sign	:1;
+		unsigned int	exp	:11;
+		unsigned int	manh	:20;
+		unsigned int	manl	:32;
 #endif
 	} bits;
 };

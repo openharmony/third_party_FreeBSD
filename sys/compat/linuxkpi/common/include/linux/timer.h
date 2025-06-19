@@ -87,4 +87,4 @@ extern int linux_mod_timer(timer_list_t *timer, ULONG expires);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_TIMER_H_ */
+#endif					/* _LINUXKPI_LINUX_TIMER_H_ */

@@ -53,4 +53,4 @@ static inline unsigned int jiffies_to_msecs(const unsigned long j)
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif  /* _LINUXKPI_LINUX_JIFFIES_H_ */
+#endif	/* _LINUXKPI_LINUX_JIFFIES_H_ */

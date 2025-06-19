@@ -411,9 +411,9 @@ usb_pc_dmamap_destroy(struct usb_page_cache *pc)
  *------------------------------------------------------------------------*/
 void
 usb_dma_tag_setup(struct usb_dma_parent_tag *udpt,
-			    struct usb_dma_tag *udt, bus_dma_tag_t dmat,
-			    struct mtx *mtx, usb_dma_callback_t *func,
-			    uint8_t ndmabits, uint8_t nudt)
+    struct usb_dma_tag *udt, bus_dma_tag_t dmat,
+    struct mtx *mtx, usb_dma_callback_t *func,
+    uint8_t ndmabits, uint8_t nudt)
 {
 	(void)memset_s(udpt, sizeof(*udpt), 0, sizeof(*udpt));
 
