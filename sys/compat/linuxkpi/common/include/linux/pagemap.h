@@ -25,8 +25,9 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef __LINUX_PAGEMAP_H__
-#define __LINUX_PAGEMAP_H__
+
+#ifndef _LINUXKPI_LINUX_PAGEMAP_H_
+#define _LINUXKPI_LINUX_PAGEMAP_H_
 
 #include "asm/page.h"
 
@@ -58,4 +59,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUX_PAGEMAP_H__ */
+#endif

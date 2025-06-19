@@ -26,8 +26,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef __LINUX_MODULEPARAM_H__
-#define __LINUX_MODULEPARAM_H__
+#ifndef	_LINUXKPI_LINUX_MODULEPARAM_H_
+#define	_LINUXKPI_LINUX_MODULEPARAM_H_
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -48,4 +48,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUX_MODULEPARAM_H__ */
+#endif					/* _LINUXKPI_LINUX_MODULEPARAM_H_ */

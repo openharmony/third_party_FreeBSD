@@ -31,4 +31,4 @@
 
 #include "sys/types.h"
 
-#endif /* _LINUXKPI_LINUX_TYPES_H_ */
+#endif	/* _LINUXKPI_LINUX_TYPES_H_ */

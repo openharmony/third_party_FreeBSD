@@ -45,7 +45,7 @@
 #define	SER_SRX		0x0008		/* secondary receive */
 #define	SER_CTS		0x0010		/* clear to send */
 #define	SER_DCD		0x0020		/* data carrier detect */
-#define	SER_RI		0x0040		/* ring indicate */
+#define	SER_RI	 	0x0040		/* ring indicate */
 #define	SER_DSR		0x0080		/* data set ready */
 
 #define	SER_MASK_STATE	0x00ff
