@@ -26,8 +26,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef __LINUXKPI_LINUX_STRING_H__
-#define __LINUXKPI_LINUX_STRING_H__
+#ifndef	_LINUXKPI_LINUX_STRING_H_
+#define	_LINUXKPI_LINUX_STRING_H_
 
 #include_next "string.h"
 
@@ -46,4 +46,4 @@ extern size_t strlcpy(char *dest, const char *src, size_t size);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* __LINUXKPI_LINUX_STRING_H__ */
+#endif	/* _LINUXKPI_LINUX_STRING_H_ */

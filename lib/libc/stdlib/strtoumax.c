@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * Copyright (c) 1992, 1993
- *    The Regents of the University of California.  All rights reserved.
+ *	The Regents of the University of California.  All rights reserved.
  *
  * Copyright (c) 2011 The FreeBSD Foundation
  *
@@ -35,7 +35,7 @@
  */
 
 #if defined(LIBC_SCCS) && !defined(lint)
-static char sccsid[] = "from @(#)strtoul.c    8.1 (Berkeley) 6/4/93";
+static char sccsid[] = "from @(#)strtoul.c	8.1 (Berkeley) 6/4/93";
 #endif /* LIBC_SCCS and not lint */
 // #include <sys/cdefs.h>
 // __FBSDID("$FreeBSD$");

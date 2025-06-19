@@ -160,4 +160,4 @@ rb_replace_node_cached(struct rb_node *old, struct rb_node *new,
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif    /* _LINUXKPI_LINUX_RBTREE_H_ */
+#endif	/* _LINUXKPI_LINUX_RBTREE_H_ */

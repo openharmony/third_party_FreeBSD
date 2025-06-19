@@ -90,4 +90,4 @@ SPIN_MACRO_END
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_SPINLOCK_H_ */
+#endif					/* _LINUXKPI_LINUX_SPINLOCK_H_ */

@@ -102,4 +102,4 @@ extern bool irq_bottom_half(struct workqueue_struct *workQueue, irq_bottom_half_
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_INTERRUPT_H_ */
+#endif	/* _LINUXKPI_LINUX_INTERRUPT_H_ */
