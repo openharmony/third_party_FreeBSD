@@ -534,4 +534,4 @@ extern int munmap(void *addr, size_t length);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_KERNEL_H_ */
+#endif	/* _LINUXKPI_LINUX_KERNEL_H_ */

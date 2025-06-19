@@ -562,4 +562,4 @@ extern bool linux_cancel_work_sync(struct work_struct *work);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_WORKQUEUE_H_ */
+#endif					/* _LINUXKPI_LINUX_WORKQUEUE_H_ */

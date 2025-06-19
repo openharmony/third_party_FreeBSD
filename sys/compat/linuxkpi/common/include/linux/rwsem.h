@@ -51,4 +51,4 @@ extern "C" {
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_RWSEM_H_ */
+#endif					/* _LINUXKPI_LINUX_RWSEM_H_ */

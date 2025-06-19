@@ -327,4 +327,4 @@ int linux_hrtimer_is_queued(struct hrtimer *timer);
 #endif /* __cplusplus */
 #endif /* __cplusplus */
 
-#endif /* _LINUXKPI_LINUX_HRTIMER_H */
+#endif /* _LINUXKPI_LINUX_HRTIMER_H_ */
