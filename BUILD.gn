@@ -24,6 +24,7 @@ ohos_static_library("libfreebsd_static") {
   visibility = [
     ":*",
     "//third_party/musl/*",
+    "//third_party/selinux/*",
   ]
   branch_protector_ret = "pac_ret"
   output_name = "libfreebsd_static"
