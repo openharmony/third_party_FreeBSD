@@ -21,6 +21,11 @@ config("free_bsd_config") {
 }
 
 ohos_static_library("libfreebsd_static") {
+  visibility = [
+    ":*",
+    "//third_party/musl/*",
+    "//third_party/selinux/*",
+  ]
   branch_protector_ret = "pac_ret"
   output_name = "libfreebsd_static"
   sources = [ "lib/libc/gen/fts.c" ]
@@ -46,6 +51,10 @@ ohos_static_library("libfreebsd_static") {
 }
 
 static_library("ld128_static") {
+  visibility = [
+    ":*",
+    "//third_party/musl/*",
+  ]
   sources = [
     "lib/msun/ld128/e_lgammal_r.c",
     "lib/msun/ld128/e_powl.c",
