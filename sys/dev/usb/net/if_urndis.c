@@ -20,8 +20,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <sys/cdefs.h>
-
 #include <lwip/netif.h>
 #include <lwip/dhcp.h>
 #include <lwip/netifapi.h>
