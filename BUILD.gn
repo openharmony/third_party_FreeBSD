@@ -111,6 +111,10 @@ freebsd_files = [
 template("freebsd_libc_template") {
   __use_flto = invoker.freebsd_use_flto
   static_library(target_name) {
+    visibility = [
+      ":*",
+      "//third_party/musl/*",
+    ]
     sources = [
       "contrib/tcp_wrappers/strcasecmp.c",
       "lib/libc/gen/arc4random.c",
