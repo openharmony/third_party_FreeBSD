@@ -56,11 +56,12 @@
 #define reallocf(ptr, size)           (realloc((ptr), (size)))
 
 // __size_t is a macro defined in stddef.h, not a type, so we define a new type
+// Use __fts_ prefix to avoid conflicts with glibc internal types (__dev_t, __ino_t, __nlink_t)
 typedef size_t    __fts_size_t;
-typedef uint64_t  __dev_t;
+typedef uint64_t  __fts_dev_t;
 #ifndef WITH_FREEBSD
-typedef uint64_t  __ino_t;
-typedef uint64_t  __nlink_t;
+typedef uint64_t  __fts_ino_t;
+typedef uint64_t  __fts_nlink_t;
 #endif
 //
 // From https://github.com/freebsd/freebsd-src/blob/e81e71b/sys/sys/stat.h
@@ -80,7 +81,7 @@ typedef struct {
 	struct _ftsent *fts_cur;	/* current node */
 	struct _ftsent *fts_child;	/* linked list of children */
 	struct _ftsent **fts_array;	/* sort array */
-	__dev_t fts_dev;		/* starting device # */
+	__fts_dev_t fts_dev;		/* starting device # */
 	char *fts_path;			/* path for this descent */
 	int fts_rfd;			/* fd for root */
 	__fts_size_t fts_pathlen;	/* sizeof(path) */
@@ -122,9 +123,9 @@ typedef struct _ftsent {
 	__fts_size_t fts_pathlen;	/* strlen(fts_path) */
 	__fts_size_t fts_namelen;	/* strlen(fts_name) */
 
-	__ino_t fts_ino;		/* inode */
-	__dev_t fts_dev;		/* device */
-	__nlink_t fts_nlink;		/* link count */
+	__fts_ino_t fts_ino;		/* inode */
+	__fts_dev_t fts_dev;		/* device */
+	__fts_nlink_t fts_nlink;		/* link count */
 
 #define	FTS_ROOTPARENTLEVEL	-1
 #define	FTS_ROOTLEVEL		 0
